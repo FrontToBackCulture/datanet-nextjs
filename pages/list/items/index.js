@@ -1,0 +1,134 @@
+import React, { useState, useEffect, useRef } from 'react';
+// next
+import { useRouter, withRouter } from 'next/router';
+import Link from 'next/link';
+// @mui
+import { styled } from '@mui/material/styles';
+import { Container } from '@mui/material';
+// config
+import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
+// hooks
+import { useRequest } from '../../../src/hooks';
+// layouts
+import Layout from '../../../src/layouts';
+// components
+import { Page, ErrorScreen } from '../../../src/components';
+import AgGrid from '../../../src/components/AgGrid';
+// sections
+import { PromotionItemBarFilters } from '../../../src/sections/promotions';
+// _data
+import confFn from '../../../config/conf';
+
+import { readVAL } from '../../api/grpc';
+import { useUser } from '@auth0/nextjs-auth0';
+
+// ----------------------------------------------------------------------
+
+const RootStyle = styled('div')(({ theme }) => ({
+  paddingTop: HEADER_MOBILE_HEIGHT,
+  [theme.breakpoints.up('md')]: {
+    paddingTop: HEADER_DESKTOP_HEIGHT,
+  },
+}));
+
+// ----------------------------------------------------------------------
+
+export default function PromotionItemsPage() {
+  const { user, error, isLoading } = useUser();
+
+  const [errors, setErrors] = useState();
+  const [rowData, setRowData] = useState([]);
+  const [conf, setConf] = useState();
+  const [listFields, setListFields] = useState();
+  const [staticData, setStaticData] = useState();
+  const [metricData, setMetriccData] = useState();
+
+  const router = useRouter();
+  const { title, code } = router.query;
+
+  const getConfig = () => {
+    let config = confFn.getConfig(code);
+    // console.log('List Config: ', config);
+    setConf(config);
+  };
+
+  useEffect(() => {
+    // console.log('Code:', code);
+    getConfig();
+  }, [router.query]);
+
+  useEffect(async () => {
+    if (conf) {
+      console.log(conf);
+      setListFields(conf.listFields);
+      const staticQueryID = conf.staticSource.queryID;
+      const staticDomain = conf.staticSource.domain;
+      const staticKey = conf.staticSource.key;
+      let sD = await getJobs(staticQueryID, staticDomain);
+      setStaticData(sD);
+      const metricQueryID = conf.metricSource.queryID;
+      const metricDomain = conf.metricSource.domain;
+      const metricKey = conf.metricSource.key;
+      let mD = await getJobs(metricQueryID, metricDomain);
+      setMetriccData(mD);
+      let merged = [];
+
+      for (let i = 0; i < sD.length; i++) {
+        merged.push({
+          ...sD[i],
+          ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
+        });
+      }
+
+      setRowData(merged);
+    }
+  }, [conf]);
+
+  const getJobs = async (id, dom) => {
+    // console.log(`List Get ${code}`, id, dom);
+    let valJobs = await readVAL({ queryID: id, domain: dom });
+    // console.log(`List Get Jobs Data ${code}`, valJobs.data);
+    // setRowData(valJobs.data);
+    // setErrors(valJobs.status);
+    return valJobs.data;
+  };
+
+  //  if (errors != 200) {
+  //     return <ErrorScreen />;
+  //   }
+  if (user) {
+    return (
+      <Page title="Promotions">
+        <RootStyle>
+          <Container>
+            {title}
+            <AgGrid
+              type={'list'}
+              fieldConf={listFields}
+              fullConf={conf}
+              entity={code}
+              rowD={rowData}
+            />
+          </Container>
+        </RootStyle>
+      </Page>
+    );
+  }
+  return (
+    <Page title="Promotions">
+      <RootStyle>
+        <Container>
+          <Link href="../api/auth/login">Login</Link>
+          <br />
+          <br />
+        </Container>
+      </RootStyle>
+    </Page>
+  );
+}
+
+// ----------------------------------------------------------------------
+
+PromotionItemsPage.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
