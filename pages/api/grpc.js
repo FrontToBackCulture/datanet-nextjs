@@ -2,10 +2,9 @@ import axios from 'axios';
 
 let host = '';
 let api = '';
-if (process.env.DEPLOY_STAGE === 'development' || process.env.DEPLOY_STAGE === 'staging') {
-  host = process.env.MINIAPP_HOST;
-  api = process.env.MINIAPP_API;
-}
+
+host = process.env.MINIAPP_HOST || 'http://0.0.0.0:8085';
+api = process.env.MINIAPP_API || 'miniapp_api/v0.1';
 
 export async function insert2VAL(params) {
   const config = {

@@ -52,6 +52,8 @@ export default function PromotionItemsPage() {
   const { title, code } = router.query;
 
   const getConfig = () => {
+    console.log('Deploy Stage:', process.env.DEPLOY_STAGE);
+    console.log('Process Env:', process.env);
     if (process.env.DEPLOY_STAGE == 'development') {
       let config = confFn.getConfig(code);
       setConf(config);
@@ -62,6 +64,10 @@ export default function PromotionItemsPage() {
     }
     if (process.env.DEPLOY_STAGE == 'production') {
       let config = confFnProd.getConfig(code);
+      setConf(config);
+    }
+    if (!process.env.DEPLOY_STAGE) {
+      let config = confFn.getConfig(code);
       setConf(config);
     }
   };
@@ -100,6 +106,7 @@ export default function PromotionItemsPage() {
 
   const getJobs = async (id, dom) => {
     // console.log(`List Get ${code}`, id, dom);
+    console.log('Trying to readVAL');
     let valJobs = await readVAL({ queryID: id, domain: dom });
     // console.log(`List Get Jobs Data ${code}`, valJobs.data);
     // setRowData(valJobs.data);
