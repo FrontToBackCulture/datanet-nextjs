@@ -30,7 +30,7 @@ export default function App({ widgetHeight, conf, chartData }) {
       if (chartData && chartData.length > 0 && conf) {
         month = chartData.map((a) => fDate2(a[groupKey]));
         value = chartData.map((a) => a[valueKey]);
-        console.log('React Chart Months:', month);
+        console.log('React Chart Period:', month);
         console.log('React Chart Value:', value);
       }
     }

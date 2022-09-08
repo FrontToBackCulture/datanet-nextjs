@@ -18,14 +18,11 @@ export async function insert2VAL(params) {
 }
 
 export async function readVAL(params) {
-  console.log('I am in ReadVAL');
-  console.log(`${host}/${api}/readVAL`);
   const config = {
     method: 'post',
     url: `${host}/${api}/readVAL`,
     headers: {},
     data: params,
   };
-  console.log(config.url);
   return axios(config).then((res) => res);
 }

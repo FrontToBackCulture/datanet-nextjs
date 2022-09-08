@@ -27,7 +27,7 @@ import { useUser } from '@auth0/nextjs-auth0';
 
 // ----------------------------------------------------------------------
 
-console.log(process.env.DEPLOY_STAGE);
+// console.log(process.env.DEPLOY_STAGE);
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: HEADER_MOBILE_HEIGHT,
@@ -52,8 +52,8 @@ export default function PromotionItemsPage() {
   const { title, code } = router.query;
 
   const getConfig = () => {
-    console.log('Deploy Stage:', process.env.DEPLOY_STAGE);
-    console.log('Process Env:', process.env);
+    // console.log('Deploy Stage:', process.env.DEPLOY_STAGE);
+    // console.log('Process Env:', process.env);
     if (process.env.DEPLOY_STAGE == 'development') {
       let config = confFn.getConfig(code);
       setConf(config);
@@ -79,7 +79,7 @@ export default function PromotionItemsPage() {
 
   useEffect(async () => {
     if (conf) {
-      console.log(conf);
+      // console.log(conf);
       setListFields(conf.listFields);
       const staticQueryID = conf.staticSource.queryID;
       const staticDomain = conf.staticSource.domain;
@@ -106,7 +106,7 @@ export default function PromotionItemsPage() {
 
   const getJobs = async (id, dom) => {
     // console.log(`List Get ${code}`, id, dom);
-    console.log('Trying to readVAL');
+    // console.log('Trying to readVAL');
     let valJobs = await readVAL({ queryID: id, domain: dom });
     // console.log(`List Get Jobs Data ${code}`, valJobs.data);
     // setRowData(valJobs.data);

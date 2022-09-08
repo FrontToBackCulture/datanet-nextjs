@@ -178,7 +178,7 @@ function NavItemDesktop({ item, isScrolling, isTransparent }) {
       </RootLinkStyle>
     );
   }
-  console.log(path);
+  // console.log(path);
   return (
     <NextLink key={title} href={{ pathname: path, query: { title: title, code: code } }} passHref>
       <RootLinkStyle active={isActiveRoot} scrolling={isScrolling} transparent={isTransparent}>

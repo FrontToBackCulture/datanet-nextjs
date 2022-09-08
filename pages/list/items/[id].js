@@ -29,7 +29,6 @@ import { readVAL } from '../../api/grpc';
 import { fCurrency, fShortenNumber } from '../../../src/utils/formatNumber';
 import { DragControls } from 'framer-motion';
 
-console.log(process.env.DEPLOY_STAGE);
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -124,7 +123,6 @@ export default function PromotionItemPage() {
   const isDesktop = useResponsive('up', 'md');
 
   const getJobs = async (qId, dom) => {
-    console.log(qId, dom);
     let valJobs = await readVAL({ queryID: qId, domain: dom });
     // setJobs(valJobs.data);
     return valJobs.data;
@@ -168,11 +166,11 @@ export default function PromotionItemPage() {
 
   useEffect(async () => {
     if (router.isReady) {
-      console.log(router.query);
+      // console.log(router.query);
       let { id, entity } = router.query;
-      console.log(entity);
+      // console.log(entity);
       if (entity) {
-        console.log(entity);
+        // console.log(entity);
         // let configJson = JSON.parse(conf);
         setEntity(entity);
         let conf = await getConfig(entity);
@@ -191,7 +189,7 @@ export default function PromotionItemPage() {
       let sD = await getJobs(staticQueryID, staticDomain);
       setStaticData(sD);
       let finalChartValue = await getChartData(fullConfig);
-      console.log(finalChartValue);
+      // console.log(finalChartValue);
       setChartData(finalChartValue);
     }
   }, [staticQueryID, staticDomain]);

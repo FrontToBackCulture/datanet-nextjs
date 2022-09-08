@@ -6,7 +6,6 @@ import { readVAL } from '../../../api/grpc';
 
 export default async function handler(req, res) {
   const { id } = req.query;
-  console.log('Melvin: ', req.query);
 
   const valJobs = await readVAL({ queryID: '10', domain: 'dev' });
 
