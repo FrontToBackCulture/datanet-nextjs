@@ -61,9 +61,9 @@ const config = {
     chartSource: {
       queryID: '4055',
       domain: 'saladstop',
-      key: 'Store',
-      valueKey: 'sum_sum_usr_0dc0dfcfbcc0_3',
-      groupKey: 'Date',
+      key: 'expenses_store',
+      valueKey: 'usr_0dc0dfcfbcc0_3',
+      groupKey: 'log_date',
       title: 'Daily Revenue Last 3M',
     },
     listFields: {
