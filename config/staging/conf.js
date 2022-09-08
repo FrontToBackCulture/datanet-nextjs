@@ -62,7 +62,7 @@ const config = {
       queryID: '3474',
       domain: 'dev',
       key: 'Store',
-      valueKey: 'sum_usr_afeafdf0fe0_1',
+      valueKey: 'sum_usr_0eacffaebedeefddfb_2',
       groupKey: 'Month',
       title: 'Revenue by months',
     },
