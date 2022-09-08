@@ -82,7 +82,7 @@ const config = {
       // metric6: { sourceColumn: 'Count Storehub', link: false, type: 'decimal' },
     },
     detailFields: {
-      metric1: { sourceColumn: 'sum_usr_0dc0dfcfbcc0_3', link: false, type: 'currency' },
+      metric1: { sourceColumn: 'sum Net Sales', link: false, type: 'currency' },
       // metric1PercentChange: {},
       // metric2: { sourceColumn: 'Net Credit Day', link: false, type: 'currency' },
       // metric3: { sourceColumn: 'Net Cash Day', link: false, type: 'currency' },
