@@ -107,7 +107,10 @@ export default function PromotionItemPage() {
       let config = confFnProd.getConfig(code);
       setFullConfig(config);
     }
-    console.log(config);
+    if (!process.env.DEPLOY_STAGE) {
+      let config = confFn.getConfig(code);
+      setConf(config);
+    }
     return config;
   };
 
