@@ -91,21 +91,21 @@ export default function App({ widgetHeight, conf, chartData }) {
             },
           },
         },
-        scaleLabel: "<%= value + ' + two = ' + (Number(value) + 2)   %>",
-        scaleOverride: true,
-        scaleSteps: 10,
-        scaleStepWidth: 10,
-        scaleStartValue: 0,
-        scales: {
-          y: {
-            ticks: {
-              // Include a dollar sign in the ticks
-              callback: function (value, index, ticks) {
-                return value / 1000 + 'k';
-              },
-            },
-          },
-        },
+        // scaleLabel: "<%= value + ' + two = ' + (Number(value) + 2)   %>",
+        // scaleOverride: true,
+        // scaleSteps: 10,
+        // scaleStepWidth: 10,
+        // scaleStartValue: 0,
+        // scales: {
+        //   y: {
+        //     ticks: {
+        //       // Include a dollar sign in the ticks
+        //       callback: function (value, index, ticks) {
+        //         return value / 1000 + 'k';
+        //       },
+        //     },
+        //   },
+        // },
       },
     };
     const myLineChart = new Chart(ctx, config);
