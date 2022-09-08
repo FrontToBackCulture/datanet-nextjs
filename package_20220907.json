@@ -6,10 +6,8 @@
     "lint": "next lint",
     "lint:es": "eslint --ext .js,.jsx .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
+    "dev": "next dev -p 3002",
     "build": "next build",
-    "dev": "env NODE_ENV=dev env-cmd -f env/.env.development next dev",
-    "stage": "env NODE_ENV=staging env-cmd -f env/.env.staging next dev",
-    "production": "env NODE_ENV=production env-cmd -f env/.env.production next dev",
     "start": "next start",
     "export": "yarn build && next export -o _static",
     "clear-all": "rm -rf .next _static node_modules",
@@ -35,7 +33,6 @@
     "chart.js": "^3.9.1",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.2",
-    "env-cmd": "^10.1.0",
     "framer-motion": "^6.2.8",
     "google-map-react": "^2.1.10",
     "gray-matter": "^4.0.3",
@@ -60,7 +57,6 @@
     "stylis": "^4.0.13",
     "stylis-plugin-rtl": "^2.1.1",
     "swr": "^1.2.2",
-    "webpack": "^5.74.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

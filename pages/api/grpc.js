@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 let host = '';
-if (process.env.NODE_ENV === 'development') {
-  host = 'http://0.0.0.0:8085';
-} else {
-  host = 'https://shark-app-b5dbm.ondigitalocean.app';
+let api = '';
+if (process.env.DEPLOY_STAGE === 'development' || process.env.DEPLOY_STAGE === 'staging') {
+  host = process.env.MINIAPP_HOST;
+  api = process.env.MINIAPP_API;
 }
 
 export async function insert2VAL(params) {
   const config = {
     method: 'post',
-    url: `${host}/api/insert2VAL`,
+    url: `${host}/${api}/insert2VAL`,
     headers: {},
     data: params,
   };
@@ -19,9 +19,10 @@ export async function insert2VAL(params) {
 }
 
 export async function readVAL(params) {
+  console.log(`${host}/${api}/readVAL`);
   const config = {
     method: 'post',
-    url: `${host}/api/readVAL`,
+    url: `${host}/${api}/readVAL`,
     headers: {},
     data: params,
   };

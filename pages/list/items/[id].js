@@ -10,9 +10,6 @@ import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mu
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // hooks
 import { useRequest, useResponsive } from '../../../src/hooks';
-// _data
-// import _mock from '../../../_data/mock';
-import confFn from '../../../config/conf';
 // layouts
 import Layout from '../../../src/layouts';
 // components
@@ -21,12 +18,18 @@ import ReactChartsLine from '../../../src/components/ReactCharts/ReactChartsLine
 import DataTable from '../../../src/components/DataTable';
 // sections
 import { PromotionItemHero } from '../../../src/sections/promotions';
+// _data
+// import _mock from '../../../_data/mock';
+import confFn from '../../../config/development/conf';
+import confFnStage from '../../../config/staging/conf';
+import confFnProd from '../../../config/production/conf';
 
 import { readVAL } from '../../api/grpc';
 // utils
 import { fCurrency, fShortenNumber } from '../../../src/utils/formatNumber';
 import { DragControls } from 'framer-motion';
 
+console.log(process.env.DEPLOY_STAGE);
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -92,9 +95,19 @@ export default function PromotionItemPage() {
   const [metricData, setMetriccData] = useState();
 
   const getConfig = (code) => {
-    let config = confFn.getConfig(code);
-    console.log('List Config: ', config);
-    setFullConfig(config);
+    if (process.env.DEPLOY_STAGE == 'development') {
+      let config = confFn.getConfig(code);
+      setConf(config);
+    }
+    if (process.env.DEPLOY_STAGE == 'staging') {
+      let config = confFnStage.getConfig(code);
+      setConf(config);
+    }
+    if (process.env.DEPLOY_STAGE == 'production') {
+      let config = confFnProd.getConfig(code);
+      setConf(config);
+    }
+    console.log(config);
     return config;
   };
 

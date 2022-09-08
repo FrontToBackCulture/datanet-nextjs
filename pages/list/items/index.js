@@ -17,12 +17,17 @@ import AgGrid from '../../../src/components/AgGrid';
 // sections
 import { PromotionItemBarFilters } from '../../../src/sections/promotions';
 // _data
-import confFn from '../../../config/conf';
+// import confFn from '../../../config/conf';
+import confFn from '../../../config/development/conf';
+import confFnStage from '../../../config/staging/conf';
+import confFnProd from '../../../config/production/conf';
 
 import { readVAL } from '../../api/grpc';
 import { useUser } from '@auth0/nextjs-auth0';
 
 // ----------------------------------------------------------------------
+
+console.log(process.env.DEPLOY_STAGE);
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: HEADER_MOBILE_HEIGHT,
@@ -47,9 +52,18 @@ export default function PromotionItemsPage() {
   const { title, code } = router.query;
 
   const getConfig = () => {
-    let config = confFn.getConfig(code);
-    // console.log('List Config: ', config);
-    setConf(config);
+    if (process.env.DEPLOY_STAGE == 'development') {
+      let config = confFn.getConfig(code);
+      setConf(config);
+    }
+    if (process.env.DEPLOY_STAGE == 'staging') {
+      let config = confFnStage.getConfig(code);
+      setConf(config);
+    }
+    if (process.env.DEPLOY_STAGE == 'production') {
+      let config = confFnProd.getConfig(code);
+      setConf(config);
+    }
   };
 
   useEffect(() => {
