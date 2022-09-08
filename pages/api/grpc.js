@@ -19,6 +19,7 @@ export async function insert2VAL(params) {
 }
 
 export async function readVAL(params) {
+  console.log('I am in ReadVAL');
   console.log(`${host}/${api}/readVAL`);
   const config = {
     method: 'post',
