@@ -26,6 +26,6 @@ export async function readVAL(params) {
     headers: {},
     data: params,
   };
-
+  console.log(config.url);
   return axios(config).then((res) => res);
 }
