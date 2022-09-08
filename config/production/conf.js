@@ -69,7 +69,7 @@ const config = {
     listFields: {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string' },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string' },
-      metric1: { sourceColumn: 'sum_usr_0dc0dfcfbcc0_3', link: false, type: 'currency' },
+      metric1: { sourceColumn: 'sum Net Sales', link: false, type: 'currency' },
       // metric1PercentChange: {
       //   sourceColumn: 'Net Cash Day',
       //   link: false,
