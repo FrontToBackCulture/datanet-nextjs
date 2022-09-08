@@ -62,7 +62,7 @@ const config = {
       queryID: '4055',
       domain: 'saladstop',
       key: 'Store',
-      valueKey: 'sum_usr_0dc0dfcfbcc0_3',
+      valueKey: 'sum_sum_usr_0dc0dfcfbcc0_3',
       groupKey: 'Date',
       title: 'Daily Revenue Last 3M',
     },
