@@ -97,15 +97,15 @@ export default function PromotionItemPage() {
   const getConfig = (code) => {
     if (process.env.DEPLOY_STAGE == 'development') {
       let config = confFn.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     if (process.env.DEPLOY_STAGE == 'staging') {
       let config = confFnStage.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     if (process.env.DEPLOY_STAGE == 'production') {
       let config = confFnProd.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     console.log(config);
     return config;
