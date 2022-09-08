@@ -95,21 +95,22 @@ export default function PromotionItemPage() {
   const [metricData, setMetriccData] = useState();
 
   const getConfig = (code) => {
+    let config;
     if (process.env.DEPLOY_STAGE == 'development') {
-      let config = confFn.getConfig(code);
+      config = confFn.getConfig(code);
       setFullConfig(config);
     }
     if (process.env.DEPLOY_STAGE == 'staging') {
-      let config = confFnStage.getConfig(code);
+      config = confFnStage.getConfig(code);
       setFullConfig(config);
     }
     if (process.env.DEPLOY_STAGE == 'production') {
-      let config = confFnProd.getConfig(code);
+      config = confFnProd.getConfig(code);
       setFullConfig(config);
     }
     if (!process.env.DEPLOY_STAGE) {
-      let config = confFn.getConfig(code);
-      setConf(config);
+      config = confFn.getConfig(code);
+      setFullConfig(config);
     }
     return config;
   };
