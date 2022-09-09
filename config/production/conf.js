@@ -105,6 +105,12 @@ const config = {
         type: 'decimal',
         headerName: 'Daily Min Net Sales L3M',
       },
+      metric5: {
+        sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
+        link: false,
+        type: 'number',
+        headerName: 'Average Order Count',
+      },
     },
     detailFields: {
       atestMetric: {
