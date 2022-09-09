@@ -142,7 +142,13 @@ export default function PromotionItemPage() {
     // console.log(data);
     setAllChartData(data);
     // console.log('Chart: ', data);
-    const filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
+    let filteredChart;
+    if (Array.isArray(allChartData[0][metricKey])) {
+      filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
+    } else {
+      filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
+    }
+
     return filteredChart;
   };
 
