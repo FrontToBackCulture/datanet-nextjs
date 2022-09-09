@@ -147,7 +147,7 @@ const config = {
       metric4: {
         sourceColumn: 'min_usr_0dc0dfcfbcc0_3',
         link: false,
-        type: 'decimal',
+        type: 'currency',
         headerName: 'Daily Min Net Sales L3M',
       },
       metric5: {
