@@ -227,9 +227,6 @@ export default function PromotionItemPage() {
       const chartGroupKey = fullConfig.chartSource.groupKey;
       let merged = [];
 
-      // console.log(staticKey, metricKey);
-      // console.log(staticData, metricData);
-
       for (let i = 0; i < staticData.length; i++) {
         if (Array.isArray(metricData[0][metricKey])) {
           merged.push({
@@ -245,7 +242,10 @@ export default function PromotionItemPage() {
       }
 
       const trendKey = fullConfig.chartSource.key;
-
+      console.log('Static Data', staticData);
+      console.log('Metric Data', metricData);
+      console.log('Trend Data', allChartData);
+      console.log('Merged:', merged);
       // console.log('Merged:', merged);
       // console.log('All Chart Data', allChartData);
 
@@ -306,6 +306,8 @@ export default function PromotionItemPage() {
       // console.log('Combined: ', filteredItemTrendData);
 
       merged = filteredItemTrendData;
+
+      console.log('[ID] 2nd Merged:', merged);
 
       const { detailFields, listFields } = fullConfig;
       let filtered;
