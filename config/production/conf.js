@@ -77,50 +77,33 @@ const config = {
         sourceColumn: 'latestMetric',
         link: false,
         type: 'currency',
-        headerName: 'Last Day Net Sales',
-      },
-      priorMetric: {
-        sourceColumn: 'priorMetric',
-        link: false,
-        type: 'currency',
-        headerName: 'Prior Day Net Sales',
+        headerName: 'Last Working Day Net Sales',
       },
       metric1: {
-        sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
-        link: false,
-        type: 'currency',
-        headerName: 'Net Sales L3M',
-      },
-      metric2: {
         sourceColumn: 'changeMetricPercent',
         link: false,
         type: 'percent',
         headerName: 'Daily % Change',
         condition: 'cellClassRules',
       },
-      metric3: {
-        sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
+      metric2: {
+        sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
-        headerName: 'Order Count L3M',
+        sort: 'desc',
+        headerName: 'Net Sales L3M',
       },
-      metric4: {
+      metric3: {
         sourceColumn: 'max_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
       },
-      metric5: {
+      metric4: {
         sourceColumn: 'min_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'decimal',
         headerName: 'Daily Min Net Sales L3M',
-      },
-      metric6: {
-        sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
-        link: false,
-        type: 'decimal',
-        headerName: 'Average Daily Order Count',
       },
     },
     detailFields: {
