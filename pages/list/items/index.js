@@ -130,7 +130,7 @@ export default function PromotionItemsPage() {
           filteredChart.length - 2
         ];
 
-        // console.log('Most Recent: ', mostRecentObject);
+        console.log('Most Recent: ', mostRecentObject);
         // console.log('Second Recent: ', secondLatestDate);
 
         let latestMetric = mostRecentObject[changeKey];
