@@ -9,10 +9,9 @@ import 'ag-grid-enterprise';
 import 'ag-grid-enterprise/dist/styles/ag-grid.css';
 import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-enterprise/dist/styles/ag-theme-material.css';
-[];
 
 // utils
-import { fCurrency, fShortenNumber } from '../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent } from '../utils/formatNumber';
 
 export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   const gridRef = useRef();
@@ -26,6 +25,11 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   const onGridReady = (params) => {
     setGridApi(params);
     autoSizeAll(false);
+  };
+
+  const cellClassRules = {
+    'cell-pass': (params) => params.value >= 0,
+    'cell-fail': (params) => params.value < 0,
   };
 
   const onFirstDataRendered = useCallback((params) => {
@@ -142,6 +146,14 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     }
   }
 
+  function percentFormatter(params) {
+    if (params && params.value) {
+      return fPercent(params.value);
+    } else {
+      return 0;
+    }
+  }
+
   const autoSizeAll = useCallback((skipHeader) => {
     const allColumnIds = [];
     gridRef.current.columnApi.getColumns().forEach((column) => {
@@ -167,6 +179,19 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
               colDefsObj.cellRenderer = LinkComponent;
               colDefsObj.pinned = 'left';
             }
+            if (fieldConf[field2Show].sort) {
+              colDefsObj.sort = fieldConf[field2Show].sort;
+            }
+            if (fieldConf[field2Show].headerName) {
+              colDefsObj.headerName = fieldConf[field2Show].headerName;
+            }
+            if (fieldConf[field2Show].condition) {
+              colDefsObj.cellClassRules = {
+                'rag-green': 'x > 0',
+                'rag-amber': 'x >= 20 && x < 25',
+                'rag-red': 'x < 0',
+              };
+            }
             switch (fieldConf[field2Show].type) {
               case 'decimal':
                 colDefsObj.valueFormatter = decimalFormatter;
@@ -176,6 +201,9 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
                 break;
               case 'number':
                 colDefsObj.valueFormatter = numberFormatter;
+                break;
+              case 'percent':
+                colDefsObj.valueFormatter = percentFormatter;
                 break;
               default:
                 break;

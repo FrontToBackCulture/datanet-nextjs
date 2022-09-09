@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 // utils
-import { fCurrency, fShortenNumber } from '../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent } from '../utils/formatNumber';
 
 export default function DenseTable({ job, conf }) {
   const [item, setItem] = useState([]);
@@ -16,13 +16,21 @@ export default function DenseTable({ job, conf }) {
   //   console.log(job);
   useEffect(() => {
     if (job.length > 0 && conf) {
+      // console.log(job);
       let itemMetrics = [];
       let { detailFields } = conf;
       //   console.log(detailFields);
       itemMetrics = job.map((field) => {
         let fieldSetting = Object.keys(detailFields).filter(function (row) {
-          return detailFields[row].sourceColumn === field.name;
+          if (detailFields[row].sourceColumn === field.name) {
+            field.headerName = detailFields[row].headerName;
+            if (detailFields[row].condition) {
+              field.condition = 'cellClassRules';
+            }
+            return row;
+          }
         });
+        // console.log(fieldSetting);
         if (field.value) {
           switch (detailFields[fieldSetting[0]].type) {
             case 'decimal':
@@ -34,6 +42,9 @@ export default function DenseTable({ job, conf }) {
             case 'number':
               field.value = fShortenNumber(field.value);
               break;
+            case 'percent':
+              field.value = fPercent(field.value);
+              break;
             default:
               break;
           }
@@ -41,7 +52,7 @@ export default function DenseTable({ job, conf }) {
         // console.log(field);
         return field;
       });
-      //   console.log('To Display:', itemMetrics);
+      console.log('To Display:', itemMetrics);
       setItem(itemMetrics);
     }
   }, [job, conf]);
@@ -59,9 +70,20 @@ export default function DenseTable({ job, conf }) {
               }}
             >
               <TableCell component="th" scope="row" style={{ color: '#7a7a7a' }}>
-                {row.name}
+                {row.headerName}
               </TableCell>
-              <TableCell align="right">{row.value}</TableCell>
+              {/* <TableCell align="right">{row.value}</TableCell> */}
+              {!row.condition && <TableCell align="right">{row.value}</TableCell>}
+              {row.condition && parseFloat(row.value) < 0 && (
+                <TableCell align="right" style={{ color: 'red' }}>
+                  {row.value}
+                </TableCell>
+              )}
+              {row.condition && parseFloat(row.value) > 0 && (
+                <TableCell align="right" style={{ color: 'green' }}>
+                  {row.value}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

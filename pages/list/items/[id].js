@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useRouter, withRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
@@ -16,6 +17,7 @@ import Layout from '../../../src/layouts';
 import { Page, ErrorScreen, LoadingScreen, SocialsButton } from '../../../src/components';
 import ReactChartsLine from '../../../src/components/ReactCharts/ReactChartsLine';
 import DataTable from '../../../src/components/DataTable';
+import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
 // sections
 import { PromotionItemHero } from '../../../src/sections/promotions';
 // _data
@@ -38,6 +40,14 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }));
 
+const useStyles = makeStyles((theme) => ({
+  tab: {
+    '& .MuiBox-root': {
+      padding: '0px',
+    },
+  },
+}));
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -50,7 +60,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 0 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -92,6 +102,7 @@ export default function PromotionItemPage() {
   const [metricDomain, setMetricDomain] = useState();
   const [staticData, setStaticData] = useState();
   const [metricData, setMetriccData] = useState();
+  const [allChartData, setAllChartData] = useState([]);
 
   const getConfig = (code) => {
     let config;
@@ -137,7 +148,9 @@ export default function PromotionItemPage() {
       domain: conf.chartSource.domain,
     });
     let data = valChartData.data;
-    console.log('Chart: ', data);
+    // console.log(data);
+    setAllChartData(data);
+    // console.log('Chart: ', data);
     const filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
     return filteredChart;
   };
@@ -210,9 +223,16 @@ export default function PromotionItemPage() {
   // }, [fullConfig]);
 
   useEffect(async () => {
-    if (staticData && metricData && staticData.length > 0 && metricData.length > 0) {
+    if (
+      staticData &&
+      metricData &&
+      staticData.length > 0 &&
+      metricData.length > 0 &&
+      allChartData.length > 0
+    ) {
       const staticKey = fullConfig.staticSource.key;
       const metricKey = fullConfig.metricSource.key;
+      const changeKey = fullConfig.change.valueKey;
       let merged = [];
 
       // console.log(staticKey, metricKey);
@@ -225,7 +245,54 @@ export default function PromotionItemPage() {
         });
       }
 
-      // console.log(merged);
+      const trendKey = fullConfig.chartSource.key;
+
+      // console.log('Merged:', merged);
+      // console.log('All Chart Data', allChartData);
+
+      const filteredItemTrendData = await merged.map((item) => {
+        const filteredChart = allChartData.filter((trend) => trend[trendKey] === item[staticKey]);
+        // console.log(item[staticKey] + ': ', filteredChart);
+
+        var mostRecentDate = new Date(
+          Math.max.apply(
+            null,
+            filteredChart.map((e) => {
+              return new Date(e.Month);
+            })
+          )
+        );
+
+        var mostRecentObject = filteredChart.filter((e) => {
+          var d = new Date(e.Month);
+          return d.getTime() == mostRecentDate.getTime();
+        })[0];
+
+        const secondLatestDate = filteredChart.sort((a, b) => a.Month - b.Month)[
+          filteredChart.length - 2
+        ];
+
+        // console.log('Most Recent: ', mostRecentObject);
+        // console.log('Second Recent: ', secondLatestDate);
+
+        let latestMetric = mostRecentObject[changeKey];
+        let priorMetric = secondLatestDate[changeKey];
+        let changeMetric = latestMetric - priorMetric;
+        let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+
+        item['latestMetric'] = latestMetric;
+        item['priorMetric'] = priorMetric;
+        item['changeMetric'] = changeMetric;
+        item['changeMetricPercent'] = changeMetricPercent;
+
+        // console.log(item);
+
+        return item;
+      });
+
+      console.log('Combined: ', filteredItemTrendData);
+
+      merged = filteredItemTrendData;
 
       const { detailFields, listFields } = fullConfig;
       const filtered = merged.find((merge) => merge[metricKey] === itemId);
@@ -245,8 +312,10 @@ export default function PromotionItemPage() {
       });
       setJob(jobObj);
       setDataRows(jobArray);
+      console.log(jobObj);
+      console.log(jobArray);
     }
-  }, [staticData, metricData]);
+  }, [staticData, metricData, allChartData]);
 
   // useEffect(() => {
   //   if (jobs && jobs.length > 0) {
@@ -281,9 +350,9 @@ export default function PromotionItemPage() {
           <Container>
             <Grid container spacing={12}>
               {!isDesktop && (
-                <Grid item xs={12} md={12} lg={12}>
-                  <Box sx={{ width: '100%' }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Grid item xs={12} md={12} lg={12} sx={{ padding: '0px' }}>
+                  <Box sx={{ width: '100%', padding: '0px' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', padding: '0px' }}>
                       <Tabs
                         value={value}
                         scrollButtons="auto"
@@ -294,13 +363,14 @@ export default function PromotionItemPage() {
                         <Tab label="Summary" {...a11yProps(0)} />
                       </Tabs>
                     </Box>
-                    <TabPanel value={value} index={0} style={{ padding: 0 }}>
-                      <ReactChartsLine
+                    <TabPanel value={value} index={0} sx={{ padding: '0px' }}>
+                      {/* <ReactChartsLine
                         widgetHeight={'40vh'}
                         conf={fullConfig}
                         chartData={chartData}
-                      />
+                      /> */}
                       <br />
+                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
                       <DataTable job={dataRows} conf={fullConfig} />
                     </TabPanel>
                   </Box>
@@ -309,7 +379,7 @@ export default function PromotionItemPage() {
 
               {isDesktop && (
                 <Grid item xs={12} md={12} lg={12}>
-                  <Box sx={{ width: '100%' }}>
+                  <Box sx={{ width: '100%', padding: '0px' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                       <Tabs
                         value={value}
@@ -324,11 +394,12 @@ export default function PromotionItemPage() {
                     <TabPanel value={value} index={0}>
                       {/* <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}> */}
                       {/* <Grid item xs={12} md={12} lg={12}> */}
-                      <ReactChartsLine
+                      {/* <ReactChartsLine
                         widgetHeight={'40vh'}
                         conf={fullConfig}
                         chartData={chartData}
-                      />
+                      /> */}
+                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
                       <br />
                       {/* </Grid> */}
                       {/* <Grid item xs={12} md={12} lg={12}> */}

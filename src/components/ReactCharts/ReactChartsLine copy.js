@@ -26,12 +26,12 @@ export default function App({ widgetHeight, conf, chartData }) {
       const { chartSource } = conf;
       const { groupKey, valueKey, title } = chartSource;
       setChartTitle(title);
-      console.log('React Chart:', chartData);
+      // console.log('React Chart:', chartData);
       if (chartData && chartData.length > 0 && conf) {
         month = chartData.map((a) => fDate2(a[groupKey]));
         value = chartData.map((a) => a[valueKey]);
-        console.log('React Chart Period:', month);
-        console.log('React Chart Value:', value);
+        // console.log('React Chart Period:', month);
+        // console.log('React Chart Value:', value);
       }
     }
     const ctx = canvasEl.current.getContext('2d');

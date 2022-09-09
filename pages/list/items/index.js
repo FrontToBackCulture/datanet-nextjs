@@ -91,6 +91,8 @@ export default function PromotionItemsPage() {
       const metricKey = conf.metricSource.key;
       let mD = await getJobs(metricQueryID, metricDomain);
       setMetriccData(mD);
+      const changeKey = conf.change.valueKey;
+
       let merged = [];
 
       for (let i = 0; i < sD.length; i++) {
@@ -99,6 +101,53 @@ export default function PromotionItemsPage() {
           ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
         });
       }
+
+      const trendKey = conf.chartSource.key;
+      let tD = await getChartData(conf);
+      console.log('Trend Data', tD);
+      console.log('Merged:', merged);
+
+      const filteredItemTrendData = await merged.map((item) => {
+        const filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
+        // console.log(item[staticKey] + ': ', filteredChart);
+
+        var mostRecentDate = new Date(
+          Math.max.apply(
+            null,
+            filteredChart.map((e) => {
+              return new Date(e.Month);
+            })
+          )
+        );
+
+        var mostRecentObject = filteredChart.filter((e) => {
+          var d = new Date(e.Month);
+          return d.getTime() == mostRecentDate.getTime();
+        })[0];
+
+        const secondLatestDate = filteredChart.sort((a, b) => a.Month - b.Month)[
+          filteredChart.length - 2
+        ];
+
+        // console.log('Most Recent: ', mostRecentObject);
+        // console.log('Second Recent: ', secondLatestDate);
+
+        let latestMetric = mostRecentObject[changeKey];
+        let priorMetric = secondLatestDate[changeKey];
+        let changeMetric = latestMetric - priorMetric;
+        let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+
+        item['latestMetric'] = latestMetric;
+        item['priorMetric'] = priorMetric;
+        item['changeMetric'] = changeMetric;
+        item['changeMetricPercent'] = changeMetricPercent;
+
+        console.log(item);
+
+        return item;
+      });
+
+      console.log('Combined: ', filteredItemTrendData);
 
       setRowData(merged);
     }
@@ -112,6 +161,19 @@ export default function PromotionItemsPage() {
     // setRowData(valJobs.data);
     // setErrors(valJobs.status);
     return valJobs.data;
+  };
+
+  const getChartData = async (conf) => {
+    // console.log('Full Config: ', fullConfig);
+    // console.log('ID: ', itemId);
+    let valChartData = await readVAL({
+      queryID: conf.chartSource.queryID,
+      domain: conf.chartSource.domain,
+    });
+    let data = valChartData.data;
+    // console.log('Chart: ', data);
+    // const filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
+    return data;
   };
 
   //  if (errors != 200) {

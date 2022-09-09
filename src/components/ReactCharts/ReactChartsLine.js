@@ -24,14 +24,14 @@ export default function App({ widgetHeight, conf, chartData }) {
     let data, month, value;
     if (conf.chartSource) {
       const { chartSource } = conf;
-      const { groupKey, valueKey, title } = chartSource;
+      const { groupKey, valueKey, title, metricName } = chartSource;
       setChartTitle(title);
-      console.log('React Chart:', chartData);
+      // console.log('React Chart:', chartData);
       if (chartData && chartData.length > 0 && conf) {
         month = chartData.map((a) => fDate2(a[groupKey]));
         value = chartData.map((a) => a[valueKey]);
-        console.log('React Chart Months:', month);
-        console.log('React Chart Value:', value);
+        // console.log('React Chart Months:', month);
+        // console.log('React Chart Value:', value);
       }
     }
     const ctx = canvasEl.current.getContext('2d');
@@ -62,7 +62,7 @@ export default function App({ widgetHeight, conf, chartData }) {
         datasets: [
           {
             backgroundColor: gradient,
-            label: 'My First Dataset',
+            label: metricName,
             data: value,
             fill: true,
             borderWidth: 2,
