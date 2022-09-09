@@ -56,7 +56,7 @@ const config = {
     metricSource: {
       queryID: '4007',
       domain: 'saladstop',
-      key: 'Store',
+      key: 'expenses_store',
     },
     chartSource: {
       queryID: '4055',
@@ -74,7 +74,7 @@ const config = {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string', headerName: 'Outlet' },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string', headerName: 'Name' },
       metric1: {
-        sourceColumn: 'sum Net Sales',
+        sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Net Sales L3M',
@@ -87,25 +87,25 @@ const config = {
         condition: 'cellClassRules',
       },
       metric3: {
-        sourceColumn: 'sum Order Count',
+        sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'currency',
         headerName: 'Order Count L3M',
       },
       metric4: {
-        sourceColumn: 'max Net Sales',
+        sourceColumn: 'max_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
       },
       metric5: {
-        sourceColumn: 'min Net Sales',
+        sourceColumn: 'min_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'decimal',
         headerName: 'Daily Min Net Sales L3M',
       },
       metric6: {
-        sourceColumn: 'average Order Count',
+        sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'decimal',
         headerName: 'Average Daily Order Count',
@@ -113,7 +113,7 @@ const config = {
     },
     detailFields: {
       metric1: {
-        sourceColumn: 'sum Net Sales',
+        sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Net Sales L3M',
@@ -126,25 +126,25 @@ const config = {
         condition: 'cellClassRules',
       },
       metric3: {
-        sourceColumn: 'sum Order Count',
+        sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'currency',
         headerName: 'Order Count L3M',
       },
       metric4: {
-        sourceColumn: 'max Net Sales',
+        sourceColumn: 'max_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
       },
       metric5: {
-        sourceColumn: 'min Net Sales',
+        sourceColumn: 'min_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'decimal',
         headerName: 'Daily Min Net Sales L3M',
       },
       metric6: {
-        sourceColumn: 'average Order Count',
+        sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'decimal',
         headerName: 'Average Daily Order Count',
