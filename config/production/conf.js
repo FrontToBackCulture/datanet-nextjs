@@ -170,7 +170,7 @@ const config = {
     metricSource: {
       queryID: '4019',
       domain: 'saladstop',
-      key: 'shb068931cc450442b63f5b3d276ea4297',
+      key: 'sh582d2adc6fd60fae17556aeb80b219c5',
     },
     chartSource: {
       queryID: '4009',
