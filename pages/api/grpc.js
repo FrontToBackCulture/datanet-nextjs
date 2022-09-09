@@ -3,7 +3,8 @@ import axios from 'axios';
 let host = '';
 let api = '';
 
-host = process.env.MINIAPP_HOST || 'http://0.0.0.0:8085';
+// host = process.env.MINIAPP_HOST || 'http://0.0.0.0:8085';
+host = process.env.MINIAPP_HOST || 'https://screener.thinkval.io';
 api = process.env.MINIAPP_API || 'miniapp_api/v0.1';
 
 export async function insert2VAL(params) {
