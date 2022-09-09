@@ -76,7 +76,7 @@ export default function CareerJobHero({ job, entity }) {
           <Typography variant="h3" component="h3" style={{ marginTop: '0px' }}>
             <Stack spacing={2} direction="row" alignItems="flex-end" sx={{ mt: 0 }}>
               <>{fCurrency(latestMetric)}&nbsp;&nbsp;</>
-              {metric2 > 0 ? (
+              {latestMetric > 0 ? (
                 <Typography variant="h4" style={{ color: 'green' }}>
                   +{fPercent(percentChangeMetric)}
                 </Typography>

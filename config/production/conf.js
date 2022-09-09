@@ -125,26 +125,26 @@ const config = {
         type: 'currency',
         headerName: 'Prior Working Day Net Sales',
       },
-      metric2: {
+      metric1: {
         sourceColumn: 'changeMetricPercent',
         link: false,
         type: 'percent',
         headerName: 'Daily Net Sales % Δ',
         condition: 'cellClassRules',
       },
-      metric1: {
+      metric2: {
         sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Net Sales L3M',
       },
-      metric4: {
+      metric3: {
         sourceColumn: 'max_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
       },
-      metric5: {
+      metric4: {
         sourceColumn: 'min_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'decimal',
@@ -156,13 +156,13 @@ const config = {
         type: 'currency',
         headerName: 'Avg Order Value',
       },
-      metric3: {
+      metric6: {
         sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'number',
         headerName: 'Order Count L3M',
       },
-      metric6: {
+      metric7: {
         sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
         link: false,
         type: 'number',
