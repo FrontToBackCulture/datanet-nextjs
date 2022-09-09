@@ -73,7 +73,7 @@ export default function PromotionItemsPage() {
   };
 
   useEffect(() => {
-    // console.log('Code:', code);
+    console.log('Code:', code);
     getConfig();
   }, [router.query]);
 
@@ -178,7 +178,7 @@ export default function PromotionItemsPage() {
   }, [conf]);
 
   const getJobs = async (id, dom) => {
-    // console.log(`List Get ${code}`, id, dom);
+    console.log(`List Get ${code}`, id, dom);
     // console.log('Trying to readVAL');
     let valJobs = await readVAL({ queryID: id, domain: dom });
     // console.log(`List Get Jobs Data ${code}`, valJobs.data);

@@ -1,44 +1,4 @@
 const config = {
-  promotion: {
-    staticSource: {
-      queryID: '4015',
-      domain: 'saladstop',
-      key: 'general_record_id',
-    },
-    metricSource: {
-      queryID: '4019',
-      domain: 'saladstop',
-      key: 'shb068931cc450442b63f5b3d276ea4297',
-    },
-    chartSource: {
-      queryID: '4009',
-      domain: 'saladstop',
-      key: 'Productid',
-      valueKey: 'shb068931cc450442b63f5b3d276ea4297',
-      groupKey: 'Transactiontime',
-      title: 'Qty by weeks',
-    },
-    change: {
-      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
-    },
-    listFields: {
-      shortCode: {
-        sourceColumn: 'shf8c461fd1f0a234e5df4bb9d6fecc69a',
-        link: true,
-        type: 'string',
-        headerName: 'Outlet',
-      },
-      name: { sourceColumn: 'shb068931cc450442b63f5b3d276ea4297', link: false, type: 'string' },
-    },
-    detailFields: {
-      latestMetric: {
-        sourceColumn: 'sh1228f5d0a84ff17d650022d28d4ebc90',
-        link: false,
-        type: 'currency',
-        headerName: 'Last Working Day Net Sales',
-      },
-    },
-  },
   outlet: {
     staticSource: {
       queryID: '4012',
@@ -199,8 +159,8 @@ const config = {
       latestMetric: {
         sourceColumn: 'latestMetric',
         link: false,
-        type: 'currency',
-        headerName: 'Last Working Day Net Sales',
+        type: 'number',
+        headerName: 'Last Working Day Qty Sold',
       },
       percentChangeMetric: {
         sourceColumn: 'changeMetricPercent',
@@ -212,7 +172,7 @@ const config = {
       metric1: {
         sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
         link: false,
-        type: 'currency',
+        type: 'number',
         sort: 'desc',
         headerName: 'Order Count L3M',
       },
@@ -242,7 +202,7 @@ const config = {
     // { title: 'Home', path: '/', code: 'home' },
     { title: 'Outlets', code: 'outlet' },
     { title: 'Products', code: 'product' },
-    { title: 'Promotions', code: 'promotion' },
+    // { title: 'Promotions', code: 'promotion' },
   ],
 };
 
