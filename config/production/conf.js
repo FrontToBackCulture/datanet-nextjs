@@ -73,13 +73,13 @@ const config = {
     listFields: {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string', headerName: 'Outlet' },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string', headerName: 'Name' },
-      latestMetric: {
+      latestmetric: {
         sourceColumn: 'latestMetric',
         link: false,
         type: 'currency',
         headerName: 'Last Day Net Sales',
       },
-      priorMetric: {
+      priormetric: {
         sourceColumn: 'priorMetric',
         link: false,
         type: 'currency',
