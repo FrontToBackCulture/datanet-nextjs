@@ -68,7 +68,7 @@ const config = {
     },
 
     change: {
-      valueKey: 'sum_usr_0dc0dfcfbcc0_3',
+      valueKey: 'usr_0dc0dfcfbcc0_3',
     },
     listFields: {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string', headerName: 'Outlet' },
