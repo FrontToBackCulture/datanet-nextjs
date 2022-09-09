@@ -62,9 +62,9 @@ export default function Example({ conf, chartData }) {
   const [chartTitle, setChartTitle] = useState();
 
   useEffect(() => {
-    console.log('Re Chart: ', chartData);
-    console.log('Re Chart: ', chartData.length);
     if (chartData.length > 0) {
+      console.log('Re Chart: ', chartData);
+      console.log('Re Chart: ', chartData.length);
       setDat(chartData);
 
       let data, month, value;

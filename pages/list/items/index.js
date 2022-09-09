@@ -144,14 +144,14 @@ export default function PromotionItemsPage() {
             var d = new Date(e[chartGroupKey]);
             return d.getTime() == mostRecentDate.getTime();
           })[0];
-          console.log('Most Recent: ', mostRecentObject);
+          // console.log('Most Recent: ', mostRecentObject);
           latestMetric = mostRecentObject[changeKey];
 
           if (filteredChart.length > 1) {
             const secondLatestDate = filteredChart.sort(
               (a, b) => a[chartGroupKey] - b[chartGroupKey]
             )[filteredChart.length - 2];
-            console.log('Second Recent: ', secondLatestDate);
+            // console.log('Second Recent: ', secondLatestDate);
             priorMetric = secondLatestDate[changeKey];
           } else {
             priorMetric = 0;
