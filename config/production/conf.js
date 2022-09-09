@@ -64,7 +64,7 @@ const config = {
       key: 'expenses_store',
       valueKey: 'usr_0dc0dfcfbcc0_3',
       groupKey: 'log_date',
-      title: 'Daily Revenue Last 3M',
+      title: 'Daily Net Sales Last 3M',
     },
 
     change: {
@@ -73,6 +73,18 @@ const config = {
     listFields: {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string', headerName: 'Outlet' },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string', headerName: 'Name' },
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Last Day Net Sales',
+      },
+      priorMetric: {
+        sourceColumn: 'priorMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Prior Day Net Sales',
+      },
       metric1: {
         sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
