@@ -139,21 +139,25 @@ export default function PromotionItemsPage() {
             )
           );
 
+          let latestMetric, priorMetric;
           var mostRecentObject = filteredChart.filter((e) => {
             // console.log(e);
             var d = new Date(e[chartGroupKey]);
             return d.getTime() == mostRecentDate.getTime();
           })[0];
-
-          const secondLatestDate = filteredChart.sort(
-            (a, b) => a[chartGroupKey] - b[chartGroupKey]
-          )[filteredChart.length - 2];
-
           console.log('Most Recent: ', mostRecentObject);
-          console.log('Second Recent: ', secondLatestDate);
+          latestMetric = mostRecentObject[changeKey];
 
-          let latestMetric = mostRecentObject[changeKey];
-          let priorMetric = secondLatestDate[changeKey];
+          if (filteredChart.length > 1) {
+            const secondLatestDate = filteredChart.sort(
+              (a, b) => a[chartGroupKey] - b[chartGroupKey]
+            )[filteredChart.length - 2];
+            console.log('Second Recent: ', secondLatestDate);
+            priorMetric = secondLatestDate[changeKey];
+          } else {
+            priorMetric = 0;
+          }
+
           let changeMetric = latestMetric - priorMetric;
           let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
 
