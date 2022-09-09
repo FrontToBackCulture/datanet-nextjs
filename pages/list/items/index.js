@@ -102,7 +102,7 @@ export default function PromotionItemsPage() {
           merged.push({
             ...sD[i],
             ...mD.find((itmInner) => {
-              console.log(itemInner);
+              console.log(itmInner);
               itmInner[metricKey][0] === sD[i][staticKey];
             }),
           });
