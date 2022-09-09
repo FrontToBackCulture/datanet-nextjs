@@ -84,20 +84,24 @@ export default function Example({ conf, chartData }) {
   }, [conf, chartData]);
 
   function formatXAxis(tickItem) {
-    // If using moment.js
-    console.log(tickItem);
-    return fDate2(tickItem);
+    if (chartData.length > 0) {
+      // If using moment.js
+      console.log(tickItem);
+      return fDate2(tickItem);
+    }
   }
 
   const DataFormater = (number) => {
-    if (number > 1000000000) {
-      return (number / 1000000000).toString() + 'B';
-    } else if (number > 1000000) {
-      return (number / 1000000).toString() + 'M';
-    } else if (number > 1000) {
-      return (number / 1000).toString() + 'K';
-    } else {
-      return number.toString();
+    if (chartData.length > 0) {
+      if (number > 1000000000) {
+        return (number / 1000000000).toString() + 'B';
+      } else if (number > 1000000) {
+        return (number / 1000000).toString() + 'M';
+      } else if (number > 1000) {
+        return (number / 1000).toString() + 'K';
+      } else {
+        return number.toString();
+      }
     }
   };
 
