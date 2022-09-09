@@ -98,13 +98,11 @@ export default function PromotionItemsPage() {
 
       for (let i = 0; i < sD.length; i++) {
         if (Array.isArray(mD[0][metricKey])) {
-          console.log('Metric is an array: ', mD[0][metricKey]);
           merged.push({
             ...sD[i],
             ...mD.find((itmInner) => itmInner[metricKey][0] === sD[i][staticKey]),
           });
         } else {
-          console.log('Metric is not an array: ', mD[0][metricKey]);
           merged.push({
             ...sD[i],
             ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
@@ -120,8 +118,14 @@ export default function PromotionItemsPage() {
       console.log('Merged:', merged);
 
       const filteredItemTrendData = await merged.map((item) => {
-        const filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-        console.log(item[staticKey] + ': ', filteredChart);
+        let filteredChart;
+        if (Array.isArray(tD[0][metricKey])) {
+          filteredChart = tD.filter((trend) => trend[trendKey][0] === item[staticKey]);
+          console.log(item[staticKey] + ': ', filteredChart);
+        } else {
+          filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
+          console.log(item[staticKey] + ': ', filteredChart);
+        }
 
         var mostRecentDate = new Date(
           Math.max.apply(
