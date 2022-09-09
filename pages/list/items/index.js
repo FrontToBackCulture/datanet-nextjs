@@ -92,6 +92,7 @@ export default function PromotionItemsPage() {
       let mD = await getJobs(metricQueryID, metricDomain);
       setMetriccData(mD);
       const changeKey = conf.change.valueKey;
+      const chartGroupKey = conf.chartSource.chartGroupKey;
 
       let merged = [];
 
@@ -115,17 +116,17 @@ export default function PromotionItemsPage() {
           Math.max.apply(
             null,
             filteredChart.map((e) => {
-              return new Date(e.Month);
+              return new Date(e[chartGroupKey]);
             })
           )
         );
 
         var mostRecentObject = filteredChart.filter((e) => {
-          var d = new Date(e.Month);
+          var d = new Date(e[chartGroupKey]);
           return d.getTime() == mostRecentDate.getTime();
         })[0];
 
-        const secondLatestDate = filteredChart.sort((a, b) => a.Month - b.Month)[
+        const secondLatestDate = filteredChart.sort((a, b) => a[chartGroupKey] - b[chartGroupKey])[
           filteredChart.length - 2
         ];
 
