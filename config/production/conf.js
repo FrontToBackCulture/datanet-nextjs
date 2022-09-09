@@ -176,12 +176,12 @@ const config = {
       queryID: '4009',
       domain: 'saladstop',
       key: 'sh582d2adc6fd60fae17556aeb80b219c5',
-      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
+      valueKey: 'sum_sh9bcafdf80f8756fa2d73444ea3dd0984',
       groupKey: 'sh7934c3bfee3ea2dc3b95c1c2662cf87b',
-      title: 'Qty by weeks',
+      title: 'Daily Qty Sold Last 3M',
     },
     change: {
-      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
+      valueKey: 'sum_sh9bcafdf80f8756fa2d73444ea3dd0984',
     },
     listFields: {
       shortCode: {
@@ -214,13 +214,13 @@ const config = {
         link: false,
         type: 'currency',
         sort: 'desc',
-        headerName: 'Net Sales L3M',
+        headerName: 'Order Count L3M',
       },
       metric2: {
         sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
         link: false,
         type: 'currency',
-        headerName: 'Order Count L3M',
+        headerName: 'Net Sales L3M',
       },
       metric3: {
         sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
