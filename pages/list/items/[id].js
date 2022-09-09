@@ -224,6 +224,7 @@ export default function PromotionItemPage() {
       const staticKey = fullConfig.staticSource.key;
       const metricKey = fullConfig.metricSource.key;
       const changeKey = fullConfig.change.valueKey;
+      const chartGroupKey = fullConfig.chartSource.groupKey;
       let merged = [];
 
       // console.log(staticKey, metricKey);
@@ -249,17 +250,17 @@ export default function PromotionItemPage() {
           Math.max.apply(
             null,
             filteredChart.map((e) => {
-              return new Date(e.Month);
+              return new Date(e[chartGroupKey]);
             })
           )
         );
 
         var mostRecentObject = filteredChart.filter((e) => {
-          var d = new Date(e.Month);
+          var d = new Date(e[chartGroupKey]);
           return d.getTime() == mostRecentDate.getTime();
         })[0];
 
-        const secondLatestDate = filteredChart.sort((a, b) => a.Month - b.Month)[
+        const secondLatestDate = filteredChart.sort((a, b) => a[chartGroupKey] - b[chartGroupKey])[
           filteredChart.length - 2
         ];
 
