@@ -8,26 +8,31 @@ const config = {
     metricSource: {
       queryID: '4019',
       domain: 'saladstop',
-      key: 'Productid',
+      key: 'shb068931cc450442b63f5b3d276ea4297',
     },
     chartSource: {
       queryID: '4009',
       domain: 'saladstop',
       key: 'Productid',
-      valueKey: 'sum_usr_fddbbbeabfb_6',
+      valueKey: 'shb068931cc450442b63f5b3d276ea4297',
       groupKey: 'Transactiontime',
       title: 'Qty by weeks',
     },
     change: {
-      valueKey: 'usr_0dc0dfcfbcc0_3',
+      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
     },
     listFields: {
-      shortCode: { sourceColumn: 'Sku', link: true, type: 'string', headerName: 'Outlet' },
+      shortCode: {
+        sourceColumn: 'shf8c461fd1f0a234e5df4bb9d6fecc69a',
+        link: true,
+        type: 'string',
+        headerName: 'Outlet',
+      },
       name: { sourceColumn: 'shb068931cc450442b63f5b3d276ea4297', link: false, type: 'string' },
     },
     detailFields: {
       latestMetric: {
-        sourceColumn: 'latestMetric',
+        sourceColumn: 'sh1228f5d0a84ff17d650022d28d4ebc90',
         link: false,
         type: 'currency',
         headerName: 'Last Working Day Net Sales',
@@ -165,14 +170,14 @@ const config = {
     metricSource: {
       queryID: '4019',
       domain: 'saladstop',
-      key: 'Productid',
+      key: 'shb068931cc450442b63f5b3d276ea4297',
     },
     chartSource: {
       queryID: '4009',
       domain: 'saladstop',
-      key: 'Productid',
+      key: 'sh582d2adc6fd60fae17556aeb80b219c5',
       valueKey: 'sum_usr_fddbbbeabfb_6',
-      groupKey: 'Transactiontime',
+      groupKey: 'sh7934c3bfee3ea2dc3b95c1c2662cf87b',
       title: 'Qty by weeks',
     },
     change: {
