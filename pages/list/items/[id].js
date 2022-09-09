@@ -230,11 +230,18 @@ export default function PromotionItemPage() {
       // console.log(staticKey, metricKey);
       // console.log(staticData, metricData);
 
-      for (let i = 0; i < staticData.length; i++) {
-        merged.push({
-          ...staticData[i],
-          ...metricData.find((itmInner) => itmInner[metricKey] === staticData[i][staticKey]),
-        });
+      for (let i = 0; i < sD.length; i++) {
+        if (Array.isArray(mD[0][metricKey])) {
+          merged.push({
+            ...sD[i],
+            ...mD.find((itmInner) => itmInner[metricKey][0] === sD[i][staticKey]),
+          });
+        } else {
+          merged.push({
+            ...sD[i],
+            ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
+          });
+        }
       }
 
       const trendKey = fullConfig.chartSource.key;
@@ -243,32 +250,34 @@ export default function PromotionItemPage() {
       // console.log('All Chart Data', allChartData);
 
       const filteredItemTrendData = await merged.map((item) => {
-        const filteredChart = allChartData.filter((trend) => trend[trendKey] === item[staticKey]);
-        // console.log(item[staticKey] + ': ', filteredChart);
+        if (Array.isArray(tD[0][metricKey])) {
+          filteredChart = tD.filter((trend) => trend[trendKey][0] === item[staticKey]);
+          // console.log(item[staticKey] + ': ', filteredChart);
+        } else {
+          filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
+          // console.log(item[staticKey] + ': ', filteredChart);
+        }
 
-        var mostRecentDate = new Date(
-          Math.max.apply(
-            null,
-            filteredChart.map((e) => {
-              return new Date(e[chartGroupKey]);
-            })
-          )
-        );
-
+        let latestMetric = 0,
+          priorMetric = 0;
         var mostRecentObject = filteredChart.filter((e) => {
+          // console.log(e);
           var d = new Date(e[chartGroupKey]);
           return d.getTime() == mostRecentDate.getTime();
         })[0];
+        console.log('Most Recent: ', mostRecentObject);
+        latestMetric = mostRecentObject[changeKey];
 
-        const secondLatestDate = filteredChart.sort((a, b) => a[chartGroupKey] - b[chartGroupKey])[
-          filteredChart.length - 2
-        ];
+        if (filteredChart.length > 1) {
+          const secondLatestDate = filteredChart.sort(
+            (a, b) => a[chartGroupKey] - b[chartGroupKey]
+          )[filteredChart.length - 2];
+          console.log('Second Recent: ', secondLatestDate);
+          priorMetric = secondLatestDate[changeKey];
+        } else {
+          priorMetric = 0;
+        }
 
-        // console.log('Most Recent: ', mostRecentObject);
-        // console.log('Second Recent: ', secondLatestDate);
-
-        let latestMetric = mostRecentObject[changeKey];
-        let priorMetric = secondLatestDate[changeKey];
         let changeMetric = latestMetric - priorMetric;
         let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
 
