@@ -119,7 +119,7 @@ export default function PromotionItemPage() {
       setFullConfig(config);
     }
     if (!process.env.DEPLOY_STAGE) {
-      config = confFn.getConfig(code);
+      config = confFnProd.getConfig(code);
       setFullConfig(config);
     }
     return config;
