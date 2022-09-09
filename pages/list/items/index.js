@@ -181,7 +181,7 @@ export default function PromotionItemsPage() {
     console.log(`List Get ${code}`, id, dom);
     // console.log('Trying to readVAL');
     let valJobs = await readVAL({ queryID: id, domain: dom });
-    // console.log(`List Get Jobs Data ${code}`, valJobs.data);
+    console.log(`List Get Jobs Data ${code}, ${id}`, valJobs.data);
     // setRowData(valJobs.data);
     // setErrors(valJobs.status);
     return valJobs.data;
