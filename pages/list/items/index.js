@@ -100,7 +100,7 @@ export default function PromotionItemsPage() {
         if (Array.isArray(mD[0][metricKey])) {
           merged.push({
             ...sD[i],
-            ...mD.find((itmInner) => itmInner[0][metricKey] === sD[i][staticKey]),
+            ...mD.find((itmInner) => itmInner[0][metricKey][0] === sD[i][staticKey]),
           });
         } else {
           merged.push({
