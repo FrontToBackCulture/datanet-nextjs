@@ -66,6 +66,10 @@ const config = {
       groupKey: 'log_date',
       title: 'Daily Revenue Last 3M',
     },
+
+    change: {
+      valueKey: 'sum Net Sales',
+    },
     listFields: {
       shortCode: { sourceColumn: 'Outlet', link: true, type: 'string' },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string' },
