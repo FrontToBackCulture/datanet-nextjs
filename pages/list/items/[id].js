@@ -145,10 +145,10 @@ export default function PromotionItemPage() {
     let filteredChart = [];
     if (data.length > 0) {
       if (Array.isArray(data[0][conf.metricSource.key])) {
-        console.log('Chart Data Key is array:', chartData[0][conf.metricSource.key]);
+        console.log('Chart Data Key is array:', data[0][conf.metricSource.key]);
         filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
       } else {
-        console.log('Chart Data Key is not array:', chartData[conf.metricSource.key]);
+        console.log('Chart Data Key is not array:', data[conf.metricSource.key]);
         filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
       }
     }
