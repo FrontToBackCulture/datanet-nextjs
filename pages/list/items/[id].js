@@ -343,7 +343,7 @@ export default function PromotionItemPage() {
       // console.log(jobObj);
       // console.log(jobArray);
     }
-  }, [staticData, metricData, allChartData]);
+  }, [staticData, metricData, allChartData, chartData]);
 
   // useEffect(() => {
   //   if (jobs && jobs.length > 0) {
