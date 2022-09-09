@@ -122,6 +122,7 @@ export default function PromotionItemsPage() {
         );
 
         var mostRecentObject = filteredChart.filter((e) => {
+          console.log(e);
           var d = new Date(e[chartGroupKey]);
           return d.getTime() == mostRecentDate.getTime();
         })[0];
