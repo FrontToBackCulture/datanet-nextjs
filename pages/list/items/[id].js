@@ -259,16 +259,6 @@ export default function PromotionItemPage() {
           // console.log(item[staticKey] + ': ', filteredChart);
         }
 
-        let latestMetric = 0,
-          priorMetric = 0;
-        var mostRecentObject = filteredChart.filter((e) => {
-          // console.log(e);
-          var d = new Date(e[chartGroupKey]);
-          return d.getTime() == mostRecentDate.getTime();
-        })[0];
-        console.log('Most Recent: ', mostRecentObject);
-        latestMetric = mostRecentObject[changeKey];
-
         if (filteredChart.length > 0) {
           var mostRecentDate = new Date(
             Math.max.apply(
