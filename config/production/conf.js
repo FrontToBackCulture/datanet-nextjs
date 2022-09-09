@@ -1,50 +1,34 @@
 const config = {
   promotion: {
     staticSource: {
-      queryID: '4012',
-      domain: 'dev',
-      key: 'Storehub Product ID',
+      queryID: '4015',
+      domain: 'saladstop',
+      key: 'general_record_id',
     },
     metricSource: {
-      queryID: '4007',
-      domain: 'dev',
+      queryID: '4019',
+      domain: 'saladstop',
       key: 'Productid',
     },
     chartSource: {
-      queryID: '4055',
-      domain: 'dev',
+      queryID: '4009',
+      domain: 'saladstop',
       key: 'Productid',
       valueKey: 'sum_usr_fddbbbeabfb_6',
       groupKey: 'Transactiontime',
       title: 'Qty by weeks',
     },
     listFields: {
-      shortCode: { sourceColumn: 'Storehub Product ID', link: true, type: 'string' },
-      name: { sourceColumn: 'POS Button Storehub', link: false, type: 'string' },
-      metric1: { sourceColumn: 'SUM Quantity', link: false, type: 'currency' },
-      // metric1PercentChange: {
-      //   sourceColumn: 'Net Cash Day',
-      //   link: false,
-      //   type: 'decimal',
-      // },
-      // metric2: { sourceColumn: 'SUM Total', link: false, type: 'currency' },
-      // metric3: { sourceColumn: 'SUM Discount', link: false, type: 'currency' },
-      // metric4: { sourceColumn: 'SUM Total', link: false, type: 'decimal' },
-      // metric5: { sourceColumn: 'YTD RENTAL RATIO', link: false, type: 'decimal' },
-      // metric6: { sourceColumn: 'Count Storehub', link: false, type: 'decimal' },
+      shortCode: { sourceColumn: 'Sku', link: true, type: 'string', headerName: 'Outlet' },
+      name: { sourceColumn: 'shb068931cc450442b63f5b3d276ea4297', link: false, type: 'string' },
     },
     detailFields: {
-      metric1: { sourceColumn: 'SUM Quantity', link: false, type: 'currency' },
-      // metric1PercentChange: {
-      //   sourceColumn: 'Net Cash Day',
-      //   link: false,
-      //   type: 'decimal',
-      // },
-      // metric2: { sourceColumn: 'SUM Total', link: false, type: 'currency' },
-      // metric3: { sourceColumn: 'SUM Discount', link: false, type: 'currency' },
-      // metric4: { sourceColumn: 'SUM Total', link: false, type: 'decimal' },
-      // metric5: { sourceColumn: 'YTD RENTAL RATIO', link: false, type: 'decimal' },
-      // metric6: { sourceColumn: 'Count Storehub', link: false, type: 'decimal' },
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Last Working Day Net Sales',
+      },
     },
   },
   outlet: {
@@ -271,9 +255,9 @@ const config = {
     // { title: 'Promotions', path: Routes.promotion.jobs, code: 'promotion' },
     // { title: 'Careers', path: Routes.career.jobs, code: 'career' },
     { title: 'Outlets', code: 'outlet' },
-    { title: 'Raw Materials', code: 'rawmaterial' },
     { title: 'Products', code: 'product' },
     { title: 'Promotions', code: 'promotion' },
+    // { title: 'Raw Materials', code: 'rawmaterial' },
   ],
 };
 
