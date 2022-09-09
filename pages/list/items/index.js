@@ -120,13 +120,11 @@ export default function PromotionItemsPage() {
       const filteredItemTrendData = await merged.map((item) => {
         let filteredChart;
         if (Array.isArray(tD[0][metricKey])) {
-          console.log('TD Key is array', tD[0][metricKey]);
           filteredChart = tD.filter((trend) => trend[trendKey][0] === item[staticKey]);
-          console.log(item[staticKey] + ': ', filteredChart);
+          // console.log(item[staticKey] + ': ', filteredChart);
         } else {
-          console.log('TD Key is not array', tD[0][metricKey]);
           filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-          console.log(item[staticKey] + ': ', filteredChart);
+          // console.log(item[staticKey] + ': ', filteredChart);
         }
 
         if (filteredChart.length > 0) {
@@ -139,7 +137,8 @@ export default function PromotionItemsPage() {
             )
           );
 
-          let latestMetric, priorMetric;
+          let latestMetric = 0,
+            priorMetric = 0;
           var mostRecentObject = filteredChart.filter((e) => {
             // console.log(e);
             var d = new Date(e[chartGroupKey]);

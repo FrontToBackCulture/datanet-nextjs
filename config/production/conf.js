@@ -176,16 +176,58 @@ const config = {
       queryID: '4009',
       domain: 'saladstop',
       key: 'sh582d2adc6fd60fae17556aeb80b219c5',
-      valueKey: 'sum_usr_fddbbbeabfb_6',
+      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
       groupKey: 'sh7934c3bfee3ea2dc3b95c1c2662cf87b',
       title: 'Qty by weeks',
     },
     change: {
-      valueKey: 'usr_0dc0dfcfbcc0_3',
+      valueKey: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
     },
     listFields: {
-      shortCode: { sourceColumn: 'Sku', link: true, type: 'string', headerName: 'Outlet' },
-      name: { sourceColumn: 'shb068931cc450442b63f5b3d276ea4297', link: false, type: 'string' },
+      shortCode: {
+        sourceColumn: 'general_record_id',
+        link: true,
+        type: 'string',
+        headerName: 'Product ID',
+      },
+      name: {
+        sourceColumn: 'shb068931cc450442b63f5b3d276ea4297',
+        link: false,
+        type: 'string',
+        headerName: 'Name',
+      },
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Last Working Day Net Sales',
+      },
+      percentChangeMetric: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Net Sales % Δ',
+        condition: 'cellClassRules',
+      },
+      metric1: {
+        sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
+        link: false,
+        type: 'currency',
+        sort: 'desc',
+        headerName: 'Net Sales L3M',
+      },
+      metric2: {
+        sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
+        link: false,
+        type: 'currency',
+        headerName: 'Order Count L3M',
+      },
+      metric3: {
+        sourceColumn: 'sum_shb4375105ab5dd981a5cdc88f89d5fe90',
+        link: false,
+        type: 'currency',
+        headerName: 'Discount L3M',
+      },
     },
     detailFields: {
       latestMetric: {
