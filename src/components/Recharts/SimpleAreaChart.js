@@ -85,6 +85,7 @@ export default function Example({ conf, chartData }) {
 
   function formatXAxis(tickItem) {
     // If using moment.js
+    console.log(tickItem);
     return fDate2(tickItem);
   }
 
