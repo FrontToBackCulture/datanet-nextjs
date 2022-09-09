@@ -92,7 +92,7 @@ export default function PromotionItemsPage() {
       let mD = await getJobs(metricQueryID, metricDomain);
       setMetriccData(mD);
       const changeKey = conf.change.valueKey;
-      const chartGroupKey = conf.chartSource.chartGroupKey;
+      const chartGroupKey = conf.chartSource.groupKey;
 
       let merged = [];
 
