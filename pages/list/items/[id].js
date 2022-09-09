@@ -282,7 +282,7 @@ export default function PromotionItemPage() {
         return item;
       });
 
-      console.log('Combined: ', filteredItemTrendData);
+      // console.log('Combined: ', filteredItemTrendData);
 
       merged = filteredItemTrendData;
 
@@ -305,8 +305,8 @@ export default function PromotionItemPage() {
       });
       setJob(jobObj);
       setDataRows(jobArray);
-      console.log(jobObj);
-      console.log(jobArray);
+      // console.log(jobObj);
+      // console.log(jobArray);
     }
   }, [staticData, metricData, allChartData]);
 

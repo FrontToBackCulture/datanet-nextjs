@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 // utils
-import { fCurrency, fShortenNumber, fPercent } from '../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../utils/formatNumber';
 
 export default function DenseTable({ job, conf }) {
   const [item, setItem] = useState([]);
@@ -40,7 +40,7 @@ export default function DenseTable({ job, conf }) {
               field.value = fCurrency(field.value);
               break;
             case 'number':
-              field.value = fShortenNumber(field.value);
+              field.value = fNumber(field.value);
               break;
             case 'percent':
               field.value = fPercent(field.value);
@@ -52,7 +52,7 @@ export default function DenseTable({ job, conf }) {
         // console.log(field);
         return field;
       });
-      console.log('To Display:', itemMetrics);
+      // console.log('To Display:', itemMetrics);
       setItem(itemMetrics);
     }
   }, [job, conf]);
