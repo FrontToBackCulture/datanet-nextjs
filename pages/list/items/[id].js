@@ -86,7 +86,7 @@ export default function PromotionItemPage() {
   const [domain, setDomain] = useState();
   const [itemId, setItemId] = useState();
   const [entity, setEntity] = useState();
-  const [chartData, setChartData] = useState();
+  const [chartData, setChartData] = useState([]);
   const [staticQueryID, setStaticQueryID] = useState();
   const [staticDomain, setStaticDomain] = useState();
   const [metricQueryID, setMetricQueryID] = useState();
