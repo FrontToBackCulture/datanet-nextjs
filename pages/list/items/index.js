@@ -109,7 +109,7 @@ export default function PromotionItemsPage() {
 
       const filteredItemTrendData = await merged.map((item) => {
         const filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-        // console.log(item[staticKey] + ': ', filteredChart);
+        console.log(item[staticKey] + ': ', filteredChart);
 
         var mostRecentDate = new Date(
           Math.max.apply(
