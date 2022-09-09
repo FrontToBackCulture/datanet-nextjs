@@ -230,16 +230,16 @@ export default function PromotionItemPage() {
       // console.log(staticKey, metricKey);
       // console.log(staticData, metricData);
 
-      for (let i = 0; i < sD.length; i++) {
-        if (Array.isArray(mD[0][metricKey])) {
+      for (let i = 0; i < staticData.length; i++) {
+        if (Array.isArray(metricData[0][metricKey])) {
           merged.push({
-            ...sD[i],
-            ...mD.find((itmInner) => itmInner[metricKey][0] === sD[i][staticKey]),
+            ...staticData[i],
+            ...metricData.find((itmInner) => itmInner[metricKey][0] === staticData[i][staticKey]),
           });
         } else {
           merged.push({
-            ...sD[i],
-            ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
+            ...staticData[i],
+            ...metricData.find((itmInner) => itmInner[metricKey] === staticData[i][staticKey]),
           });
         }
       }
@@ -250,11 +250,11 @@ export default function PromotionItemPage() {
       // console.log('All Chart Data', allChartData);
 
       const filteredItemTrendData = await merged.map((item) => {
-        if (Array.isArray(tD[0][metricKey])) {
-          filteredChart = tD.filter((trend) => trend[trendKey][0] === item[staticKey]);
+        if (Array.isArray(allChartData[0][metricKey])) {
+          filteredChart = allChartData.filter((trend) => trend[trendKey][0] === item[staticKey]);
           // console.log(item[staticKey] + ': ', filteredChart);
         } else {
-          filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
+          filteredChart = allChartData.filter((trend) => trend[trendKey] === item[staticKey]);
           // console.log(item[staticKey] + ': ', filteredChart);
         }
 
