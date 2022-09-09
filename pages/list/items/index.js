@@ -97,10 +97,17 @@ export default function PromotionItemsPage() {
       let merged = [];
 
       for (let i = 0; i < sD.length; i++) {
-        merged.push({
-          ...sD[i],
-          ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
-        });
+        if (Array.isArray(mD[0][metricKey])) {
+          merged.push({
+            ...sD[i],
+            ...mD.find((itmInner) => itmInner[0][metricKey] === sD[i][staticKey]),
+          });
+        } else {
+          merged.push({
+            ...sD[i],
+            ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
+          });
+        }
       }
 
       const trendKey = conf.chartSource.key;
