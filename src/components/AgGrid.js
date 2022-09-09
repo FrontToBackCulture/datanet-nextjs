@@ -11,7 +11,7 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css';
 import 'ag-grid-enterprise/dist/styles/ag-theme-material.css';
 
 // utils
-import { fCurrency, fShortenNumber, fPercent } from '../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../utils/formatNumber';
 
 export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   const gridRef = useRef();
@@ -140,7 +140,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
 
   function numberFormatter(params) {
     if (params && params.value) {
-      return fShortenNumber(params.value);
+      return fNumber(params.value);
     } else {
       return 0;
     }

@@ -79,11 +79,11 @@ const config = {
         type: 'currency',
         headerName: 'Last Working Day Net Sales',
       },
-      metric1: {
+      percentChangeMetric: {
         sourceColumn: 'changeMetricPercent',
         link: false,
         type: 'percent',
-        headerName: 'Daily % Change',
+        headerName: 'Daily Net Sales % Δ',
         condition: 'cellClassRules',
       },
       metric2: {
@@ -113,36 +113,30 @@ const config = {
       },
     },
     detailFields: {
-      atestMetric: {
+      latestMetric: {
         sourceColumn: 'latestMetric',
         link: false,
         type: 'currency',
-        headerName: 'Last Day Net Sales',
+        headerName: 'Last Working Day Net Sales',
       },
       priorMetric: {
         sourceColumn: 'priorMetric',
         link: false,
         type: 'currency',
-        headerName: 'Prior Day Net Sales',
+        headerName: 'Prior Working Day Net Sales',
+      },
+      metric2: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Net Sales % Δ',
+        condition: 'cellClassRules',
       },
       metric1: {
         sourceColumn: 'sum_usr_0dc0dfcfbcc0_3',
         link: false,
         type: 'currency',
         headerName: 'Net Sales L3M',
-      },
-      metric2: {
-        sourceColumn: 'changeMetricPercent',
-        link: false,
-        type: 'percent',
-        headerName: 'Daily % Change',
-        condition: 'cellClassRules',
-      },
-      metric3: {
-        sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
-        link: false,
-        type: 'currency',
-        headerName: 'Order Count L3M',
       },
       metric4: {
         sourceColumn: 'max_usr_0dc0dfcfbcc0_3',
@@ -156,11 +150,23 @@ const config = {
         type: 'decimal',
         headerName: 'Daily Min Net Sales L3M',
       },
+      metric5: {
+        sourceColumn: 'average_usr_ffbba0b0ddcf00c0',
+        link: false,
+        type: 'currency',
+        headerName: 'Avg Order Value',
+      },
+      metric3: {
+        sourceColumn: 'sum_usr_fc0dfcbade0ee0a0',
+        link: false,
+        type: 'number',
+        headerName: 'Order Count L3M',
+      },
       metric6: {
         sourceColumn: 'average_usr_fc0dfcbade0ee0a0',
         link: false,
-        type: 'decimal',
-        headerName: 'Average Daily Order Count',
+        type: 'number',
+        headerName: 'Avg Daily Order Count',
       },
     },
   },

@@ -40,7 +40,7 @@ CareerJobHero.propTypes = {
 
 export default function CareerJobHero({ job, entity }) {
   // const { shortCode, name, metric1, metric1PercentChange } = job;
-  const { shortCode, name, latestMetric, metric1, metric2 } = job;
+  const { shortCode, name, latestMetric, percentChangeMetric, metric1, metric2 } = job;
   // console.log(job);
   // let metric1PercentChange = 0.5;
 
@@ -78,11 +78,11 @@ export default function CareerJobHero({ job, entity }) {
               <>{fCurrency(latestMetric)}&nbsp;&nbsp;</>
               {metric2 > 0 ? (
                 <Typography variant="h4" style={{ color: 'green' }}>
-                  +{fPercent(metric2)}
+                  +{fPercent(percentChangeMetric)}
                 </Typography>
               ) : (
                 <Typography variant="h4" style={{ color: 'red' }}>
-                  {fPercent(metric2)}
+                  {fPercent(percentChangeMetric)}
                 </Typography>
               )}
             </Stack>
