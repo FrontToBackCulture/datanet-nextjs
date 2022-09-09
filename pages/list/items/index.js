@@ -110,7 +110,7 @@ export default function PromotionItemsPage() {
 
       const filteredItemTrendData = await merged.map((item) => {
         const filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-        // console.log(item[staticKey] + ': ', filteredChart);
+        console.log(item[staticKey] + ': ', filteredChart);
 
         var mostRecentDate = new Date(
           Math.max.apply(
@@ -131,8 +131,8 @@ export default function PromotionItemsPage() {
           filteredChart.length - 2
         ];
 
-        // console.log('Most Recent: ', mostRecentObject);
-        // console.log('Second Recent: ', secondLatestDate);
+        console.log('Most Recent: ', mostRecentObject);
+        console.log('Second Recent: ', secondLatestDate);
 
         let latestMetric = mostRecentObject[changeKey];
         let priorMetric = secondLatestDate[changeKey];
