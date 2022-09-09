@@ -132,7 +132,7 @@ export default function PromotionItemPage() {
   };
 
   const getChartData = async (conf) => {
-    // console.log('Full Config: ', fullConfig);
+    console.log('Full Config: ', conf.chartSource.queryID, conf.chartSource.domain);
     // console.log('ID: ', itemId);
     let valChartData = await readVAL({
       queryID: conf.chartSource.queryID,
@@ -142,14 +142,15 @@ export default function PromotionItemPage() {
     console.log('All Chart Datat: ', data);
     setAllChartData(data);
     // console.log('Chart: ', data);
-    let filteredChart;
-
-    if (Array.isArray(data[0][conf.metricSource.key])) {
-      console.log('Chart Data Key is array:', chartData[0][conf.metricSource.key]);
-      filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
-    } else {
-      console.log('Chart Data Key is not array:', chartData[conf.metricSource.key]);
-      filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
+    let filteredChart = [];
+    if (data.length > 0) {
+      if (Array.isArray(data[0][conf.metricSource.key])) {
+        console.log('Chart Data Key is array:', chartData[0][conf.metricSource.key]);
+        filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
+      } else {
+        console.log('Chart Data Key is not array:', chartData[conf.metricSource.key]);
+        filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
+      }
     }
 
     return filteredChart;
