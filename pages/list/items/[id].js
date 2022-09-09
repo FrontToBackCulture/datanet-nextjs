@@ -202,7 +202,7 @@ export default function PromotionItemPage() {
       let sD = await getJobs(staticQueryID, staticDomain);
       setStaticData(sD);
       let finalChartValue = await getChartData(fullConfig);
-      // console.log(finalChartValue);
+      console.log('FINAL CHART VALUE:', finalChartValue);
       setChartData(finalChartValue);
     }
   }, [staticQueryID, staticDomain]);
