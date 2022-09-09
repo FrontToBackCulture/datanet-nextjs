@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { useRouter, withRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
@@ -37,14 +36,6 @@ const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: HEADER_MOBILE_HEIGHT,
   [theme.breakpoints.up('md')]: {
     paddingTop: HEADER_DESKTOP_HEIGHT,
-  },
-}));
-
-const useStyles = makeStyles((theme) => ({
-  tab: {
-    '& .MuiBox-root': {
-      padding: '0px',
-    },
   },
 }));
 
