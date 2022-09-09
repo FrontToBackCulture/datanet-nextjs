@@ -129,37 +129,39 @@ export default function PromotionItemsPage() {
           console.log(item[staticKey] + ': ', filteredChart);
         }
 
-        var mostRecentDate = new Date(
-          Math.max.apply(
-            null,
-            filteredChart.map((e) => {
-              return new Date(e[chartGroupKey]);
-            })
-          )
-        );
+        if (filteredChart) {
+          var mostRecentDate = new Date(
+            Math.max.apply(
+              null,
+              filteredChart.map((e) => {
+                return new Date(e[chartGroupKey]);
+              })
+            )
+          );
 
-        var mostRecentObject = filteredChart.filter((e) => {
-          // console.log(e);
-          var d = new Date(e[chartGroupKey]);
-          return d.getTime() == mostRecentDate.getTime();
-        })[0];
+          var mostRecentObject = filteredChart.filter((e) => {
+            // console.log(e);
+            var d = new Date(e[chartGroupKey]);
+            return d.getTime() == mostRecentDate.getTime();
+          })[0];
 
-        const secondLatestDate = filteredChart.sort((a, b) => a[chartGroupKey] - b[chartGroupKey])[
-          filteredChart.length - 2
-        ];
+          const secondLatestDate = filteredChart.sort(
+            (a, b) => a[chartGroupKey] - b[chartGroupKey]
+          )[filteredChart.length - 2];
 
-        console.log('Most Recent: ', mostRecentObject);
-        console.log('Second Recent: ', secondLatestDate);
+          console.log('Most Recent: ', mostRecentObject);
+          console.log('Second Recent: ', secondLatestDate);
 
-        let latestMetric = mostRecentObject[changeKey];
-        let priorMetric = secondLatestDate[changeKey];
-        let changeMetric = latestMetric - priorMetric;
-        let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+          let latestMetric = mostRecentObject[changeKey];
+          let priorMetric = secondLatestDate[changeKey];
+          let changeMetric = latestMetric - priorMetric;
+          let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
 
-        item['latestMetric'] = latestMetric;
-        item['priorMetric'] = priorMetric;
-        item['changeMetric'] = changeMetric;
-        item['changeMetricPercent'] = changeMetricPercent;
+          item['latestMetric'] = latestMetric;
+          item['priorMetric'] = priorMetric;
+          item['changeMetric'] = changeMetric;
+          item['changeMetricPercent'] = changeMetricPercent;
+        }
 
         // console.log(item);
 
