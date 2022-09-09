@@ -139,7 +139,7 @@ export default function PromotionItemPage() {
       domain: conf.chartSource.domain,
     });
     let data = valChartData.data;
-    // console.log(data);
+    console.log('All Chart Datat: ', data);
     setAllChartData(data);
     // console.log('Chart: ', data);
     let filteredChart;
@@ -254,6 +254,7 @@ export default function PromotionItemPage() {
       console.log('Static Data', staticData);
       console.log('Metric Data', metricData);
       console.log('Trend Data', allChartData);
+      console.log('Chart Specific Data', chartData);
       console.log('Merged:', merged);
       // console.log('Merged:', merged);
       // console.log('All Chart Data', allChartData);
