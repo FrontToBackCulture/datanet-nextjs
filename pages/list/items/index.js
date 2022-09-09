@@ -101,7 +101,7 @@ export default function PromotionItemsPage() {
           console.log('Metric is an array: ', mD[0][metricKey]);
           merged.push({
             ...sD[i],
-            ...mD.find((itmInner) => itmInner[0][metricKey][0] === sD[i][staticKey]),
+            ...mD.find((itmInner) => itmInner[metricKey][0] === sD[i][staticKey]),
           });
         } else {
           console.log('Metric is not an array: ', mD[0][metricKey]);
