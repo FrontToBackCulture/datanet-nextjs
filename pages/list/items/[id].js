@@ -308,7 +308,13 @@ export default function PromotionItemPage() {
       merged = filteredItemTrendData;
 
       const { detailFields, listFields } = fullConfig;
-      const filtered = merged.find((merge) => merge[metricKey] === itemId);
+      let filtered;
+      if (Array.isArray(metricData[0][metricKey])) {
+        filtered = merged.find((merge) => merge[metricKey][0] === itemId);
+      } else {
+        filtered = merged.find((merge) => merge[metricKey] === itemId);
+      }
+
       setOJob(filtered);
       console.log('Selected Job: ', filtered);
       const fields2ShowList = Object.keys(listFields);
