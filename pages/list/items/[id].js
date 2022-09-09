@@ -144,7 +144,7 @@ export default function PromotionItemPage() {
     // console.log('Chart: ', data);
     let filteredChart;
 
-    if (Array.isArray(chartData[0][conf.metricSource.key])) {
+    if (Array.isArray(data[0][conf.metricSource.key])) {
       console.log('Chart Data Key is array:', chartData[0][conf.metricSource.key]);
       filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
     } else {
