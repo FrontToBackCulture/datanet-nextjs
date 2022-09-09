@@ -250,6 +250,7 @@ export default function PromotionItemPage() {
       // console.log('All Chart Data', allChartData);
 
       const filteredItemTrendData = await merged.map((item) => {
+        let filteredChart;
         if (Array.isArray(allChartData[0][metricKey])) {
           filteredChart = allChartData.filter((trend) => trend[trendKey][0] === item[staticKey]);
           // console.log(item[staticKey] + ': ', filteredChart);
