@@ -129,7 +129,7 @@ export default function PromotionItemsPage() {
           console.log(item[staticKey] + ': ', filteredChart);
         }
 
-        if (filteredChart) {
+        if (filteredChart.length > 0) {
           var mostRecentDate = new Date(
             Math.max.apply(
               null,
