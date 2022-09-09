@@ -3,7 +3,10 @@ import Routes from '../../routes';
 // _data
 // import { _tours, _jobs, _courses } from '../../../_data/mock';
 // _data
-import confFn from '../../../config/conf';
+// import confFn from '../../../config/conf';
+import confFn from '../../../config/development/conf';
+import confFnStage from '../../../config/staging/conf';
+import confFnProd from '../../../config/production/conf';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +43,7 @@ import confFn from '../../../config/conf';
 //     ],
 //   },
 // ];
-let configNavConfig = confFn.getConfig('navConfig');
+let configNavConfig = confFnProd.getConfig('navConfig');
 let configNavConfigArray = [];
 configNavConfig.map((config) => {
   configNavConfigArray.push({
