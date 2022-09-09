@@ -110,7 +110,7 @@ export default function PromotionItemsPage() {
 
       const filteredItemTrendData = await merged.map((item) => {
         const filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-        console.log(item[staticKey] + ': ', filteredChart);
+        // console.log(item[staticKey] + ': ', filteredChart);
 
         var mostRecentDate = new Date(
           Math.max.apply(
@@ -122,7 +122,7 @@ export default function PromotionItemsPage() {
         );
 
         var mostRecentObject = filteredChart.filter((e) => {
-          console.log(e);
+          // console.log(e);
           var d = new Date(e[chartGroupKey]);
           return d.getTime() == mostRecentDate.getTime();
         })[0];
@@ -131,7 +131,7 @@ export default function PromotionItemsPage() {
           filteredChart.length - 2
         ];
 
-        console.log('Most Recent: ', mostRecentObject);
+        // console.log('Most Recent: ', mostRecentObject);
         // console.log('Second Recent: ', secondLatestDate);
 
         let latestMetric = mostRecentObject[changeKey];
@@ -144,7 +144,7 @@ export default function PromotionItemsPage() {
         item['changeMetric'] = changeMetric;
         item['changeMetricPercent'] = changeMetricPercent;
 
-        console.log(item);
+        // console.log(item);
 
         return item;
       });
