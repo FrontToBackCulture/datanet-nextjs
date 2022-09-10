@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+//auth
+import { useUser } from '@auth0/nextjs-auth0';
 // icons
 import chevronDown from '@iconify/icons-carbon/chevron-down';
 import chevronUp from '@iconify/icons-carbon/chevron-up';

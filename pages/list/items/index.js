@@ -219,7 +219,7 @@ export default function PromotionItemsPage() {
     <Page title="Promotions">
       <RootStyle>
         <Container>
-          <Link href="../api/auth/login">Login</Link>
+          Please login to see data
           <br />
           <br />
         </Container>

@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+//auth
+import { useUser } from '@auth0/nextjs-auth0';
 // next
 import NextLink from 'next/link';
 // @mui
@@ -17,8 +19,6 @@ import Searchbar from '../Searchbar';
 import LanguagePopover from '../LanguagePopover';
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
-
-import { useUser } from '@auth0/nextjs-auth0';
 
 // ----------------------------------------------------------------------
 
@@ -75,6 +75,24 @@ export default function Header({ transparent }) {
 
           <Box sx={{ flexGrow: 1 }} />
 
+          <Stack spacing={2} direction="row" alignItems="center">
+            {!user && (
+              <NextLink href="/api/auth/login" prefetch={false} passHref>
+                <Button
+                  color="inherit"
+                  variant="outlined"
+                  sx={{
+                    ...(transparent && {
+                      color: 'common.white',
+                    }),
+                    ...(isScrolling && isLight && { color: 'text.primary' }),
+                  }}
+                >
+                  Login
+                </Button>
+              </NextLink>
+            )}
+          </Stack>
           <Stack spacing={2} direction="row" alignItems="center">
             {user && (
               <NextLink href="/api/auth/logout" prefetch={false} passHref>
