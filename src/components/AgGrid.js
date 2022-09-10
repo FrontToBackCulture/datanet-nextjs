@@ -227,13 +227,19 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     }
   }, [rowD, type, fieldConf, fullConf, entity]);
 
-  // useEffect(() => {
-  //   console.log('AG GRID USE: ', rowD, type, fieldConf, fullConf, entity);
-  // }, [rowD, type, fieldConf, fullConf, entity]);
+  const onFilterTextBoxChanged = useCallback(() => {
+    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value);
+  }, []);
 
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
+      <input
+        type="text"
+        id="filter-text-box"
+        placeholder="Filter..."
+        onInput={onFilterTextBoxChanged}
+      />
       <div id="myGrid" style={gridStyle} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
@@ -249,7 +255,8 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           pagination={true}
           paginationPageSize={25}
           rowGroupPanelShow={rowGroupPanelShow}
-          rowHeight={30}
+          rowHeight={25}
+          cacheQuickFilter={true}
           // frameworkComponents={{
           //   LinkComponent,
           // }}
