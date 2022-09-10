@@ -1,6 +1,9 @@
 // next
 import NextLink from 'next/link';
-//mui
+import searchIcon from '@iconify/icons-carbon/search';
+import Iconify from './Iconify';
+// @mui
+import { InputAdornment, FilledInput } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 // routes
@@ -255,7 +258,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
-      <Box
+      {/* <Box
         component="form"
         sx={{
           '& > :not(style)': { m: 1, width: '25ch' },
@@ -270,7 +273,17 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           onChange={onFilterTextBoxChanged}
           focused
         />
-      </Box>
+      </Box> */}
+      <FilledInput
+        fullWidth
+        startAdornment={
+          <InputAdornment position="start">
+            <Iconify icon={searchIcon} sx={{ width: 24, height: 24, color: 'text.disabled' }} />
+          </InputAdornment>
+        }
+        placeholder="Search..."
+        onChange={onFilterTextBoxChanged}
+      />
       <div id="myGrid" style={gridStyle} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
