@@ -48,12 +48,18 @@ export default function PromotionItemsPage() {
   }, [router.query]);
 
   // get static and metric data from VAL
-  const getJobs = async (id, dom) => {
-    let valJobs = await readVAL({ queryID: id, domain: dom });
+  const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
+    let valJobs = await readVAL({
+      queryID: id,
+      domain: dom,
+      contentType: contentType,
+      dataType: dataType,
+    });
     return valJobs.data;
   };
 
   // get chart aka trend data from VAL
+  // TODO: can remove if getData work
   const getChartData = async (conf) => {
     let valChartData = await readVAL({
       queryID: conf.chartSource.queryID,
@@ -92,15 +98,17 @@ export default function PromotionItemsPage() {
       const staticDomain = conf.staticSource.domain;
       const staticKey = conf.staticSource.key;
       //extract static data set
-      let sD = await getJobs(staticQueryID, staticDomain);
+      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', code, true);
       //extract metric data set
       const metricQueryID = conf.metricSource.queryID;
       const metricDomain = conf.metricSource.domain;
       const metricKey = conf.metricSource.key;
-      let mD = await getJobs(metricQueryID, metricDomain);
+      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', code, true);
       //extract the metrics that will be used to calculate latestMetrics, priorMetrics and changeMetrics
       const changeKey = conf.change.valueKey;
       //extract the key for the trend data aka the chart data
+      const trendQueryID = conf.chartSource.queryID;
+      const trendDomain = conf.chartSource.domain;
       const chartGroupKey = conf.chartSource.groupKey;
 
       // start merging of static and metric data
@@ -122,7 +130,8 @@ export default function PromotionItemsPage() {
 
       //extract trend data set
       const trendKey = conf.chartSource.key;
-      let tD = await getChartData(conf);
+      // let tD = await getChartData(conf);
+      let tD = await getDataFromVAL(trendQueryID, trendDomain, 'trend', code, true);
 
       console.log('Static Data', sD);
       console.log('Metric Data', mD);
