@@ -1,4 +1,3 @@
-import * as React from 'react';
 // next
 import NextLink from 'next/link';
 //mui
