@@ -1,5 +1,9 @@
+import * as React from 'react';
 // next
 import NextLink from 'next/link';
+//mui
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 // routes
 import Routes from '../../src/routes';
 
@@ -234,12 +238,22 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
-      <input
-        type="text"
-        id="filter-text-box"
-        placeholder="Filter..."
-        onInput={onFilterTextBoxChanged}
-      />
+      <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { m: 1, width: '25ch' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField
+          id="filter-text-box"
+          label="Search"
+          color="secondary"
+          onChange={onFilterTextBoxChanged}
+          focused
+        />
+      </Box>
       <div id="myGrid" style={gridStyle} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
