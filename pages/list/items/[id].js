@@ -1,34 +1,28 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 // next
-import { useRouter, withRouter } from 'next/router';
+import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
+import confFn from '../../../config/development/conf';
+import confFnStage from '../../../config/staging/conf';
+import confFnProd from '../../../config/production/conf';
 // hooks
-import { useRequest, useResponsive } from '../../../src/hooks';
+import { seRequest, useResponsive } from '../../../src/hooks';
 // layouts
 import Layout from '../../../src/layouts';
 // components
 import { Page, ErrorScreen, LoadingScreen, SocialsButton } from '../../../src/components';
-import ReactChartsLine from '../../../src/components/ReactCharts/ReactChartsLine';
 import DataTable from '../../../src/components/DataTable';
 import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
 // sections
 import { PromotionItemHero } from '../../../src/sections/promotions';
-// _data
-// import _mock from '../../../_data/mock';
-import confFn from '../../../config/development/conf';
-import confFnStage from '../../../config/staging/conf';
-import confFnProd from '../../../config/production/conf';
-
+// api
 import { readVAL } from '../../api/grpc';
 // utils
-import { fCurrency, fShortenNumber } from '../../../src/utils/formatNumber';
-import { DragControls } from 'framer-motion';
 
 // ----------------------------------------------------------------------
 
@@ -76,14 +70,9 @@ function a11yProps(index) {
 
 export default function PromotionItemPage() {
   const [value, setValue] = useState(0);
-  const [errors, setErrors] = useState();
-  const [jobs, setJobs] = useState([]);
   const [job, setJob] = useState();
-  const [oJob, setOJob] = useState();
   const [dataRows, setDataRows] = useState([]);
   const [fullConfig, setFullConfig] = useState({});
-  const [queryID, setQueryID] = useState();
-  const [domain, setDomain] = useState();
   const [itemId, setItemId] = useState();
   const [entity, setEntity] = useState();
   const [chartData, setChartData] = useState([]);
@@ -95,6 +84,16 @@ export default function PromotionItemPage() {
   const [metricData, setMetriccData] = useState();
   const [allChartData, setAllChartData] = useState([]);
 
+  const isDesktop = useResponsive('up', 'md');
+  const router = useRouter();
+
+  //tab value changes
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  //get the config from the config file based on environment variable
+  //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
     let config;
     if (process.env.DEPLOY_STAGE == 'development') {
@@ -116,21 +115,13 @@ export default function PromotionItemPage() {
     return config;
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const router = useRouter();
-
-  const isDesktop = useResponsive('up', 'md');
-
+  // get data from VAL
   const getJobs = async (qId, dom) => {
     let valJobs = await readVAL({ queryID: qId, domain: dom });
-    // setJobs(valJobs.data);
     return valJobs.data;
-    // setErrors(valJobs.status);
   };
 
+  // get chart aka trend data from VAL
   const getChartData = async (conf) => {
     console.log('Full Config: ', conf.chartSource.queryID, conf.chartSource.domain);
     // console.log('ID: ', itemId);
@@ -160,24 +151,6 @@ export default function PromotionItemPage() {
   //   return <ErrorScreen />;
   // }
 
-  // useEffect(async () => {
-  //   let { id, entity } = router.query;
-  //   console.log(router.query);
-  //   console.log(entity);
-  //   if (entity) {
-  //     console.log(entity);
-  //     // let configJson = JSON.parse(conf);
-  //     setEntity(entity);
-  //     let conf = await getConfig(entity);
-  //     // setFullConfig(configJson);
-  //     setItemId(id);
-  //     setStaticQueryID(conf.staticSource.queryID);
-  //     setStaticDomain(conf.staticSource.domain);
-  //     setMetricQueryID(conf.metricSource.queryID);
-  //     setMetricDomain(conf.metricSource.domain);
-  //   }
-  // }, []);
-
   useEffect(async () => {
     if (router.isReady) {
       // console.log(router.query);
@@ -198,6 +171,7 @@ export default function PromotionItemPage() {
     }
   }, [router.isReady]);
 
+  //once static query and domain available extract static and trend aka chart data
   useEffect(async () => {
     if (staticQueryID && staticDomain) {
       let sD = await getJobs(staticQueryID, staticDomain);
@@ -208,6 +182,7 @@ export default function PromotionItemPage() {
     }
   }, [staticQueryID, staticDomain]);
 
+  //once metric query and domain available extract metric data
   useEffect(async () => {
     if (metricQueryID && metricDomain) {
       let mD = await getJobs(metricQueryID, metricDomain);
@@ -215,14 +190,7 @@ export default function PromotionItemPage() {
     }
   }, [metricQueryID, metricDomain]);
 
-  // useEffect(async () => {
-  //   if (fullConfig.chartSource) {
-  //     let finalChartValue = await getChartData(fullConfig);
-  //     console.log(finalChartValue);
-  //     setChartData(finalChartValue);
-  //   }
-  // }, [fullConfig]);
-
+  //once all data available starts massaging the end result data
   useEffect(async () => {
     if (
       staticData &&
@@ -234,10 +202,13 @@ export default function PromotionItemPage() {
       const staticKey = fullConfig.staticSource.key;
       const metricKey = fullConfig.metricSource.key;
       const changeKey = fullConfig.change.valueKey;
+      const trendKey = fullConfig.chartSource.key;
       const chartGroupKey = fullConfig.chartSource.groupKey;
-      let merged = [];
 
+      // start merging of static and metric data
+      let merged = [];
       for (let i = 0; i < staticData.length; i++) {
+        // check if the attribute storing the key in metric is a value in the array or not as different processing required
         if (Array.isArray(metricData[0][metricKey])) {
           merged.push({
             ...staticData[i],
@@ -251,26 +222,26 @@ export default function PromotionItemPage() {
         }
       }
 
-      const trendKey = fullConfig.chartSource.key;
       console.log('Static Data', staticData);
       console.log('Metric Data', metricData);
       console.log('Trend Data', allChartData);
       console.log('Chart Specific Data', chartData);
       console.log('Merged:', merged);
-      // console.log('Merged:', merged);
-      // console.log('All Chart Data', allChartData);
 
+      //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
       const filteredItemTrendData = await merged.map((item) => {
         let filteredChart;
+        //filter by matching to the static data key
+        // check if the attribute storing the key in metric is a value in the array or not as different processing required
         if (Array.isArray(allChartData[0][metricKey])) {
           filteredChart = allChartData.filter((trend) => trend[trendKey][0] === item[staticKey]);
-          // console.log(item[staticKey] + ': ', filteredChart);
         } else {
           filteredChart = allChartData.filter((trend) => trend[trendKey] === item[staticKey]);
-          // console.log(item[staticKey] + ': ', filteredChart);
         }
 
+        // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {
+          // get the the most recent date in the data set belonging to the selected item
           var mostRecentDate = new Date(
             Math.max.apply(
               null,
@@ -282,15 +253,17 @@ export default function PromotionItemPage() {
 
           let latestMetric = 0,
             priorMetric = 0;
+          // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
-            // console.log(e);
             var d = new Date(e[chartGroupKey]);
             return d.getTime() == mostRecentDate.getTime();
           })[0];
-          // console.log('Most Recent: ', mostRecentObject);
           latestMetric = mostRecentObject[changeKey];
 
+          // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (filteredChart.length > 1) {
+            // get the the 2nd recent date object in the trend data for the selected item
+            // get the the 2nd recent date object in the trend data for the selected item
             const secondLatestDate = filteredChart.sort(
               (a, b) => a[chartGroupKey] - b[chartGroupKey]
             )[filteredChart.length - 2];
@@ -300,6 +273,7 @@ export default function PromotionItemPage() {
             priorMetric = 0;
           }
 
+          // calculate change metrics
           let changeMetric = latestMetric - priorMetric;
           let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
 
@@ -309,28 +283,23 @@ export default function PromotionItemPage() {
           item['changeMetricPercent'] = changeMetricPercent;
         }
 
-        // console.log(item);
-
+        // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
         return item;
       });
 
-      // console.log('Combined: ', filteredItemTrendData);
-
       merged = filteredItemTrendData;
 
-      console.log('[ID] 2nd Merged:', merged);
-
       const { detailFields, listFields } = fullConfig;
-      let filtered;
-      filtered = merged.find((merge) => merge[staticKey] === itemId);
-
-      setOJob(filtered);
+      //filter the selected item from the newly merged data with trend
+      let filtered = merged.find((merge) => merge[staticKey] === itemId);
       console.log('Selected Job: ', filtered);
+      //fetch the fields to show from static and metric
       const fields2ShowList = Object.keys(listFields);
       let jobObj = {};
       fields2ShowList.forEach((field2Show) => {
         jobObj[field2Show] = filtered[listFields[field2Show].sourceColumn];
       });
+      //fetch the fields to show at the table level
       const fields2ShowDetail = Object.keys(detailFields);
       let jobArray = [];
       fields2ShowDetail.forEach((field2Show) => {
@@ -341,33 +310,8 @@ export default function PromotionItemPage() {
       });
       setJob(jobObj);
       setDataRows(jobArray);
-      // console.log(jobObj);
-      // console.log(jobArray);
     }
   }, [staticData, metricData, allChartData, chartData]);
-
-  // useEffect(() => {
-  //   if (jobs && jobs.length > 0) {
-  //     const { detailFields, listFields } = fullConfig;
-  //     const filtered = jobs.find((job) => job.ID === itemId);
-  //     setOJob(filtered);
-  //     const fields2ShowList = Object.keys(listFields);
-  //     let jobObj = {};
-  //     fields2ShowList.forEach((field2Show) => {
-  //       jobObj[field2Show] = filtered[listFields[field2Show].sourceColumn];
-  //     });
-  //     const fields2ShowDetail = Object.keys(detailFields);
-  //     let jobArray = [];
-  //     fields2ShowDetail.forEach((field2Show) => {
-  //       jobArray.push({
-  //         name: detailFields[field2Show].sourceColumn,
-  //         value: filtered[detailFields[field2Show].sourceColumn],
-  //       });
-  //     });
-  //     setJob(jobObj);
-  //     setDataRows(jobArray);
-  //   }
-  // }, [jobs]);
 
   if (!job) {
     return <LoadingScreen />;
