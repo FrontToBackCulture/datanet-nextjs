@@ -29,6 +29,7 @@ const config = {
         link: false,
         type: 'currency',
         headerName: 'Last Working Day Net Sales',
+        maxWidth: 125,
       },
       percentChangeMetric: {
         sourceColumn: 'changeMetricPercent',

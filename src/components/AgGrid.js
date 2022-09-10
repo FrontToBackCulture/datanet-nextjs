@@ -37,6 +37,10 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
 
   const onFirstDataRendered = useCallback((params) => {
     autoSizeAll(false);
+    var padding = 20;
+    var height = headerHeightGetter() + padding;
+    gridRef.current.api.setHeaderHeight(height);
+    gridRef.current.api.resetRowHeights();
   }, []);
 
   const defaultColDef = useMemo(() => {
@@ -49,6 +53,9 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
       enablePivot: true,
       sortable: true,
       filter: true,
+      resizable: true,
+      wrapHeaderText: true,
+      autoHeight: true,
     };
   }, []);
 
@@ -188,6 +195,9 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
             if (fieldConf[field2Show].headerName) {
               colDefsObj.headerName = fieldConf[field2Show].headerName;
             }
+            if (fieldConf[field2Show].maxWidth) {
+              colDefsObj.maxWidth = fieldConf[field2Show].maxWidth;
+            }
             if (fieldConf[field2Show].condition) {
               colDefsObj.cellClassRules = {
                 'rag-green': 'x > 0',
@@ -234,6 +244,14 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value);
   }, []);
 
+  function headerHeightGetter() {
+    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')];
+    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight);
+    var tallestHeaderTextHeight = Math.max(...clientHeights);
+
+    return tallestHeaderTextHeight;
+  }
+
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
@@ -260,14 +278,16 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           statusBar={{ statusBar }}
-          sideBar={sideBar}
+          // sideBar={sideBar}
+          sideBar={false}
           onGridReady={onGridReady}
           onFirstDataRendered={onFirstDataRendered}
           animateRows={true}
           domLayout={'autoHeight'}
           pagination={true}
           paginationPageSize={25}
-          rowGroupPanelShow={rowGroupPanelShow}
+          // rowGroupPanelShow={rowGroupPanelShow}
+          rowGroupPanelShow={false}
           rowHeight={25}
           cacheQuickFilter={true}
           // frameworkComponents={{
