@@ -181,8 +181,9 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     }
     if (rowD && fullConf && entity) {
       // console.log('AG GRID USE: ', fullConf, entity);
-      if (rowD && rowD.length > 0 && rowD[0][Object.keys(rowD[0])[0]]) {
-        console.log('1st object 1st attribute:', rowD[0][Object.keys(rowD[0])[0]]);
+      // if (rowD && rowD.length > 0 && rowD[0][Object.keys(rowD[0])[0]]) {
+      if (rowD && rowD.length > 0) {
+        // console.log('1st object 1st attribute:', rowD[0][Object.keys(rowD[0])[0]]);
         let colDefs = [];
         if (fieldConf) {
           const fields2Show = Object.keys(fieldConf);
@@ -240,6 +241,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           setColumnDefs(colDefs);
         }
       }
+      console.log('See what is in rowData:', rowData);
       setRowData(rowD);
     }
   }, [rowD, type, fieldConf, fullConf, entity]);
