@@ -75,7 +75,6 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    console.log(process.env.NEXT_PUBLIC_MINIAPP_VALHOST);
     if (process.env.DEPLOY_STAGE == 'development') {
       let config = confFn.getConfig(code);
       setConf(config);
