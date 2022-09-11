@@ -84,11 +84,11 @@ export default function Example({ conf, chartData }) {
   }, [conf, chartData]);
 
   function formatXAxis(tickItem) {
-    // if (chartData.length > 0) {
-    //   // If using moment.js
-    //   console.log(tickItem);
-    //   return fDate2(tickItem);
-    // }
+    if (chartData.length > 0) {
+      // If using moment.js
+      console.log(tickItem);
+      return fDate2(moment(tickItem).format('YYYY-M-DD'));
+    }
   }
 
   const DataFormater = (number) => {
