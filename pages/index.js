@@ -21,9 +21,9 @@ import {
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
-  console.log('MINIAPP_VALHOST: ', process.env.MINIAPP_VALHOST);
-  console.log('MINIAPP_HOST: ', process.env.MINIAPP_HOST);
-  console.log('MINIAPP_API: ', process.env.MINIAPP_API);
+  // console.log('MINIAPP_VALHOST: ', process.env.MINIAPP_VALHOST);
+  // console.log('MINIAPP_HOST: ', process.env.MINIAPP_HOST);
+  // console.log('MINIAPP_API: ', process.env.MINIAPP_API);
   return (
     <Page title="The starting point for your next project">
       <HomeHero />
