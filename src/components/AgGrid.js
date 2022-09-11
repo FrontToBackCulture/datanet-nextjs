@@ -176,7 +176,6 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   }, []);
 
   useEffect(() => {
-    setRowData([]);
     if (fullConf) {
       setEntityConf(fullConf);
     }
@@ -266,6 +265,10 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
 
   const onBtShowNoRows = useCallback(() => {
     gridRef.current.api.showNoRowsOverlay();
+  }, []);
+
+  useEffect(() => {
+    setRowData([]);
   }, []);
 
   return (
