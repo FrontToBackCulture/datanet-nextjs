@@ -316,10 +316,10 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           rowHeight={25}
           cacheQuickFilter={true}
           overlayLoadingTemplate={
-            '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>'
+            '<span class="ag-overlay-loading-center">This is a custom \'no rows\' overlay</span>'
           }
           overlayNoRowsTemplate={
-            '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow">This is a custom \'no rows\' overlay</span>'
+            '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow">Please wait while your rows are loading</span>'
           }
           // frameworkComponents={{
           //   LinkComponent,
