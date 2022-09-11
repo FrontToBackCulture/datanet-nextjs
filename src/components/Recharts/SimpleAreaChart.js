@@ -88,7 +88,8 @@ export default function Example({ conf, chartData }) {
     if (chartData.length > 0) {
       // If using moment.js
       console.log(tickItem);
-      return fDate2(moment(tickItem).format('YYYY-M-DD'));
+      console.log(new Date(moment(tickItem).format('YYYY-M-DD')));
+      // return fDate2(moment(tickItem).format('YYYY-M-DD'));
     }
   }
 
