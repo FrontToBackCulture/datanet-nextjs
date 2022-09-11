@@ -75,6 +75,7 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
+    console.log('URL:', window.location.href);
     if (process.env.DEPLOY_STAGE == 'development') {
       let config = confFn.getConfig(code);
       setConf(config);
