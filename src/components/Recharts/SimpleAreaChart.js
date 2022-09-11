@@ -139,7 +139,7 @@ export default function Example({ conf, chartData }) {
             type="monotone"
             dataKey={yAxis}
             stroke="#8884d8"
-            fill="#8884d8"
+            // fill="#8884d8"
             dot={{ stroke: 'purple', strokeWidth: 2 }}
             fillOpacity={1}
             fill="url(#yAxis)"
