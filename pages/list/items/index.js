@@ -159,7 +159,8 @@ export default function PromotionItemsPage() {
             Math.max.apply(
               null,
               filteredChart.map((e) => {
-                return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
+                // return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
+                return new Date(e[chartGroupKey]);
               })
             )
           );
