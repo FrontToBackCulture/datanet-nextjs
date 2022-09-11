@@ -100,15 +100,15 @@ export default function PromotionItemPage() {
     console.log('MINIAPP_VALHOST: ', process.env.MINIAPP_VALHOST);
     if (process.env.MINIAPP_VALHOST == 'local') {
       config = confFn.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     if (process.env.MINIAPP_VALHOST == 'dev') {
       config = confFnStage.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     if (process.env.MINIAPP_VALHOST == 'prod') {
       config = confFnProd.getConfig(code);
-      setConf(config);
+      setFullConfig(config);
     }
     return config;
   };
