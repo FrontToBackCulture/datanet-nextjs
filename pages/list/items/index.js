@@ -168,8 +168,9 @@ export default function PromotionItemsPage() {
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
             var d = new Date(e[chartGroupKey]);
-            // return d.getTime() == mostRecentDate.getTime();
-            return d == mostRecentDate;
+            console.log('D Time: ', d.getTime());
+            console.log('Most Recent Time: ', mostRecentDate.getTime());
+            return d.getTime() == mostRecentDate.getTime();
           })[0];
           latestMetric = mostRecentObject[changeKey];
 
