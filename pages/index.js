@@ -21,13 +21,6 @@ import {
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
-  console.info('[INFO] baseAPI', axios.defaults.baseURL);
-  console.log('NODE_ENV: ', process.env.NODE_ENV);
-  console.log('DEPLOY_STAGE: ', process.env.DEPLOY_STAGE);
-  console.log('MINIAPP_HOST: ', process.env.MINIAPP_HOST);
-  console.log('MINIAPP_API: ', process.env.MINIAPP_API);
-  console.log('AUTH0_BASE_URL: ', process.env.AUTH0_BASE_URL);
-  return (
     <Page title="The starting point for your next project">
       <HomeHero />
 
