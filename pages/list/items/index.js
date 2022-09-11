@@ -160,7 +160,7 @@ export default function PromotionItemsPage() {
               null,
               filteredChart.map((e) => {
                 // return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
-                let mrd = moment(e[chartGroupKey]).format('YYYY-MM-DD');
+                let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
                 console.log(
                   'Original:',
                   e[chartGroupKey],
@@ -169,7 +169,8 @@ export default function PromotionItemsPage() {
                   ' Suggested Most Recent Object: ',
                   new Date(mrd)
                 );
-                return new Date(e[chartGroupKey]);
+                // return new Date(e[chartGroupKey]);
+                return new Date(mrd);
               })
             )
           );
