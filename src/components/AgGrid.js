@@ -178,6 +178,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   useEffect(() => {
     if (fullConf) {
       setEntityConf(fullConf);
+      setRowData([]);
     }
     if (rowD && fullConf && entity) {
       // console.log('AG GRID USE: ', fullConf, entity);
