@@ -75,20 +75,18 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    if (process.env.DEPLOY_STAGE == 'development') {
-      let config = confFn.getConfig(code);
+    let config;
+    console.log('MINIAPP_VALHOST: ', process.env.MINIAPP_VALHOST);
+    if (process.env.MINIAPP_VALHOST == 'local') {
+      config = confFn.getConfig(code);
       setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
-      let config = confFnStage.getConfig(code);
+    if (process.env.MINIAPP_VALHOST == 'dev') {
+      config = confFnStage.getConfig(code);
       setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'production') {
-      let config = confFnProd.getConfig(code);
-      setConf(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
-      let config = confFnProd.getConfig(code);
+    if (process.env.MINIAPP_VALHOST == 'prod') {
+      config = confFnProd.getConfig(code);
       setConf(config);
     }
   };
@@ -161,14 +159,14 @@ export default function PromotionItemsPage() {
               filteredChart.map((e) => {
                 // return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
                 let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-                console.log(
-                  'Original:',
-                  e[chartGroupKey],
-                  ' Most Recent Object: ',
-                  new Date(e[chartGroupKey]),
-                  ' Suggested Most Recent Object: ',
-                  new Date(mrd)
-                );
+                // console.log(
+                //   'Original:',
+                //   e[chartGroupKey],
+                //   ' Most Recent Object: ',
+                //   new Date(e[chartGroupKey]),
+                //   ' Suggested Most Recent Object: ',
+                //   new Date(mrd)
+                // );
                 // return new Date(e[chartGroupKey]);
                 return new Date(mrd);
               })
@@ -179,7 +177,6 @@ export default function PromotionItemsPage() {
             priorMetric = 0;
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
-            // var d = moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
             // var d = new Date(e[chartGroupKey]);
             var d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
             // console.log('D Time: ', d.getTime());

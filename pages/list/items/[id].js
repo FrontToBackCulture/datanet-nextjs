@@ -23,6 +23,7 @@ import { PromotionItemHero } from '../../../src/sections/promotions';
 // api
 import { readVAL } from '../../api/grpc';
 // utils
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
@@ -96,21 +97,18 @@ export default function PromotionItemPage() {
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
     let config;
-    if (process.env.DEPLOY_STAGE == 'development') {
+    console.log('MINIAPP_VALHOST: ', process.env.MINIAPP_VALHOST);
+    if (process.env.MINIAPP_VALHOST == 'local') {
       config = confFn.getConfig(code);
-      setFullConfig(config);
+      setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
+    if (process.env.MINIAPP_VALHOST == 'dev') {
       config = confFnStage.getConfig(code);
-      setFullConfig(config);
+      setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'production') {
+    if (process.env.MINIAPP_VALHOST == 'prod') {
       config = confFnProd.getConfig(code);
-      setFullConfig(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
-      config = confFnProd.getConfig(code);
-      setFullConfig(config);
+      setConf(config);
     }
     return config;
   };
@@ -255,7 +253,17 @@ export default function PromotionItemPage() {
             Math.max.apply(
               null,
               filteredChart.map((e) => {
-                return new Date(e[chartGroupKey]);
+                let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
+                // console.log(
+                //   'Original:',
+                //   e[chartGroupKey],
+                //   ' Most Recent Object: ',
+                //   new Date(e[chartGroupKey]),
+                //   ' Suggested Most Recent Object: ',
+                //   new Date(mrd)
+                // );
+                // return new Date(e[chartGroupKey]);
+                return new Date(mrd);
               })
             )
           );
@@ -264,8 +272,13 @@ export default function PromotionItemPage() {
             priorMetric = 0;
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
-            var d = new Date(e[chartGroupKey]);
+            // var d = new Date(e[chartGroupKey]);
+            var d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
+            // console.log('D Time: ', d.getTime());
+            // console.log('Most Recent Time: ', mostRecentDate.getTime());
+            console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
             return d.getTime() == mostRecentDate.getTime();
+            // return d == mostRecentDate;
           })[0];
           latestMetric = mostRecentObject[changeKey];
 

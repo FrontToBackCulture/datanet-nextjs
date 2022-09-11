@@ -7,9 +7,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    DEV_API: 'http://localhost:3002s',
-    PRODUCTION_API: 'https://zone-assets-api.vercel.app',
-    GOOGLE_API: '',
+    MINIAPP_VALHOST: process.env.MINIAPP_VALHOST,
   },
   images: {
     domains: ['flagcdn.com'],
