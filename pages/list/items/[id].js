@@ -97,19 +97,16 @@ export default function PromotionItemPage() {
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
     let config;
-    if (process.env.DEPLOY_STAGE == 'development') {
+    let URL = window.location.href;
+    if (URL.includes('localhost')) {
       config = confFn.getConfig(code);
       setFullConfig(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
+    if (URL.includes('melvinapps')) {
       config = confFnStage.getConfig(code);
       setFullConfig(config);
     }
-    if (process.env.DEPLOY_STAGE == 'production') {
-      config = confFnProd.getConfig(code);
-      setFullConfig(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
+    if (URL.includes('screener')) {
       config = confFnProd.getConfig(code);
       setFullConfig(config);
     }
