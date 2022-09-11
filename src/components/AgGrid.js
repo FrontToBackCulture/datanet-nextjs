@@ -241,8 +241,6 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           setColumnDefs(colDefs);
         }
       }
-      console.log('See what is in rowD:', rowD);
-      console.log('See what is in rowData:', rowData);
       setRowData(rowD);
     }
   }, [rowD, type, fieldConf, fullConf, entity]);
