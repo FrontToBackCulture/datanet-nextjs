@@ -397,7 +397,7 @@ export default function PromotionItemPage() {
                         conf={fullConfig}
                         chartData={chartData}
                       /> */}
-                      {/* <SimpleAreaChart conf={fullConfig} chartData={chartData} /> */}
+                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
                       <br />
                       {/* </Grid> */}
                       {/* <Grid item xs={12} md={12} lg={12}> */}
