@@ -171,8 +171,8 @@ export default function PromotionItemsPage() {
             var d = moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
             // console.log('D Time: ', d.getTime());
             // console.log('Most Recent Time: ', mostRecentDate.getTime());
-            // return d.getTime() == mostRecentDate.getTime();
-            return d == mostRecentDate;
+            return d.getTime() == mostRecentDate.getTime();
+            // return d == mostRecentDate;
           })[0];
           latestMetric = mostRecentObject[changeKey];
 
