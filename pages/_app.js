@@ -1,4 +1,3 @@
-import { UserProvider } from '@auth0/nextjs-auth0';
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
@@ -37,6 +36,8 @@ import ProgressBar from '../src/components/ProgressBar';
 import ThemeColorPresets from '../src/components/ThemeColorPresets';
 import MotionLazyContainer from '../src/components/animate/MotionLazyContainer';
 
+import { UserProvider } from '@auth0/nextjs-auth0';
+
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
@@ -49,22 +50,15 @@ export default function MyApp(props) {
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  console.info('[INFO] baseAPI', axios.defaults.baseURL);
-  console.log('NODE_ENV: ', process.env.NODE_ENV);
-  console.log('DEPLOY_STAGE: ', process.env.DEPLOY_STAGE);
-  console.log('MINIAPP_HOST: ', process.env.MINIAPP_HOST);
-  console.log('MINIAPP_API: ', process.env.MINIAPP_API);
-  console.log('AUTH0_BASE_URL: ', process.env.AUTH0_BASE_URL);
-
   return (
     <>
-      <UserProvider>
-        <Head>
-          <meta name="viewport" content="initial-scale=1, width=device-width" />
-        </Head>
+      <Head>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <SettingsProvider>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <SettingsProvider>
+          <UserProvider>
             <ThemeProvider>
               <ThemeColorPresets>
                 <MotionLazyContainer>
@@ -76,9 +70,9 @@ export default function MyApp(props) {
                 </MotionLazyContainer>
               </ThemeColorPresets>
             </ThemeProvider>
-          </SettingsProvider>
-        </LocalizationProvider>
-      </UserProvider>
+          </UserProvider>
+        </SettingsProvider>
+      </LocalizationProvider>
     </>
   );
 }

@@ -28,7 +28,7 @@ import { DRAWER_WIDTH } from '../../config';
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components';
 import { IconButtonAnimate } from '../../components/animate';
 
-import { useUser } from '@auth0/nextjs-auth0';
+// import { useUser } from '@auth0/nextjs-auth0';
 
 // ----------------------------------------------------------------------
 
@@ -100,6 +100,13 @@ export default function NavMobile({ navConfig, sx }) {
             ))}
           </List>
 
+          {!user && (
+            <NextLink href="/api/auth/login">
+              <Button fullWidth variant="outlined" color="inherit">
+                Login
+              </Button>
+            </NextLink>
+          )}
           {user && (
             <NextLink href="/api/auth/logout">
               <Button fullWidth variant="outlined" color="inherit">

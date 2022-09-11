@@ -24,6 +24,8 @@ import { PromotionItemHero } from '../../../src/sections/promotions';
 import { readVAL } from '../../api/grpc';
 // utils
 import moment from 'moment';
+import outletData from '../../../data/outlet';
+import productData from '../../../data/product';
 
 // ----------------------------------------------------------------------
 
@@ -87,6 +89,9 @@ export default function PromotionItemPage() {
 
   const isDesktop = useResponsive('up', 'md');
   const router = useRouter();
+  if (typeof window !== 'undefined') {
+    const URL = window.location.href;
+  }
 
   //tab value changes
   const handleChange = (event, newValue) => {
@@ -115,28 +120,66 @@ export default function PromotionItemPage() {
 
   // get data from VAL
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
-    let valJobs = await readVAL({
-      queryID: qId,
-      domain: dom,
-      contentType: contentType,
-      dataType: dataType,
-      cache: cache,
-    });
-    return valJobs.data;
+    if (URL.includes('localhost')) {
+      let localJsonData;
+      let outletJsonData = outletData[contentType].getData();
+      let productJsonData = productData[contentType].getData();
+      switch (dataType) {
+        case 'outlet':
+          localJsonData = outletJsonData;
+          break;
+        case 'product':
+          localJsonData = productJsonData;
+          break;
+        default:
+          break;
+      }
+      return localJsonData;
+    }
+    if (URL.includes('screener')) {
+      let valJobs = await readVAL({
+        queryID: qId,
+        domain: dom,
+        contentType: contentType,
+        dataType: dataType,
+        cache: cache,
+      });
+      return valJobs.data;
+    }
   };
 
   // get chart aka trend data from VAL
   const getChartData = async (conf) => {
-    console.log('Full Config: ', conf.chartSource.queryID, conf.chartSource.domain);
-    // console.log('ID: ', itemId);
-    let valChartData = await readVAL({
-      queryID: conf.chartSource.queryID,
-      domain: conf.chartSource.domain,
-      contentType: 'trend',
-      dataType: entity,
-      cache: true,
-    });
-    let data = valChartData.data;
+    let contentType = 'trend';
+    let dataType = entity;
+    let data;
+    if (URL.includes('localhost')) {
+      let localJsonData;
+      let outletJsonData = outletData[contentType].getData();
+      let productJsonData = productData[contentType].getData();
+      switch (dataType) {
+        case 'outlet':
+          localJsonData = outletJsonData;
+          break;
+        case 'product':
+          localJsonData = productJsonData;
+          break;
+        default:
+          break;
+      }
+      data = localJsonData;
+    }
+    if (URL.includes('screener')) {
+      let valChartData = await readVAL({
+        queryID: conf.chartSource.queryID,
+        domain: conf.chartSource.domain,
+        contentType: 'trend',
+        dataType: entity,
+        cache: true,
+      });
+      data = valChartData.data;
+    }
+
     console.log('All Chart Datat: ', data);
     setAllChartData(data);
     // console.log('Chart: ', data);

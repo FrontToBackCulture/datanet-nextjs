@@ -20,6 +20,8 @@ import AgGrid from '../../../src/components/AgGrid';
 // api
 import { readVAL } from '../../api/grpc';
 import moment from 'moment';
+import outletData from '../../../data/outlet';
+import productData from '../../../data/product';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +41,10 @@ export default function PromotionItemsPage() {
   const [listFields, setListFields] = useState();
 
   const router = useRouter();
+  if (typeof window !== 'undefined') {
+    const URL = window.location.href;
+  }
+
   //get parameters from url query
   const { title, code } = router.query;
 
@@ -51,31 +57,37 @@ export default function PromotionItemsPage() {
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
-    let valJobs = await readVAL({
-      queryID: id,
-      domain: dom,
-      contentType: contentType,
-      dataType: dataType,
-      cache: cache,
-    });
-    return valJobs.data;
-  };
-
-  // get chart aka trend data from VAL
-  // TODO: can remove if getData work
-  const getChartData = async (conf) => {
-    let valChartData = await readVAL({
-      queryID: conf.chartSource.queryID,
-      domain: conf.chartSource.domain,
-    });
-    let data = valChartData.data;
-    return data;
+    if (URL.includes('localhost')) {
+      let localJsonData;
+      let outletJsonData = outletData[contentType].getData();
+      let productJsonData = productData[contentType].getData();
+      switch (dataType) {
+        case 'outlet':
+          localJsonData = outletJsonData;
+          break;
+        case 'product':
+          localJsonData = productJsonData;
+          break;
+        default:
+          break;
+      }
+      return localJsonData;
+    }
+    if (URL.includes('screener')) {
+      let valJobs = await readVAL({
+        queryID: id,
+        domain: dom,
+        contentType: contentType,
+        dataType: dataType,
+        cache: cache,
+      });
+      return valJobs.data;
+    }
   };
 
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    let URL = window.location.href;
     if (URL.includes('localhost')) {
       let config = confFn.getConfig(code);
       setConf(config);
@@ -130,7 +142,6 @@ export default function PromotionItemsPage() {
 
       //extract trend data set
       const trendKey = conf.chartSource.key;
-      // let tD = await getChartData(conf);
       let tD = await getDataFromVAL(trendQueryID, trendDomain, 'trend', code, true);
 
       console.log('Static Data', sD);
@@ -239,18 +250,19 @@ export default function PromotionItemsPage() {
         </RootStyle>
       </Page>
     );
+  } else {
+    return (
+      <Page title="Promotions">
+        <RootStyle>
+          <Container>
+            Please login to see data
+            <br />
+            <br />
+          </Container>
+        </RootStyle>
+      </Page>
+    );
   }
-  return (
-    <Page title="Promotions">
-      <RootStyle>
-        <Container>
-          Please login to see data
-          <br />
-          <br />
-        </Container>
-      </RootStyle>
-    </Page>
-  );
 }
 
 // ----------------------------------------------------------------------
