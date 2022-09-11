@@ -285,27 +285,27 @@ export default function PromotionItemPage() {
           })[0];
           latestMetric = mostRecentObject[changeKey];
 
-          // // if more than 1 rows of data exists in the trend data for the item, start the calculating
-          // if (filteredChart.length > 1) {
-          //   // get the the 2nd recent date object in the trend data for the selected item
-          //   // get the the 2nd recent date object in the trend data for the selected item
-          //   const secondLatestDate = filteredChart.sort(
-          //     (a, b) => a[chartGroupKey] - b[chartGroupKey]
-          //   )[filteredChart.length - 2];
-          //   // console.log('Second Recent: ', secondLatestDate);
-          //   priorMetric = secondLatestDate[changeKey];
-          // } else {
-          //   priorMetric = 0;
-          // }
+          // if more than 1 rows of data exists in the trend data for the item, start the calculating
+          if (filteredChart.length > 1) {
+            // get the the 2nd recent date object in the trend data for the selected item
+            // get the the 2nd recent date object in the trend data for the selected item
+            const secondLatestDate = filteredChart.sort(
+              (a, b) => moment(a[chartGroupKey]) - moment(b[chartGroupKey])
+            )[filteredChart.length - 2];
+            // console.log('Second Recent: ', secondLatestDate);
+            priorMetric = secondLatestDate[changeKey];
+          } else {
+            priorMetric = 0;
+          }
 
-          // // calculate change metrics
-          // let changeMetric = latestMetric - priorMetric;
-          // let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+          // calculate change metrics
+          let changeMetric = latestMetric - priorMetric;
+          let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
 
-          // item['latestMetric'] = latestMetric;
-          // item['priorMetric'] = priorMetric;
-          // item['changeMetric'] = changeMetric;
-          // item['changeMetricPercent'] = changeMetricPercent;
+          item['latestMetric'] = latestMetric;
+          item['priorMetric'] = priorMetric;
+          item['changeMetric'] = changeMetric;
+          item['changeMetricPercent'] = changeMetricPercent;
         }
 
         // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
