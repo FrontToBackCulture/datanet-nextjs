@@ -21,6 +21,7 @@ import {
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
+  console.log(process.env.NEXT_PUBLIC_MINIAPP_VALHOST);
   return (
     <Page title="The starting point for your next project">
       <HomeHero />

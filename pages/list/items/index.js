@@ -75,19 +75,11 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    if (process.env.DEPLOY_STAGE == 'development') {
+    if (process.env.NEXT_PUBLIC_MINIAPP_VALHOST == 'local') {
       let config = confFn.getConfig(code);
       setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
-      let config = confFnStage.getConfig(code);
-      setConf(config);
-    }
-    if (process.env.DEPLOY_STAGE == 'production') {
-      let config = confFnProd.getConfig(code);
-      setConf(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
+    if (process.env.NEXT_PUBLIC_MINIAPP_VALHOST == 'prod') {
       let config = confFnProd.getConfig(code);
       setConf(config);
     }
