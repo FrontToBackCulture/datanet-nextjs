@@ -43,7 +43,19 @@ import confFnProd from '../../../config/production/conf';
 //     ],
 //   },
 // ];
-let configNavConfig = confFnProd.getConfig('navConfig');
+
+let configNavConfig;
+let URL = window.location.href;
+if (URL.includes('localhost')) {
+  configNavConfig = confFn.getConfig('navConfig');
+}
+if (URL.includes('melvinapps')) {
+  configNavConfig = confFnStage.getConfig('navConfig');
+}
+if (URL.includes('screener')) {
+  configNavConfig = confFnProd.getConfig('navConfig');
+}
+
 let configNavConfigArray = [];
 configNavConfig.map((config) => {
   configNavConfigArray.push({
