@@ -279,9 +279,16 @@ export default function PromotionItemPage() {
             var d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
             // console.log('D Time: ', d.getTime());
             // console.log('Most Recent Time: ', mostRecentDate.getTime());
-            console.log('D : ', d, ' Most Recent : ', mostRecentDate);
+            // console.log('D : ', d, ' Most Recent : ', mostRecentDate);
+            console.log(
+              'D : ',
+              moment(d).format('YYYY-MM-DD'),
+              ' Most Recent : ',
+              moment(mostRecentDate).format('YYYY-MM-DD')
+            );
             // console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
             // return d.getTime() == mostRecentDate.getTime();
+            return moment(d).format('YYYY-MM-DD') == moment(mostRecentDate).format('YYYY-MM-DD');
             // return d == mostRecentDate;
           })[0];
           latestMetric = mostRecentObject[changeKey];
