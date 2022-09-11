@@ -54,6 +54,7 @@ export default function PromotionItemsPage() {
       domain: dom,
       contentType: contentType,
       dataType: dataType,
+      cache: cache,
     });
     return valJobs.data;
   };
