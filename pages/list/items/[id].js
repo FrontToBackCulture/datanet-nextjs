@@ -257,14 +257,14 @@ export default function PromotionItemPage() {
               null,
               filteredChart.map((e) => {
                 let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-                // console.log(
-                //   'Original:',
-                //   e[chartGroupKey],
-                //   ' Most Recent Object: ',
-                //   new Date(e[chartGroupKey]),
-                //   ' Suggested Most Recent Object: ',
-                //   new Date(mrd)
-                // );
+                console.log(
+                  'Original:',
+                  e[chartGroupKey],
+                  ' Most Recent Object: ',
+                  new Date(e[chartGroupKey]),
+                  ' Suggested Most Recent Object: ',
+                  new Date(mrd)
+                );
                 // return new Date(e[chartGroupKey]);
                 return new Date(mrd);
               })
