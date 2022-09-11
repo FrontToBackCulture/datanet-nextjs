@@ -267,10 +267,6 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     gridRef.current.api.showNoRowsOverlay();
   }, []);
 
-  useEffect(() => {
-    setRowData([]);
-  }, []);
-
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}

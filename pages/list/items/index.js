@@ -44,6 +44,7 @@ export default function PromotionItemsPage() {
   //whenever query change get the relevant config based on the code attribute in the query
   useEffect(() => {
     console.log('Code:', code);
+    setRowData([]);
     getConfig();
   }, [router.query]);
 
