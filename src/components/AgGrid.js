@@ -255,6 +255,14 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
     return tallestHeaderTextHeight;
   }
 
+  const onBtShowLoading = useCallback(() => {
+    gridRef.current.api.showLoadingOverlay();
+  }, []);
+
+  const onBtShowNoRows = useCallback(() => {
+    gridRef.current.api.showNoRowsOverlay();
+  }, []);
+
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
@@ -303,6 +311,12 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           rowGroupPanelShow={false}
           rowHeight={25}
           cacheQuickFilter={true}
+          overlayLoadingTemplate={
+            '<span class="ag-overlay-loading-center">Please wait while your rows are loading</span>'
+          }
+          overlayNoRowsTemplate={
+            '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow">This is a custom \'no rows\' overlay</span>'
+          }
           // frameworkComponents={{
           //   LinkComponent,
           // }}
