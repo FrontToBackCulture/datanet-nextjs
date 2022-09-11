@@ -280,7 +280,11 @@ export default function PromotionItemPage() {
               'See if date is valid: ',
               !Number.isNaN(new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD')).getTime())
             );
-            // var d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
+            let d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
+            console.log(
+              'See if most recent date is valid: ',
+              !Number.isNaN(mostRecentDate.getTime())
+            );
             // console.log('D Time: ', d.getTime());
             // console.log('Most Recent Time: ', mostRecentDate.getTime());
             // console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
