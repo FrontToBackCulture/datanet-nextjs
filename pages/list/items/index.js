@@ -75,20 +75,16 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    console.log('URL:', window.location.href);
-    if (process.env.DEPLOY_STAGE == 'development') {
+    let URL = window.location.href;
+    if (URL.includes('localhost')) {
       let config = confFn.getConfig(code);
       setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
+    if (URL.includes('melvinapps')) {
       let config = confFnStage.getConfig(code);
       setConf(config);
     }
-    if (process.env.DEPLOY_STAGE == 'production') {
-      let config = confFnProd.getConfig(code);
-      setConf(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
+    if (URL.includes('screener')) {
       let config = confFnProd.getConfig(code);
       setConf(config);
     }
