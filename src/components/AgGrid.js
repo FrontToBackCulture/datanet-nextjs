@@ -270,7 +270,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
-      {/* <Box
+      <Box
         component="form"
         sx={{
           '& > :not(style)': { m: 1, width: '25ch' },
@@ -285,8 +285,8 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
           onChange={onFilterTextBoxChanged}
           focused
         />
-      </Box> */}
-      <FilledInput
+      </Box>
+      {/* <FilledInput
         fullWidth
         startAdornment={
           <InputAdornment position="start">
@@ -295,7 +295,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
         }
         placeholder="Search..."
         onChange={onFilterTextBoxChanged}
-      />
+      /> */}
       <div id="myGrid" style={gridStyle} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
