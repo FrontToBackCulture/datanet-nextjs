@@ -97,19 +97,11 @@ export default function PromotionItemPage() {
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
     let config;
-    if (process.env.DEPLOY_STAGE == 'development') {
+    if (process.env.MINIAPP_VALHOST == 'local') {
       config = confFn.getConfig(code);
       setFullConfig(config);
     }
-    if (process.env.DEPLOY_STAGE == 'staging') {
-      config = confFnStage.getConfig(code);
-      setFullConfig(config);
-    }
-    if (process.env.DEPLOY_STAGE == 'production') {
-      config = confFnProd.getConfig(code);
-      setFullConfig(config);
-    }
-    if (!process.env.DEPLOY_STAGE) {
+    if (process.env.MINIAPP_VALHOST == 'prod') {
       config = confFnProd.getConfig(code);
       setFullConfig(config);
     }
