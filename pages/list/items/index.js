@@ -19,6 +19,7 @@ import { Page, ErrorScreen } from '../../../src/components';
 import AgGrid from '../../../src/components/AgGrid';
 // api
 import { readVAL } from '../../api/grpc';
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
@@ -158,7 +159,7 @@ export default function PromotionItemsPage() {
             Math.max.apply(
               null,
               filteredChart.map((e) => {
-                return new Date(e[chartGroupKey]);
+                return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
               })
             )
           );
@@ -167,10 +168,11 @@ export default function PromotionItemsPage() {
             priorMetric = 0;
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
-            var d = new Date(e[chartGroupKey]);
-            console.log('D Time: ', d.getTime());
-            console.log('Most Recent Time: ', mostRecentDate.getTime());
-            return d.getTime() == mostRecentDate.getTime();
+            var d = moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
+            // console.log('D Time: ', d.getTime());
+            // console.log('Most Recent Time: ', mostRecentDate.getTime());
+            // return d.getTime() == mostRecentDate.getTime();
+            return d == mostRecentDate;
           })[0];
           latestMetric = mostRecentObject[changeKey];
 
