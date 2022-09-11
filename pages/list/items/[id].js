@@ -290,7 +290,7 @@ export default function PromotionItemPage() {
             // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
             const secondLatestDate = filteredChart.sort(
-              (a, b) => moment(a[chartGroupKey]) - moment(b[chartGroupKey])
+              (a, b) => a[chartGroupKey] - b[chartGroupKey]
             )[filteredChart.length - 2];
             // console.log('Second Recent: ', secondLatestDate);
             priorMetric = secondLatestDate[changeKey];
@@ -397,7 +397,7 @@ export default function PromotionItemPage() {
                         conf={fullConfig}
                         chartData={chartData}
                       /> */}
-                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
+                      {/* <SimpleAreaChart conf={fullConfig} chartData={chartData} /> */}
                       <br />
                       {/* </Grid> */}
                       {/* <Grid item xs={12} md={12} lg={12}> */}
