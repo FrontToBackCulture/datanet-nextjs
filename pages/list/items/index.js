@@ -160,7 +160,12 @@ export default function PromotionItemsPage() {
               null,
               filteredChart.map((e) => {
                 // return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
-                console.log('Most Recent Object: ', new Date(e[chartGroupKey]));
+                console.log(
+                  'Original:',
+                  e[chartGroupKey],
+                  ' Most Recent Object: ',
+                  new Date(e[chartGroupKey])
+                );
                 return new Date(e[chartGroupKey]);
               })
             )
@@ -174,7 +179,7 @@ export default function PromotionItemsPage() {
             var d = new Date(e[chartGroupKey]);
             // console.log('D Time: ', d.getTime());
             // console.log('Most Recent Time: ', mostRecentDate.getTime());
-            console.log('D Time: ', d.getTime(), 'Most Recent Time: ', mostRecentDate.getTime());
+            console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
             return d.getTime() == mostRecentDate.getTime();
             // return d == mostRecentDate;
           })[0];
