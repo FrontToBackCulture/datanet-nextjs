@@ -1,6 +1,3 @@
-import dotenv from 'dotenv';
-import webpack from 'webpack';
-
 // ----------------------------------------------------------------------
 
 const nextConfig = {
