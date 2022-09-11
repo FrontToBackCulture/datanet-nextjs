@@ -15,7 +15,7 @@ import cssStyles from '../../../utils/cssStyles';
 // components
 import { FavoriteButton, Breadcrumbs, TextIconLabel, Iconify } from '../../../components';
 // utils
-import { fCurrency, fShortenNumber, fPercent } from '../../../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ export default function CareerJobHero({ job, entity }) {
           </Typography>
           <Typography variant="h3" component="h3" style={{ marginTop: '0px' }}>
             <Stack spacing={2} direction="row" alignItems="flex-end" sx={{ mt: 0 }}>
-              <>{fCurrency(latestMetric)}&nbsp;&nbsp;</>
+              <>{fNumber(latestMetric)}&nbsp;&nbsp;</>
               {latestMetric > 0 ? (
                 <Typography variant="h4" style={{ color: 'green' }}>
                   +{fPercent(percentChangeMetric)}

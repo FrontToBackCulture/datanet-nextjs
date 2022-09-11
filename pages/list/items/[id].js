@@ -116,8 +116,14 @@ export default function PromotionItemPage() {
   };
 
   // get data from VAL
-  const getJobs = async (qId, dom) => {
-    let valJobs = await readVAL({ queryID: qId, domain: dom });
+  const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
+    let valJobs = await readVAL({
+      queryID: id,
+      domain: dom,
+      contentType: contentType,
+      dataType: dataType,
+      cache: cache,
+    });
     return valJobs.data;
   };
 
@@ -128,6 +134,9 @@ export default function PromotionItemPage() {
     let valChartData = await readVAL({
       queryID: conf.chartSource.queryID,
       domain: conf.chartSource.domain,
+      contentType: 'trend',
+      dataType: entity,
+      cache: true,
     });
     let data = valChartData.data;
     console.log('All Chart Datat: ', data);
@@ -174,7 +183,7 @@ export default function PromotionItemPage() {
   //once static query and domain available extract static and trend aka chart data
   useEffect(async () => {
     if (staticQueryID && staticDomain) {
-      let sD = await getJobs(staticQueryID, staticDomain);
+      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', entity, true);
       setStaticData(sD);
       let finalChartValue = await getChartData(fullConfig);
       console.log('FINAL CHART VALUE:', finalChartValue);
@@ -185,7 +194,7 @@ export default function PromotionItemPage() {
   //once metric query and domain available extract metric data
   useEffect(async () => {
     if (metricQueryID && metricDomain) {
-      let mD = await getJobs(metricQueryID, metricDomain);
+      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', entity, true);
       setMetriccData(mD);
     }
   }, [metricQueryID, metricDomain]);
