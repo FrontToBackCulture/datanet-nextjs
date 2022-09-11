@@ -118,7 +118,7 @@ export default function PromotionItemPage() {
   // get data from VAL
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     let valJobs = await readVAL({
-      queryID: id,
+      queryID: qId,
       domain: dom,
       contentType: contentType,
       dataType: dataType,
