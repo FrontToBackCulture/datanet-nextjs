@@ -57,20 +57,20 @@ export default function PromotionItemsPage() {
     getConfig();
   }, [router.query]);
 
-  //whenever users gets update
-  useEffect(() => {
-    if (user && user.email) {
-      getUserAppMetaData(user.email);
-    }
-  }, [user]);
+  // //whenever users gets update
+  // useEffect(() => {
+  //   if (user && user.email) {
+  //     getUserAppMetaData(user.email);
+  //   }
+  // }, [user]);
 
-  //get user appmetadata
-  const getUserAppMetaData = async (email) => {
-    console.log(user);
-    let appMetaData = await getAppMetaData(user.email);
-    console.log(appMetaData.data[0]['app_metadata']['domain']);
-    return appMetaData.data[0]['app_metadata']['domain'];
-  };
+  // //get user appmetadata
+  // const getUserAppMetaData = async (email) => {
+  //   console.log(user);
+  //   let appMetaData = await getAppMetaData(user.email);
+  //   console.log(appMetaData.data[0]['app_metadata']['domain']);
+  //   return appMetaData.data[0]['app_metadata']['domain'];
+  // };
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
