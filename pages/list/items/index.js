@@ -119,6 +119,16 @@ export default function PromotionItemsPage() {
     }
   };
 
+  function getWeek(date) {
+    !(date instanceof Date) && (date = new Date());
+    var nDay = (date.getDay() + 6) % 7;
+    date.setDate(date.getDate() - nDay + 3);
+    var n1stThursday = date.valueOf();
+    date.setMonth(0, 1);
+    date.getDay() !== 4 && date.setMonth(0, 1 + ((4 - date.getDay() + 7) % 7));
+    return 1 + Math.ceil((n1stThursday - date) / 604800000);
+  }
+
   //once config have been extracted, process based on config instructions
   useEffect(async () => {
     if (conf) {
@@ -239,15 +249,7 @@ export default function PromotionItemsPage() {
           item['changeMetricPercent'] = changeMetricPercent;
 
           // -----  test to get weekly
-          function getWeek(date) {
-            !(date instanceof Date) && (date = new Date());
-            var nDay = (date.getDay() + 6) % 7;
-            date.setDate(date.getDate() - nDay + 3);
-            var n1stThursday = date.valueOf();
-            date.setMonth(0, 1);
-            date.getDay() !== 4 && date.setMonth(0, 1 + ((4 - date.getDay() + 7) % 7));
-            return 1 + Math.ceil((n1stThursday - date) / 604800000);
-          }
+
           let sparklineObj = {};
           sparklineObj[chartValueKey] = 0;
           var groups = filteredChart.reduce(function (r, d) {
