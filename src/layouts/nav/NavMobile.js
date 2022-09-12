@@ -59,7 +59,7 @@ export default function NavMobile({ navConfig, sx }) {
   const { user, error, isLoading } = useUser();
   const { pathname } = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  console.log(user);
   useEffect(() => {
     if (drawerOpen) {
       handleDrawerClose();
