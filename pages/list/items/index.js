@@ -19,6 +19,7 @@ import { Page, ErrorScreen } from '../../../src/components';
 import AgGrid from '../../../src/components/AgGrid';
 // api
 import { readVAL } from '../../api/grpc';
+import { getAppMetaData } from '../../api/auth/auth0API';
 import moment from 'moment';
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
@@ -39,6 +40,7 @@ export default function PromotionItemsPage() {
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
   const [listFields, setListFields] = useState();
+  const [sparklineData, setSparkLineData] = useState([]);
 
   const router = useRouter();
   if (typeof window !== 'undefined') {
@@ -54,6 +56,21 @@ export default function PromotionItemsPage() {
     setRowData([]);
     getConfig();
   }, [router.query]);
+
+  //whenever users gets update
+  useEffect(() => {
+    if (user && user.email) {
+      getUserAppMetaData(user.email);
+    }
+  }, [user]);
+
+  //get user appmetadata
+  const getUserAppMetaData = async (email) => {
+    console.log(user);
+    let appMetaData = await getAppMetaData(user.email);
+    console.log(appMetaData.data[0]['app_metadata']['domain']);
+    return appMetaData.data[0]['app_metadata']['domain'];
+  };
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
@@ -121,6 +138,7 @@ export default function PromotionItemsPage() {
       //extract the key for the trend data aka the chart data
       const trendQueryID = conf.chartSource.queryID;
       const trendDomain = conf.chartSource.domain;
+      const chartValueKey = conf.chartSource.valueKey;
       const chartGroupKey = conf.chartSource.groupKey;
 
       // start merging of static and metric data
@@ -150,7 +168,9 @@ export default function PromotionItemsPage() {
       console.log('Merged:', merged);
 
       //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
+
       const filteredItemTrendData = await merged.map((item) => {
+        let sparklineDataArray = [];
         let filteredChart;
         //filter by matching to the static data key
         // check if the attribute storing the key in metric is a value in the array or not as different processing required
@@ -217,6 +237,49 @@ export default function PromotionItemsPage() {
           item['priorMetric'] = priorMetric;
           item['changeMetric'] = changeMetric;
           item['changeMetricPercent'] = changeMetricPercent;
+
+          // -----  test to get weekly
+          function getWeek(date) {
+            !(date instanceof Date) && (date = new Date());
+            var nDay = (date.getDay() + 6) % 7;
+            date.setDate(date.getDate() - nDay + 3);
+            var n1stThursday = date.valueOf();
+            date.setMonth(0, 1);
+            date.getDay() !== 4 && date.setMonth(0, 1 + ((4 - date.getDay() + 7) % 7));
+            return 1 + Math.ceil((n1stThursday - date) / 604800000);
+          }
+          let sparklineObj = {};
+          sparklineObj[chartValueKey] = 0;
+          var groups = filteredChart.reduce(function (r, d) {
+              var week = parseInt(getWeek(new Date(d[chartGroupKey])));
+              r[week] = r[week] ? r[week].concat(d) : [d];
+              return r;
+            }, {}),
+            groupResult = Object.keys(groups).map(
+              (week) =>
+                (groups[week] = groups[week].reduce(
+                  (a, o) => (
+                    (a[chartValueKey] += o[chartValueKey] / groups[week].length),
+                    // (a.ConversionRate += o.ConversionRate / groups[week].length),
+                    // (a.VisitRate += o.VisitRate / groups[week].length),
+                    a
+                  ),
+                  // { Week: week, ROAS: 0, ConversionRate: 0, VisitRate: 0 }
+                  // { Week: week, 'Net Sales': 0, 'sum Quantity': 0 }
+                  { ...sparklineObj, Week: week }
+                ))
+            );
+
+          // console.log('Group Result:', groupResult);
+          // ----- test to get weekly
+
+          // sparkline based on daily data
+          sparklineDataArray = filteredChart.map((x) => {
+            return [new Date(x[chartGroupKey]), x[chartValueKey]];
+          });
+          // sparkline based on daily data
+
+          item['change'] = groupResult;
         }
 
         // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
@@ -226,6 +289,8 @@ export default function PromotionItemsPage() {
       console.log('Combined: ', filteredItemTrendData);
 
       //setRowData for AG-Grid
+      // console.log(merged);
+      // setSparkLineData(sparklineDataArray);
       setRowData(merged);
     }
   }, [conf]);
@@ -238,13 +303,13 @@ export default function PromotionItemsPage() {
       <Page title="Promotions">
         <RootStyle>
           <Container>
-            {title}
             <AgGrid
               type={'list'}
               fieldConf={listFields}
               fullConf={conf}
               entity={code}
               rowD={rowData}
+              title={title}
             />
           </Container>
         </RootStyle>

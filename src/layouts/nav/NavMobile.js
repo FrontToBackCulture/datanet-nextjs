@@ -28,7 +28,7 @@ import { DRAWER_WIDTH } from '../../config';
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components';
 import { IconButtonAnimate } from '../../components/animate';
 
-// import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0';
 
 // ----------------------------------------------------------------------
 

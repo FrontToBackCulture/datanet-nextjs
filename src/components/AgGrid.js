@@ -6,6 +6,8 @@ import Iconify from './Iconify';
 import { InputAdornment, FilledInput } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 // routes
 import Routes from '../../src/routes';
 
@@ -19,7 +21,7 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-material.css';
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../utils/formatNumber';
 
-export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
+export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title }) {
   const gridRef = useRef();
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
@@ -176,8 +178,11 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   }, []);
 
   useEffect(() => {
+    let chartValueKey, chartGroupKey;
     if (fullConf) {
       setEntityConf(fullConf);
+      chartValueKey = fullConf.chartSource.valueKey;
+      chartGroupKey = fullConf.chartSource.groupKey;
     }
     if (rowD && fullConf && entity) {
       // console.log('AG GRID USE: ', fullConf, entity);
@@ -228,6 +233,34 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
             }
             colDefs.push(colDefsObj);
           });
+          colDefs.push({
+            field: 'change',
+            cellRenderer: 'agSparklineCellRenderer',
+            headerName: 'Trend',
+            // cellRendererParams: {
+            //   sparklineOptions: {
+            //     type: 'area',
+            //     axis: {
+            //       type: 'time',
+            //     },
+            //     marker: {
+            //       size: 3,
+            //     },
+            //   },
+            // },
+            cellRendererParams: {
+              sparklineOptions: {
+                type: 'area',
+                // set xKey and yKey to the keys which can be used to retrieve X and Y values from the supplied data
+                xKey: 'Week',
+                yKey: chartValueKey,
+                marker: {
+                  size: 3,
+                },
+              },
+            },
+          });
+          // console.log(colDefs);
           setColumnDefs(colDefs);
         } else {
           const keys = Object.keys(rowD[0]);
@@ -268,32 +301,29 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity }) {
   return (
     <div style={containerStyle}>
       {/* <div style={gridStyle} className="ag-theme-alpine"> */}
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1, width: '25ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField
-          id="filter-text-box"
-          label="Search"
-          color="secondary"
-          onChange={onFilterTextBoxChanged}
-          focused
-        />
-      </Box>
-      {/* <FilledInput
-        fullWidth
-        startAdornment={
-          <InputAdornment position="start">
-            <Iconify icon={searchIcon} sx={{ width: 24, height: 24, color: 'text.disabled' }} />
-          </InputAdornment>
-        }
-        placeholder="Search..."
-        onChange={onFilterTextBoxChanged}
-      /> */}
+      <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
+        <Typography variant="h4" gutterBottom>
+          {title}
+        </Typography>
+        <Box
+          component="form"
+          sx={{
+            '& > :not(style)': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            id="filter-text-box"
+            label="Search"
+            color="secondary"
+            onChange={onFilterTextBoxChanged}
+            variant="outlined"
+            size="small"
+            focused
+          />
+        </Box>
+      </Stack>
       <div id="myGrid" style={gridStyle} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}

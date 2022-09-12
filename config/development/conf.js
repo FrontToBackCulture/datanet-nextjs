@@ -22,7 +22,13 @@ const config = {
       valueKey: 'Net Sales',
     },
     listFields: {
-      shortCode: { sourceColumn: 'Outlet', link: true, type: 'string', headerName: 'Outlet' },
+      shortCode: {
+        sourceColumn: 'Outlet',
+        link: true,
+        type: 'string',
+        headerName: 'Outlet',
+        maxWidth: 150,
+      },
       name: { sourceColumn: 'Outlet Name', link: false, type: 'string', headerName: 'Name' },
       latestMetric: {
         sourceColumn: 'latestMetric',
@@ -37,6 +43,7 @@ const config = {
         type: 'percent',
         headerName: 'Daily Net Sales % Δ',
         condition: 'cellClassRules',
+        maxWidth: 150,
       },
       metric2: {
         sourceColumn: 'sum Net Sales',
@@ -44,24 +51,28 @@ const config = {
         type: 'currency',
         sort: 'desc',
         headerName: 'Net Sales L3M',
+        maxWidth: 150,
       },
       metric3: {
         sourceColumn: 'max Net Sales',
         link: false,
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
+        maxWidth: 150,
       },
       metric4: {
         sourceColumn: 'min Net Sales',
         link: false,
         type: 'currency',
         headerName: 'Daily Min Net Sales L3M',
+        maxWidth: 150,
       },
       metric5: {
         sourceColumn: 'average Order Count',
         link: false,
         type: 'number',
         headerName: 'Average Order Count',
+        maxWidth: 150,
       },
     },
     detailFields: {
@@ -150,6 +161,7 @@ const config = {
         link: true,
         type: 'string',
         headerName: 'Product ID',
+        maxWidth: 150,
       },
       name: {
         sourceColumn: 'Name',
@@ -162,6 +174,7 @@ const config = {
         link: false,
         type: 'number',
         headerName: 'Last Working Day Qty Sold',
+        maxWidth: 150,
       },
       percentChangeMetric: {
         sourceColumn: 'changeMetricPercent',
@@ -169,6 +182,7 @@ const config = {
         type: 'percent',
         headerName: 'Daily Net Sales % Δ',
         condition: 'cellClassRules',
+        maxWidth: 150,
       },
       metric1: {
         sourceColumn: 'sum Quantity',
@@ -176,18 +190,21 @@ const config = {
         type: 'number',
         sort: 'desc',
         headerName: 'Order Count L3M',
+        maxWidth: 150,
       },
       metric2: {
         sourceColumn: 'sum Total',
         link: false,
         type: 'currency',
         headerName: 'Net Sales L3M',
+        maxWidth: 150,
       },
       metric3: {
         sourceColumn: 'sum Discount',
         link: false,
         type: 'currency',
         headerName: 'Discount L3M',
+        maxWidth: 150,
       },
     },
     detailFields: {
