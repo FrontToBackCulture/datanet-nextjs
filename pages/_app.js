@@ -36,6 +36,11 @@ import MotionLazyContainer from '../src/components/animate/MotionLazyContainer';
 
 import { UserProvider } from '@auth0/nextjs-auth0';
 
+import { useEffect } from 'react';
+import Script from 'next/script';
+import { useRouter } from 'next/router';
+import * as gtag from '../lib/gtag';
+
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
