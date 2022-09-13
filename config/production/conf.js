@@ -271,14 +271,14 @@ const config = {
     },
     listFields: {
       shortCode: {
-        sourceColumn: 'ID',
+        sourceColumn: 'Storehub Product ID',
         link: true,
         type: 'string',
-        headerName: 'Product ID',
+        headerName: 'Promo ID',
         maxWidth: 150,
       },
       name: {
-        sourceColumn: 'Name',
+        sourceColumn: 'POS Button Storehub',
         link: false,
         type: 'string',
         headerName: 'Name',
