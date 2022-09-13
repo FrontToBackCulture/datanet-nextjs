@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
 // next
 import { useRouter } from 'next/router';
 // @mui
@@ -73,6 +75,7 @@ function a11yProps(index) {
 // ----------------------------------------------------------------------
 
 export default function PromotionItemPage() {
+  const { user, error, isLoading } = useUser();
   const [value, setValue] = useState(0);
   const [job, setJob] = useState();
   const [dataRows, setDataRows] = useState([]);
@@ -220,7 +223,11 @@ export default function PromotionItemPage() {
         setMetricDomain(conf.metricSource.domain);
 
         const handleRouteChange = (url) => {
-          gtag.event('event', 'screenview', entity, 1);
+          gtag.event('event', 'screenview', {
+            event_category: entity,
+            event_label: user.email,
+            value: 1,
+          });
         };
         router.events.on('routeChangeComplete', handleRouteChange);
         return () => {

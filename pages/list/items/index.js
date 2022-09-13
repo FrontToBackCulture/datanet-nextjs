@@ -52,7 +52,11 @@ export default function PromotionItemsPage() {
 
   useEffect(() => {
     const handleRouteChange = (url) => {
-      gtag.event('event', 'screenview', title, 1);
+      gtag.event('event', 'screenview', {
+        event_category: code,
+        event_label: user.email,
+        value: 1,
+      });
     };
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
