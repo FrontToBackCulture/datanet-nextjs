@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 // auth
 import { useUser } from '@auth0/nextjs-auth0';
 // next
-import { useRouter, withRouter } from 'next/router';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container } from '@mui/material';
@@ -40,7 +39,6 @@ export default function PromotionItemsPage() {
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
   const [listFields, setListFields] = useState();
-  const [sparklineData, setSparkLineData] = useState([]);
 
   const router = useRouter();
   if (typeof window !== 'undefined') {
@@ -180,7 +178,7 @@ export default function PromotionItemsPage() {
       //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
 
       const filteredItemTrendData = await merged.map((item) => {
-        let sparklineDataArray = [];
+        // let sparklineDataArray = [];
         let filteredChart;
         //filter by matching to the static data key
         // check if the attribute storing the key in metric is a value in the array or not as different processing required
@@ -276,9 +274,9 @@ export default function PromotionItemsPage() {
           // ----- test to get weekly
 
           // sparkline based on daily data
-          sparklineDataArray = filteredChart.map((x) => {
-            return [new Date(x[chartGroupKey]), x[chartValueKey]];
-          });
+          // sparklineDataArray = filteredChart.map((x) => {
+          //   return [new Date(x[chartGroupKey]), x[chartValueKey]];
+          // });
           // sparkline based on daily data
 
           item['change'] = groupResult;
@@ -292,7 +290,6 @@ export default function PromotionItemsPage() {
 
       //setRowData for AG-Grid
       // console.log(merged);
-      // setSparkLineData(sparklineDataArray);
       setRowData(merged);
     }
   }, [conf]);

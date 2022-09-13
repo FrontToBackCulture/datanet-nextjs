@@ -6,17 +6,7 @@ import Layout from '../src/layouts';
 import { Page } from '../src/components';
 // sections
 
-import {
-  HomeHero,
-  // HomeFAQs,
-  HomeNewStart,
-  // HomeDemoPages,
-  HomeForDesigner,
-  HomeCombination,
-  HomeAdvertisement,
-  HomeFeatureHighlights,
-  HomeFlexibleComponents,
-} from '../src/sections/home';
+import { HomeHero } from '../src/sections/home';
 
 // ----------------------------------------------------------------------
 
@@ -24,18 +14,6 @@ export default function HomePage() {
   return (
     <Page title="The starting point for your next project">
       <HomeHero />
-
-      {/* <HomeNewStart />
-
-      <HomeFlexibleComponents />
-
-      <HomeFeatureHighlights />
-
-      <HomeForDesigner />
-
-      <HomeCombination />
-
-      <HomeAdvertisement /> */}
     </Page>
   );
 }

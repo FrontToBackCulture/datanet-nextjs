@@ -27,10 +27,8 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { SettingsProvider } from '../src/contexts/SettingsContext';
 // theme
 import ThemeProvider from '../src/theme';
-// utils
-import axios from '../src/utils/axios';
 // components
-import Settings from '../src/components/settings';
+// import Settings from '../src/components/settings';
 import RtlLayout from '../src/components/RtlLayout';
 import ProgressBar from '../src/components/ProgressBar';
 import ThemeColorPresets from '../src/components/ThemeColorPresets';
@@ -48,6 +46,17 @@ MyApp.propTypes = {
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
@@ -55,6 +64,24 @@ export default function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <SettingsProvider>
