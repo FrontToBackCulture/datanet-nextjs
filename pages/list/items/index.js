@@ -23,6 +23,8 @@ import moment from 'moment';
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
 
+import * as gtag from '../../../lib/gtag';
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -47,6 +49,16 @@ export default function PromotionItemsPage() {
 
   //get parameters from url query
   const { title, code } = router.query;
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.event('event', 'screenview', title, 1);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   //whenever query change get the relevant config based on the code attribute in the query
   useEffect(() => {
@@ -239,7 +251,7 @@ export default function PromotionItemsPage() {
 
           // calculate change metrics
           let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
 
           item['latestMetric'] = latestMetric;
           item['priorMetric'] = priorMetric;

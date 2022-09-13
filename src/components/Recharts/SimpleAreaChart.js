@@ -1,7 +1,6 @@
 import React, { PureComponent, useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-
 import {
   AreaChart,
   Area,
@@ -79,14 +78,18 @@ export default function Example({ conf, chartData }) {
           <Box
             sx={{
               width: 150,
-              height: 30,
+              height: 80,
               backgroundColor: 'white',
               opacity: [0.9, 0.8, 0.8],
             }}
           >
-            <Typography variant="caption" gutterBottom>{`${fDate2(label)} : ${fNumber(
-              payload[0].value
-            )}`}</Typography>
+            <Typography variant="caption" gutterBottom>
+              {`Date: ${fDate2(label)}`}
+              <br />
+              {`Day of Week: ${moment(label).format('dddd')}`}
+              <br />
+              {`Value: ${fNumber(payload[0].value)}`}
+            </Typography>
             {/* <p className="label">{`${fDate2(label)} : ${fNumber(payload[0].value)}`}</p> */}
             {/* <p className="intro">{getIntroOfPage(label)}</p>
           <p className="desc">Anything you want can be displayed here.</p> */}

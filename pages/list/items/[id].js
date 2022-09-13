@@ -26,6 +26,7 @@ import { readVAL } from '../../api/grpc';
 import moment from 'moment';
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
+import * as gtag from '../../../lib/gtag';
 
 // ----------------------------------------------------------------------
 
@@ -217,6 +218,14 @@ export default function PromotionItemPage() {
         setStaticDomain(conf.staticSource.domain);
         setMetricQueryID(conf.metricSource.queryID);
         setMetricDomain(conf.metricSource.domain);
+
+        const handleRouteChange = (url) => {
+          gtag.event('event', 'screenview', entity, 1);
+        };
+        router.events.on('routeChangeComplete', handleRouteChange);
+        return () => {
+          router.events.off('routeChangeComplete', handleRouteChange);
+        };
       }
     }
   }, [router.isReady]);
@@ -340,7 +349,7 @@ export default function PromotionItemPage() {
 
           // calculate change metrics
           let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
+          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
 
           item['latestMetric'] = latestMetric;
           item['priorMetric'] = priorMetric;
