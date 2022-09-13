@@ -78,6 +78,7 @@ export default function MyApp(props) {
         src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
       />
       <Script
+        id="gtm-script2"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
