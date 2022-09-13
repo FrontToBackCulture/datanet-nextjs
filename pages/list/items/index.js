@@ -55,11 +55,9 @@ export default function PromotionItemsPage() {
     console.log('Code:', code);
     setRowData([]);
     getConfig();
-    gtag.event('event', 'screenview', {
-      event_category: code,
-      event_label: user.email,
-      value: 1,
-    });
+    if (user) {
+      gtag.event({ action: 'screenview', category: code, label: user.email, value: 1 });
+    }
   }, [router.query]);
 
   // //whenever users gets update

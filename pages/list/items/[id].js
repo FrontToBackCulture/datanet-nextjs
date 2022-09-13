@@ -221,12 +221,9 @@ export default function PromotionItemPage() {
         setStaticDomain(conf.staticSource.domain);
         setMetricQueryID(conf.metricSource.queryID);
         setMetricDomain(conf.metricSource.domain);
-
-        gtag.event('event', 'screenview', {
-          event_category: entity,
-          event_label: user.email,
-          value: 1,
-        });
+        if (user) {
+          gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
+        }
       }
     }
   }, [router.isReady]);
