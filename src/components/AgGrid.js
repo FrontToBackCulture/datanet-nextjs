@@ -236,7 +236,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
           colDefs.push({
             field: 'change',
             cellRenderer: 'agSparklineCellRenderer',
-            headerName: 'Trend',
+            headerName: 'Weekly Trend',
             // cellRendererParams: {
             //   sparklineOptions: {
             //     type: 'area',

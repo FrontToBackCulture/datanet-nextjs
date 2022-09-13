@@ -77,7 +77,7 @@ export default function Example({ conf, chartData }) {
         <div className="custom-tooltip">
           <Box
             sx={{
-              width: 150,
+              width: 180,
               height: 80,
               backgroundColor: 'white',
               opacity: [0.9, 0.8, 0.8],
@@ -153,7 +153,7 @@ export default function Example({ conf, chartData }) {
             dataKey={yAxis}
             stroke="#8884d8"
             // fill="#8884d8"
-            dot={{ stroke: 'purple', strokeWidth: 2 }}
+            // dot={{ stroke: 'purple', strokeWidth: 2 }}
             fillOpacity={1}
             fill="url(#yAxis)"
           />
