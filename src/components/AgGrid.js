@@ -211,7 +211,6 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
             if (fieldConf[field2Show].condition) {
               colDefsObj.cellClassRules = {
                 'rag-green': 'x > 0',
-                'rag-amber': 'x >= 20 && x < 25',
                 'rag-red': 'x < 0',
               };
             }
