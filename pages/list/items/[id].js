@@ -382,7 +382,7 @@ export default function PromotionItemPage() {
     return <LoadingScreen />;
   } else {
     return (
-      <Page title={`Hello - Promotions`}>
+      <Page title={entity + '|' + job.name}>
         <RootStyle>
           <PromotionItemHero job={job} entity={entity} />
           <Container>

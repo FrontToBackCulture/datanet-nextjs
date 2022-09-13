@@ -299,7 +299,7 @@ export default function PromotionItemsPage() {
   //   }
   if (user) {
     return (
-      <Page title="Promotions">
+      <Page title={title}>
         <RootStyle>
           <Container>
             <AgGrid
@@ -316,7 +316,7 @@ export default function PromotionItemsPage() {
     );
   } else {
     return (
-      <Page title="Promotions">
+      <Page title={title}>
         <RootStyle>
           <Container>
             Please login to see data
