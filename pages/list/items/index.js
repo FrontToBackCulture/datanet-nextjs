@@ -50,25 +50,16 @@ export default function PromotionItemsPage() {
   //get parameters from url query
   const { title, code } = router.query;
 
-  useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.event('event', 'screenview', {
-        event_category: code,
-        event_label: user.email,
-        value: 1,
-      });
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
-
   //whenever query change get the relevant config based on the code attribute in the query
   useEffect(() => {
     console.log('Code:', code);
     setRowData([]);
     getConfig();
+    gtag.event('event', 'screenview', {
+      event_category: code,
+      event_label: user.email,
+      value: 1,
+    });
   }, [router.query]);
 
   // //whenever users gets update

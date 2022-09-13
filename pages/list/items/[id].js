@@ -222,17 +222,11 @@ export default function PromotionItemPage() {
         setMetricQueryID(conf.metricSource.queryID);
         setMetricDomain(conf.metricSource.domain);
 
-        const handleRouteChange = (url) => {
-          gtag.event('event', 'screenview', {
-            event_category: entity,
-            event_label: user.email,
-            value: 1,
-          });
-        };
-        router.events.on('routeChangeComplete', handleRouteChange);
-        return () => {
-          router.events.off('routeChangeComplete', handleRouteChange);
-        };
+        gtag.event('event', 'screenview', {
+          event_category: entity,
+          event_label: user.email,
+          value: 1,
+        });
       }
     }
   }, [router.isReady]);
