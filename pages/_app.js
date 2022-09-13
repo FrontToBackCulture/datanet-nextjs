@@ -40,7 +40,11 @@ import { useEffect } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
 import * as gtag from '../lib/gtag';
+import { LicenseManager } from 'ag-grid-enterprise';
 
+LicenseManager.setLicenseKey(
+  'CompanyName=Front To Back Culture,LicensedApplication=VAL,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-019429,ExpiryDate=16_November_2022_[v2]_MTY2ODU1NjgwMDAwMA==7bf705096e0805bcfac9a7a0023aa92e'
+);
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
