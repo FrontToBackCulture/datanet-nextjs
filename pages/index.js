@@ -1,5 +1,6 @@
-// _data
-// import { _pricingHome } from '../_data/mock';
+import React, { useState, useEffect } from 'react';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
 // layouts
 import Layout from '../src/layouts';
 // components
@@ -11,9 +12,29 @@ import { HomeHero } from '../src/sections/home';
 // ----------------------------------------------------------------------
 
 export default function HomePage() {
+  const { user, error, isLoading } = useUser();
+  const [userDomain, setUserDomain] = useState();
+
+  useEffect(() => {
+    if (user) {
+      const regex = /(?<=@)[^.]+/g;
+      const result = user.email.match(regex);
+      switch (result[0]) {
+        case 'saladstop':
+          setUserDomain('saladstop');
+          break;
+        case 'thinkval':
+          setUserDomain('saladstop');
+          break;
+        default:
+          break;
+      }
+    }
+  }, [user]);
+
   return (
     <Page title="The starting point for your next project">
-      <HomeHero />
+      <HomeHero userDomain={userDomain} />
     </Page>
   );
 }

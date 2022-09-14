@@ -9,9 +9,9 @@ import { styled } from '@mui/material/styles';
 import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
-import confFn from '../../../config/development/conf';
-import confFnStage from '../../../config/staging/conf';
-import confFnProd from '../../../config/production/conf';
+import confFn from '../../../config/development';
+import confFnStage from '../../../config/staging';
+import confFnProd from '../../../config/production';
 // hooks
 import { seRequest, useResponsive } from '../../../src/hooks';
 // layouts
@@ -76,6 +76,7 @@ function a11yProps(index) {
 
 export default function PromotionItemPage() {
   const { user, error, isLoading } = useUser();
+  const [userDomain, setUserDomain] = useState();
   const [value, setValue] = useState(0);
   const [job, setJob] = useState();
   const [dataRows, setDataRows] = useState([]);
@@ -97,6 +98,26 @@ export default function PromotionItemPage() {
     const URL = window.location.href;
   }
 
+  useEffect(() => {
+    if (user) {
+      const regex = /(?<=@)[^.]+/g;
+      const result = user.email.match(regex);
+      let domain;
+      switch (result[0]) {
+        case 'saladstop':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        case 'thinkval':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        default:
+          break;
+      }
+    }
+  }, [user]);
+
   //tab value changes
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -107,16 +128,16 @@ export default function PromotionItemPage() {
   const getConfig = (code) => {
     let config;
     let URL = window.location.href;
-    if (URL.includes('localhost')) {
-      config = confFn.getConfig(code);
+    if (URL.includes('localhost') && userDomain) {
+      config = confFn[userDomain].conf.getConfig(code);
       setFullConfig(config);
     }
-    if (URL.includes('melvinapps')) {
-      config = confFnStage.getConfig(code);
+    if (URL.includes('melvinapps') && userDomain) {
+      config = confFnStage[userDomain].conf.getConfig(code);
       setFullConfig(config);
     }
-    if (URL.includes('screener')) {
-      config = confFnProd.getConfig(code);
+    if (URL.includes('screener') && userDomain) {
+      config = confFnProd[userDomain].conf.getConfig(code);
       setFullConfig(config);
     }
     return config;
@@ -210,7 +231,7 @@ export default function PromotionItemPage() {
       // console.log(router.query);
       let { id, entity } = router.query;
       // console.log(entity);
-      if (entity) {
+      if (entity && userDomain) {
         // console.log(entity);
         // let configJson = JSON.parse(conf);
         setEntity(entity);
@@ -226,7 +247,7 @@ export default function PromotionItemPage() {
         }
       }
     }
-  }, [router.isReady]);
+  }, [router.isReady, userDomain]);
 
   //once static query and domain available extract static and trend aka chart data
   useEffect(async () => {

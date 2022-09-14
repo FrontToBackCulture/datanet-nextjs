@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 //auth
 import { useUser } from '@auth0/nextjs-auth0';
@@ -17,8 +18,12 @@ import { Logo, Label } from '../../components';
 //
 import Searchbar from '../Searchbar';
 import LanguagePopover from '../LanguagePopover';
-import { NavMobile, NavDesktop, navConfig } from '../nav';
+import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
+
+import confFn from '../../../config/development';
+import confFnStage from '../../../config/staging';
+import confFnProd from '../../../config/production';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +33,12 @@ Header.propTypes = {
 
 export default function Header({ transparent }) {
   const { user, error, isLoading } = useUser();
+  const [userDomain, setUserDomain] = useState();
+  const [conf, setConf] = useState();
+  const [navConfig, setNavConfig] = useState([]);
+
+  const URL = window.location.href;
+
   const theme = useTheme();
 
   const isDesktop = useResponsive('up', 'md');
@@ -35,6 +46,58 @@ export default function Header({ transparent }) {
   const isLight = theme.palette.mode === 'light';
 
   const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT);
+
+  useEffect(() => {
+    if (user) {
+      const regex = /(?<=@)[^.]+/g;
+      const result = user.email.match(regex);
+      let domain;
+      switch (result[0]) {
+        case 'saladstop':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        case 'thinkval':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        default:
+          break;
+      }
+      getConfig(domain);
+    }
+  }, [user]);
+
+  const getConfig = (domain) => {
+    console.log(URL, domain, confFn[domain]);
+    if (URL.includes('localhost') && domain) {
+      let config = confFn[domain].conf.getConfig('navConfig');
+      setConf(config);
+    }
+    if (URL.includes('melvinapps') && domain) {
+      let config = confFnStage[domain].conf.getConfig('navConfig');
+      setConf(config);
+    }
+    if (URL.includes('screener') && domain) {
+      let config = confFnProd[domain].conf.getConfig('navConfig');
+      setConf(config);
+    }
+  };
+
+  useEffect(() => {
+    if (conf) {
+      let configNavConfigArray = [];
+      conf.map((config) => {
+        configNavConfigArray.push({
+          title: config.title,
+          path: Routes.list.jobs,
+          code: config.code,
+        });
+      });
+      console.log('configArray', configNavConfigArray);
+      setNavConfig(configNavConfigArray);
+    }
+  }, [conf]);
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -65,7 +128,7 @@ export default function Header({ transparent }) {
             </Label>
           </Box>
 
-          {isDesktop && (
+          {isDesktop && user && (
             <NavDesktop
               isScrolling={isScrolling}
               isTransparent={transparent}
@@ -145,7 +208,7 @@ export default function Header({ transparent }) {
             )}
           </Stack> */}
 
-          {!isDesktop && (
+          {!isDesktop && user && (
             <NavMobile
               navConfig={navConfig}
               sx={{

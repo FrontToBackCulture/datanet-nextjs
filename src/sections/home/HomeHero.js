@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // icons
 import launchIcon from '@iconify/icons-carbon/launch';
 // @mui
@@ -23,11 +23,21 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function HomeHero() {
+export default function HomeHero({ userDomain }) {
   const containerRef = useRef(null);
   const container = useBoundingClientRect(containerRef);
+  const [domain, setDomain] = useState();
 
   const offsetLeft = container?.left;
+
+  useEffect(() => {
+    if (userDomain) {
+      const toTitleCase = (str) =>
+        str.replace(/(^\w|\s\w)(\S*)/g, (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase());
+      setDomain(toTitleCase(userDomain));
+      // setDomain(userDomain);
+    }
+  }, [userDomain]);
 
   return (
     <RootStyle>
@@ -43,7 +53,7 @@ export default function HomeHero() {
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h1">Your Datanet Powered By</Typography>
+              <Typography variant="h1">{domain} Datanet Powered By</Typography>
               <Image
                 src={`https://www.thinkval.com/logos/val.png`}
                 sx={{ width: 143, height: 53 }}

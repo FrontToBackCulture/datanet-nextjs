@@ -8,9 +8,9 @@ import { styled } from '@mui/material/styles';
 import { Container } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
-import confFn from '../../../config/development/conf';
-import confFnStage from '../../../config/staging/conf';
-import confFnProd from '../../../config/production/conf';
+import confFn from '../../../config/development';
+import confFnStage from '../../../config/staging';
+import confFnProd from '../../../config/production';
 // layouts
 import Layout from '../../../src/layouts';
 // components
@@ -38,6 +38,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function PromotionItemsPage() {
   const { user, error, isLoading } = useUser();
+  const [userDomain, setUserDomain] = useState();
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
   const [listFields, setListFields] = useState();
@@ -50,15 +51,34 @@ export default function PromotionItemsPage() {
   //get parameters from url query
   const { title, code } = router.query;
 
+  useEffect(() => {
+    if (user) {
+      const regex = /(?<=@)[^.]+/g;
+      const result = user.email.match(regex);
+      let domain;
+      switch (result[0]) {
+        case 'saladstop':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        case 'thinkval':
+          setUserDomain('saladstop');
+          domain = 'saladstop';
+          break;
+        default:
+          break;
+      }
+    }
+  }, [user]);
+
   //whenever query change get the relevant config based on the code attribute in the query
   useEffect(() => {
-    console.log('Code:', code);
     setRowData([]);
     getConfig();
     if (user) {
       gtag.event({ action: 'screenview', category: code, label: user.email, value: 1 });
     }
-  }, [router.query]);
+  }, [router.query, userDomain]);
 
   // //whenever users gets update
   // useEffect(() => {
@@ -108,16 +128,16 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    if (URL.includes('localhost')) {
-      let config = confFn.getConfig(code);
+    if (URL.includes('localhost') && userDomain) {
+      let config = confFn[userDomain].conf.getConfig(code);
       setConf(config);
     }
-    if (URL.includes('melvinapps')) {
-      let config = confFnStage.getConfig(code);
+    if (URL.includes('melvinapps') && userDomain) {
+      let config = confFnStage[userDomain].conf.getConfig(code);
       setConf(config);
     }
-    if (URL.includes('screener')) {
-      let config = confFnProd.getConfig(code);
+    if (URL.includes('screener') && userDomain) {
+      let config = confFnProd[userDomain].conf.getConfig(code);
       setConf(config);
     }
   };
