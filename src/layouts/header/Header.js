@@ -159,20 +159,24 @@ export default function Header({ transparent }) {
           </Stack>
           <Stack spacing={2} direction="row" alignItems="center">
             {user && (
-              <NextLink href="/api/auth/logout" prefetch={false} passHref>
-                <Button
-                  color="inherit"
-                  variant="outlined"
-                  sx={{
-                    ...(transparent && {
-                      color: 'common.white',
-                    }),
-                    ...(isScrolling && isLight && { color: 'text.primary' }),
-                  }}
-                >
-                  Logout
-                </Button>
-              </NextLink>
+              <>
+                {userDomain} &nbsp;&nbsp;
+                <Divider orientation="vertical" sx={{ height: 24 }} />
+                <NextLink href="/api/auth/logout" prefetch={false} passHref>
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    sx={{
+                      ...(transparent && {
+                        color: 'common.white',
+                      }),
+                      ...(isScrolling && isLight && { color: 'text.primary' }),
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </NextLink>
+              </>
             )}
           </Stack>
 
@@ -216,6 +220,7 @@ export default function Header({ transparent }) {
                 ml: 1,
                 ...(isScrolling && { color: 'text.primary' }),
               }}
+              userDomain={userDomain}
             />
           )}
         </Container>

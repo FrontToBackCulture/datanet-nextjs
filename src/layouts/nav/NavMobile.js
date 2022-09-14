@@ -55,7 +55,7 @@ NavMobile.propTypes = {
   sx: PropTypes.object,
 };
 
-export default function NavMobile({ navConfig, sx }) {
+export default function NavMobile({ navConfig, sx, userDomain }) {
   const { user, error, isLoading } = useUser();
   const { pathname } = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -100,20 +100,22 @@ export default function NavMobile({ navConfig, sx }) {
             ))}
           </List>
 
-          {!user && (
+          {/* {!user && (
             <NextLink href="/api/auth/login">
               <Button fullWidth variant="outlined" color="inherit">
                 Login
               </Button>
             </NextLink>
-          )}
-          {user && (
-            <NextLink href="/api/auth/logout">
-              <Button fullWidth variant="outlined" color="inherit">
-                Logout
-              </Button>
-            </NextLink>
-          )}
+          )} */}
+          {/* {user && (
+            <>            
+              <NextLink href="/api/auth/logout">
+                <Button fullWidth variant="outlined" color="inherit">
+                  Logout
+                </Button>
+              </NextLink>
+            </>
+          )} */}
 
           {/* <Stack spacing={2} sx={{ p: 2.5, pb: 5 }}>
             <NextLink href={Routes.loginIllustration} passHref>
