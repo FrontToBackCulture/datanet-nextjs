@@ -18,7 +18,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   overflow: 'hidden',
   position: 'relative',
   [theme.breakpoints.up('md')]: {
-    height: '60vh',
+    height: '30vh',
   },
 }));
 
@@ -42,7 +42,7 @@ export default function HomeHero({ userDomain }) {
 
   return (
     <RootStyle>
-      <Container sx={{ height: 1 }}>
+      <Container>
         <Grid container columnSpacing={3} alignItems="center" sx={{ height: 1 }}>
           <Grid item xs={12} md={12}>
             <Stack
@@ -88,17 +88,6 @@ export default function HomeHero({ userDomain }) {
               </Stack> */}
             </Stack>
           </Grid>
-
-          {/* <Grid item xs={12} md={7}>
-            <Image
-              alt="home-hero"
-              src="https://www.thinkval.com/_next/image/?url=%2Fhome%2Fmain.png&w=3840&q=75"
-              layout="fill"
-              sizes="(max-width: 268px) 10vw,
-              (max-width: 300px) 5vw,
-              33vw"
-            />
-          </Grid> */}
         </Grid>
       </Container>
     </RootStyle>
