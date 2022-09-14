@@ -17,9 +17,10 @@ export default function HomePage() {
 
   useEffect(() => {
     if (user) {
-      const regex = /(?<=@)[^.]+/g;
-      const result = user.email.match(regex);
-      switch (result[0]) {
+      const regex = /@(\w+)/g;
+      let result = user.email.match(regex)[0];
+      result = result.substring(1, result.length);
+      switch (result) {
         case 'saladstop':
           setUserDomain('saladstop');
           break;

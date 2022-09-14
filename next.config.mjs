@@ -9,7 +9,7 @@ const nextConfig = {
     GOOGLE_API: '',
   },
   images: {
-    domains: ['flagcdn.com'],
+    domains: ['www.thinkval.com', 'localhost.com', 's3.ap-southeast-1.amazonaws.com'],
   },
 };
 

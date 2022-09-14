@@ -49,10 +49,11 @@ export default function Header({ transparent }) {
 
   useEffect(() => {
     if (user) {
-      const regex = /(?<=@)[^.]+/g;
-      const result = user.email.match(regex);
+      const regex = /@(\w+)/g;
+      let result = user.email.match(regex)[0];
+      result = result.substring(1, result.length);
       let domain;
-      switch (result[0]) {
+      switch (result) {
         case 'saladstop':
           setUserDomain('saladstop');
           domain = 'saladstop';

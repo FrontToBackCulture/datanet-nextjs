@@ -9,7 +9,8 @@ import { useBoundingClientRect } from '../../hooks';
 // routes
 import Routes from '../../routes';
 // components
-import { Image, Iconify } from '../../components';
+import Image from 'next/image';
+import { Iconify } from '../../components';
 
 // ----------------------------------------------------------------------
 
@@ -34,8 +35,8 @@ export default function HomeHero({ userDomain }) {
     if (userDomain) {
       const toTitleCase = (str) =>
         str.replace(/(^\w|\s\w)(\S*)/g, (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase());
-      setDomain(toTitleCase(userDomain));
-      // setDomain(userDomain);
+      // setDomain(toTitleCase(userDomain));
+      setDomain(userDomain);
     }
   }, [userDomain]);
 
@@ -43,7 +44,7 @@ export default function HomeHero({ userDomain }) {
     <RootStyle>
       <Container sx={{ height: 1 }}>
         <Grid container columnSpacing={3} alignItems="center" sx={{ height: 1 }}>
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={12}>
             <Stack
               spacing={5}
               alignItems={{ xs: 'center', md: 'flex-start' }}
@@ -53,11 +54,22 @@ export default function HomeHero({ userDomain }) {
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h1">{domain} Datanet Powered By</Typography>
-              <Image
-                src={`https://www.thinkval.com/logos/val.png`}
-                sx={{ width: 143, height: 53 }}
-              />
+              {domain && (
+                <div
+                  style={{
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image
+                    src="https://s3.ap-southeast-1.amazonaws.com/production.thinkval.static/logos/saladstopMain.png"
+                    width={399}
+                    height={80}
+                  />
+                </div>
+              )}
+              {!domain && (
+                <Image src="https://www.thinkval.com/logos/val.png" width={143} height={53} />
+              )}
 
               <Typography sx={{ color: 'text.secondary' }}>
                 Datanet is built on top of VAL, a powerful no-code data warehouse that provides a
@@ -77,12 +89,16 @@ export default function HomeHero({ userDomain }) {
             </Stack>
           </Grid>
 
-          <Grid item xs={12} md={7}>
+          {/* <Grid item xs={12} md={7}>
             <Image
               alt="home-hero"
               src="https://www.thinkval.com/_next/image/?url=%2Fhome%2Fmain.png&w=3840&q=75"
+              layout="fill"
+              sizes="(max-width: 268px) 10vw,
+              (max-width: 300px) 5vw,
+              33vw"
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </RootStyle>
