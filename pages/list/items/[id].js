@@ -427,13 +427,15 @@ export default function PromotionItemPage() {
 
       //!--------- group by channel performance
       if (fullConfig.channelPerformanceSource) {
-        const { queryID, domain } = fullConfig.channelPerformanceSource;
+        const { queryID, domain, key } = fullConfig.channelPerformanceSource;
 
         let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
-
         console.log('Channel Data', cpd);
 
-        let groupByChannel = await groupBy(cpd, {
+        let cpdFiltered = cpd.filter((row) => row[key] == itemId);
+        console.log('Channel Data Filtered', cpdFiltered);
+
+        let groupByChannel = await groupBy(cpdFiltered, {
           groupKeys: [channelGroupPeriodKey, channelGroupKey],
           sumKeys: [channelValueKey],
           excludeBlank: false,
@@ -458,6 +460,7 @@ export default function PromotionItemPage() {
           multiSeriesData.push({ name: item, data: seriesObject });
         });
 
+        console.log('ID MultiSeries:', multiSeriesData);
         setMultiSeriesChannelData(multiSeriesData);
       }
 
