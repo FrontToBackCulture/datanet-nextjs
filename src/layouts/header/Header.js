@@ -22,8 +22,8 @@ import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
 
 import confFn from '../../../config/development';
-import confFnStage from '../../../config/staging';
 import confFnProd from '../../../config/production';
+import confFnProdTest from '../../../config/productionTest';
 
 // ----------------------------------------------------------------------
 
@@ -75,12 +75,12 @@ export default function Header({ transparent }) {
       let config = confFn[domain].conf.getConfig('navConfig');
       setConf(config);
     }
-    if (URL.includes('melvinapps') && domain) {
-      let config = confFnStage[domain].conf.getConfig('navConfig');
+    if (URL.includes('screener.thinkval.io') && domain) {
+      let config = confFnProd[domain].conf.getConfig('navConfig');
       setConf(config);
     }
-    if (URL.includes('screener') && domain) {
-      let config = confFnProd[domain].conf.getConfig('navConfig');
+    if (URL.includes('screenerTest.thinkval.io') && domain) {
+      let config = confFnProdTest[domain].conf.getConfig('navConfig');
       setConf(config);
     }
   };

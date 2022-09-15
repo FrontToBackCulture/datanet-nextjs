@@ -9,8 +9,8 @@ import { Container } from '@mui/material';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 import confFn from '../../../config/development';
-import confFnStage from '../../../config/staging';
 import confFnProd from '../../../config/production';
+import confFnProdTest from '../../../config/productionTest';
 // layouts
 import Layout from '../../../src/layouts';
 // components
@@ -133,12 +133,12 @@ export default function PromotionItemsPage() {
       let config = confFn[userDomain].conf.getConfig(code);
       setConf(config);
     }
-    if (URL.includes('melvinapps') && userDomain) {
-      let config = confFnStage[userDomain].conf.getConfig(code);
+    if (URL.includes('screener.thinkval.io') && userDomain) {
+      let config = confFnProd[userDomain].conf.getConfig('navConfig');
       setConf(config);
     }
-    if (URL.includes('screener') && userDomain) {
-      let config = confFnProd[userDomain].conf.getConfig(code);
+    if (URL.includes('screenerTest.thinkval.io') && userDomain) {
+      let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
       setConf(config);
     }
   };

@@ -2,8 +2,9 @@ import React, { PureComponent, useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import {
-  AreaChart,
-  Area,
+  LineChart,
+  Line,
+  Legend,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -17,13 +18,24 @@ import moment from 'moment';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-export default function Example({ conf, chartData }) {
+export default function Example({ conf, chartData, uniqueChannels }) {
   const [dat, setDat] = useState([]);
   const [displayDat, setDisplayDat] = useState([]);
   const [period, setPeriod] = useState(90);
   const [xAxis, setXAxis] = useState();
   const [yAxis, setYAxis] = useState();
   const [chartTitle, setChartTitle] = useState();
+
+  const color = [
+    '#003f5c',
+    '#2f4b7c',
+    '##665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    '#ffa600',
+  ];
 
   useEffect(() => {
     if (chartData.length > 0) {
@@ -33,13 +45,13 @@ export default function Example({ conf, chartData }) {
       setDisplayDat(chartData);
 
       let data, month, value;
-      if (conf.chartSource) {
-        const { chartSource } = conf;
-        const { groupKey, valueKey, title, metricName } = chartSource;
+      if (conf.channelPerformanceSource) {
+        const { channelPerformanceSource } = conf;
+        const { groupKey, valueKey, title, metricName, groupPeriodKey } = channelPerformanceSource;
         setChartTitle(title);
         // console.log('React Chart:', chartData);
         if (chartData && chartData.length > 0 && conf) {
-          setXAxis(groupKey);
+          // setXAxis(groupKey);
           setYAxis(valueKey);
           // console.log('React Chart Months:', month);
           // console.log('React Chart Value:', value);
@@ -49,14 +61,14 @@ export default function Example({ conf, chartData }) {
   }, [conf, chartData]);
 
   useEffect(() => {
-    console.log('SimpleArea:', displayDat);
+    console.log('MultiSeries:', displayDat);
   }, [displayDat]);
 
   function formatXAxis(tickItem) {
     if (chartData.length > 0) {
       // If using moment.js
-      // console.log(tickItem);
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
+      // return moment(tickItem).format('YYYY-MM-DD');
       return fDate2(new Date(moment(tickItem).format('YYYY-MM-DD')));
     }
   }
@@ -105,10 +117,25 @@ export default function Example({ conf, chartData }) {
     return null;
   };
 
+  const selectLine = (e) => {
+    console.log(e);
+    // setDisplayDat({
+    //   ...displayDat,
+    //   [e.value]: !displayDat[e.value],
+    //   hover: null,
+    // });
+  };
+
   const handleClick = (period) => {
-    let slicedData = dat.slice(Math.max(dat.length - period, 1));
+    let reducedData = [];
+    uniqueChannels.forEach(function (item, index) {
+      let channelData = dat.find((element) => element.name == item);
+      let slicedData = channelData['data'].slice(Math.max(channelData['data'].length - period, 1));
+      reducedData.push({ name: item, data: slicedData });
+    });
+    console.log('FilteredData', reducedData);
     setPeriod(period);
-    setDisplayDat(slicedData);
+    setDisplayDat(reducedData);
   };
 
   return (
@@ -126,10 +153,9 @@ export default function Example({ conf, chartData }) {
         </Button>
       </Stack>
       <ResponsiveContainer width="100%" height="100%" minHeight={400}>
-        <AreaChart
+        <LineChart
           width={500}
           height={400}
-          data={displayDat}
           margin={{
             top: 10,
             right: 30,
@@ -137,32 +163,28 @@ export default function Example({ conf, chartData }) {
             bottom: 0,
           }}
         >
-          <defs>
-            <linearGradient id="yAxis" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-            </linearGradient>
-          </defs>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xAxis} tickFormatter={formatXAxis} tick={{ fontSize: 12 }} />
+          <XAxis
+            dataKey="DateNumber"
+            type="number"
+            domain={['dataMin', 'dataMax']}
+            tickFormatter={formatXAxis}
+            allowDuplicatedCategory={false}
+            tick={{ fontSize: 12 }}
+          />
           <YAxis
+            dataKey={yAxis}
             type="number"
             domain={['auto', 'auto']}
             tickFormatter={DataFormater}
             tick={{ fontSize: 12 }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey={yAxis}
-            stroke="#8884d8"
-            // fill="#8884d8"
-            // dot={{ stroke: 'purple', strokeWidth: 2 }}
-            fillOpacity={1}
-            fill="url(#yAxis)"
-          />
-          {/* <Brush tickFormatter={formatXAxis} startIndex={Math.round(displayDat.length * 0.45)} /> */}
-        </AreaChart>
+          <Legend onClick={selectLine} />
+          {displayDat.map((s, index) => (
+            <Line dataKey={yAxis} data={s.data} name={s.name} key={s.name} stroke={color[index]} />
+          ))}
+        </LineChart>
       </ResponsiveContainer>
     </>
   );

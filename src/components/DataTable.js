@@ -21,6 +21,7 @@ export default function DenseTable({ job, conf }) {
       let { detailFields } = conf;
       //   console.log(detailFields);
       itemMetrics = job.map((field) => {
+        console.log(field);
         let fieldSetting = Object.keys(detailFields).filter(function (row) {
           if (detailFields[row].sourceColumn === field.name) {
             field.headerName = detailFields[row].headerName;
@@ -52,7 +53,7 @@ export default function DenseTable({ job, conf }) {
         // console.log(field);
         return field;
       });
-      // console.log('To Display:', itemMetrics);
+      console.log('To Display:', itemMetrics);
       setItem(itemMetrics);
     }
   }, [job, conf]);

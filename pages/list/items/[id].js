@@ -10,8 +10,8 @@ import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mu
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 import confFn from '../../../config/development';
-import confFnStage from '../../../config/staging';
 import confFnProd from '../../../config/production';
+import confFnProdTest from '../../../config/productionTest';
 // hooks
 import { seRequest, useResponsive } from '../../../src/hooks';
 // layouts
@@ -19,7 +19,9 @@ import Layout from '../../../src/layouts';
 // components
 import { Page, ErrorScreen, LoadingScreen, SocialsButton } from '../../../src/components';
 import DataTable from '../../../src/components/DataTable';
+import DataTableGroup from '../../../src/components/DataTableGroup';
 import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
+import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart';
 // sections
 import { PromotionItemHero } from '../../../src/sections/promotions';
 // api
@@ -91,6 +93,8 @@ export default function PromotionItemPage() {
   const [staticData, setStaticData] = useState();
   const [metricData, setMetriccData] = useState();
   const [allChartData, setAllChartData] = useState([]);
+  const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
+  const [uniqueChannels, setUniqueChannels] = useState([]);
 
   const isDesktop = useResponsive('up', 'md');
   const router = useRouter();
@@ -133,13 +137,13 @@ export default function PromotionItemPage() {
       config = confFn[userDomain].conf.getConfig(code);
       setFullConfig(config);
     }
-    if (URL.includes('melvinapps') && userDomain) {
-      config = confFnStage[userDomain].conf.getConfig(code);
-      setFullConfig(config);
-    }
-    if (URL.includes('screener') && userDomain) {
+    if (URL.includes('screener.thinkval.io') && userDomain) {
       config = confFnProd[userDomain].conf.getConfig(code);
       setFullConfig(config);
+    }
+    if (URL.includes('screenerTest.thinkval.io') && userDomain) {
+      let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
+      setConf(config);
     }
     return config;
   };
@@ -212,10 +216,10 @@ export default function PromotionItemPage() {
     let filteredChart = [];
     if (data.length > 0) {
       if (Array.isArray(data[0][conf.metricSource.key])) {
-        console.log('Chart Data Key is array:', data[0][conf.metricSource.key]);
+        // console.log('Chart Data Key is array:', data[0][conf.metricSource.key]);
         filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
       } else {
-        console.log('Chart Data Key is not array:', data[conf.metricSource.key]);
+        // console.log('Chart Data Key is not array:', data[conf.metricSource.key]);
         filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
       }
     }
@@ -269,6 +273,23 @@ export default function PromotionItemPage() {
     }
   }, [metricQueryID, metricDomain]);
 
+  const groupBy = (data, tConfigs) => {
+    let groupByResult;
+    let arr = data;
+    let { groupKeys, sumKeys, excludeBlank } = tConfigs;
+    groupByResult = Object.values(
+      arr.reduce((acc, curr) => {
+        const group = groupKeys.map((k) => curr[k]).join('-');
+        acc[group] =
+          acc[group] ||
+          Object.fromEntries(groupKeys.map((k) => [k, curr[k]]).concat(sumKeys.map((k) => [k, 0])));
+        sumKeys.forEach((k) => (acc[group][k] += curr[k]));
+        return acc;
+      }, {})
+    );
+    return groupByResult;
+  };
+
   //once all data available starts massaging the end result data
   useEffect(async () => {
     if (
@@ -283,6 +304,9 @@ export default function PromotionItemPage() {
       const changeKey = fullConfig.change.valueKey;
       const trendKey = fullConfig.chartSource.key;
       const chartGroupKey = fullConfig.chartSource.groupKey;
+      const channelGroupKey = fullConfig.channelPerformanceSource.groupKey;
+      const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey;
+      const channelValueKey = fullConfig.channelPerformanceSource.valueKey;
 
       // start merging of static and metric data
       let merged = [];
@@ -344,11 +368,7 @@ export default function PromotionItemPage() {
             priorMetric = 0;
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = filteredChart.filter((e) => {
-            // var d = new Date(e[chartGroupKey]);
             let d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-            // console.log('D Time: ', d.getTime());
-            // console.log('Most Recent Time: ', mostRecentDate.getTime());
-            // console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
             return d.getTime() == mostRecentDate.getTime();
             // return d == mostRecentDate;
           })[0];
@@ -404,6 +424,36 @@ export default function PromotionItemPage() {
       });
       setJob(jobObj);
       setDataRows(jobArray);
+
+      //!--------- group by channel performance
+      let groupByChannel = await groupBy(allChartData, {
+        groupKeys: [channelGroupPeriodKey, channelGroupKey],
+        sumKeys: [channelValueKey],
+        excludeBlank: false,
+      });
+
+      let groupByChannelNew = [];
+      groupByChannel.forEach(function (item, index) {
+        let properDate = new Date(item['Date']);
+        item.DateNumber = moment(properDate).valueOf();
+        groupByChannelNew.push(item);
+      });
+
+      const arrayUniqueByKey = groupByChannelNew
+        .map((item) => item[channelGroupKey])
+        .filter((value, index, self) => self.indexOf(value) === index);
+      setUniqueChannels(arrayUniqueByKey);
+
+      let multiSeriesData = [];
+
+      arrayUniqueByKey.forEach(function (item, index) {
+        let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
+        multiSeriesData.push({ name: item, data: seriesObject });
+      });
+
+      setMultiSeriesChannelData(multiSeriesData);
+
+      //!--------- group by channel performance
     }
   }, [staticData, metricData, allChartData, chartData]);
 
@@ -456,26 +506,31 @@ export default function PromotionItemPage() {
                         onChange={handleChange}
                       >
                         <Tab label="Summary" {...a11yProps(0)} />
+                        <Tab label="Channel Performance" {...a11yProps(1)} />
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                      {/* <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}> */}
-                      {/* <Grid item xs={12} md={12} lg={12}> */}
-                      {/* <ReactChartsLine
-                        widgetHeight={'40vh'}
-                        conf={fullConfig}
-                        chartData={chartData}
-                      /> */}
                       <SimpleAreaChart conf={fullConfig} chartData={chartData} />
                       <br />
-                      {/* </Grid> */}
-                      {/* <Grid item xs={12} md={12} lg={12}> */}
                       <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}>
                         <DataTable job={dataRows.slice(0, 7)} conf={fullConfig} />
                         <DataTable job={dataRows.slice(7, 14)} conf={fullConfig} />
                       </Stack>
-                      {/* </Grid> */}
-                      {/* </Stack> */}
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                      <MultiLineSeriesChart
+                        conf={fullConfig}
+                        chartData={multiSeriesChannelData}
+                        uniqueChannels={uniqueChannels}
+                      />
+                      <br />
+                      <Stack sx={{ marginTop: '10px' }} spacing={2}>
+                        <DataTableGroup
+                          job={multiSeriesChannelData}
+                          conf={fullConfig}
+                          uniqueChannels={uniqueChannels}
+                        />
+                      </Stack>
                     </TabPanel>
                   </Box>
                 </Grid>
