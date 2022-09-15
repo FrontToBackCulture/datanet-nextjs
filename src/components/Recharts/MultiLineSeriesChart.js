@@ -88,7 +88,6 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   };
 
   const CustomTooltip = ({ active, payload, label }) => {
-    console.log('Multiline Label', label);
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip">
@@ -101,7 +100,7 @@ export default function Example({ conf, chartData, uniqueChannels }) {
             }}
           >
             <Typography variant="caption" gutterBottom>
-              {/* {`Date: ${fDate2(label)}`} */}
+              {`Date: ${fDate2(label)}`}
               <br />
               {`Day of Week: ${moment(label).format('dddd')}`}
               <br />

@@ -443,7 +443,7 @@ export default function PromotionItemPage() {
 
         let groupByChannelNew = [];
         groupByChannel.forEach(function (item, index) {
-          let properDate = new Date(item['Date']);
+          let properDate = new Date(item[channelGroupPeriodKey]);
           item.DateNumber = moment(properDate).valueOf();
           groupByChannelNew.push(item);
         });
