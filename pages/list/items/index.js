@@ -138,8 +138,8 @@ export default function PromotionItemsPage() {
       setConf(config);
     }
     if (URL.includes('screenertest.thinkval.io') && userDomain) {
+      console.log('Index Config:', config, userDomain);
       let config = confFnProdTest[userDomain].conf.getConfig('code');
-      console.log('Index Config:', config);
       setConf(config);
     }
   };
