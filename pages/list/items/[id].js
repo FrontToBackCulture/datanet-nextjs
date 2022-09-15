@@ -237,10 +237,11 @@ export default function PromotionItemPage() {
       let { id, entity } = router.query;
       // console.log(entity);
       if (entity && userDomain) {
-        // console.log(entity);
+        console.log(entity);
         // let configJson = JSON.parse(conf);
         setEntity(entity);
         let conf = await getConfig(entity);
+        console.log(conf);
         setFullConfig(conf);
         setItemId(id);
         setStaticQueryID(conf.staticSource.queryID);
