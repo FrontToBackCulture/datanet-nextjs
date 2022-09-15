@@ -137,7 +137,7 @@ export default function PromotionItemsPage() {
       let config = confFnProd[userDomain].conf.getConfig('navConfig');
       setConf(config);
     }
-    if (URL.includes('screenerTest.thinkval.io') && userDomain) {
+    if (URL.includes('screenertest.thinkval.io') && userDomain) {
       let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
       setConf(config);
     }

@@ -141,7 +141,7 @@ export default function PromotionItemPage() {
       config = confFnProd[userDomain].conf.getConfig(code);
       setFullConfig(config);
     }
-    if (URL.includes('screenerTest.thinkval.io') && userDomain) {
+    if (URL.includes('screenertest.thinkval.io') && userDomain) {
       let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
       setConf(config);
     }
@@ -426,32 +426,40 @@ export default function PromotionItemPage() {
       setDataRows(jobArray);
 
       //!--------- group by channel performance
-      let groupByChannel = await groupBy(allChartData, {
-        groupKeys: [channelGroupPeriodKey, channelGroupKey],
-        sumKeys: [channelValueKey],
-        excludeBlank: false,
-      });
+      if (fullConfig.channelPerformanceSource) {
+        const { queryID, domain } = fullConfig.channelPerformanceSource;
 
-      let groupByChannelNew = [];
-      groupByChannel.forEach(function (item, index) {
-        let properDate = new Date(item['Date']);
-        item.DateNumber = moment(properDate).valueOf();
-        groupByChannelNew.push(item);
-      });
+        let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
 
-      const arrayUniqueByKey = groupByChannelNew
-        .map((item) => item[channelGroupKey])
-        .filter((value, index, self) => self.indexOf(value) === index);
-      setUniqueChannels(arrayUniqueByKey);
+        console.log('Channel Data', cpd);
 
-      let multiSeriesData = [];
+        let groupByChannel = await groupBy(cpd, {
+          groupKeys: [channelGroupPeriodKey, channelGroupKey],
+          sumKeys: [channelValueKey],
+          excludeBlank: false,
+        });
 
-      arrayUniqueByKey.forEach(function (item, index) {
-        let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
-        multiSeriesData.push({ name: item, data: seriesObject });
-      });
+        let groupByChannelNew = [];
+        groupByChannel.forEach(function (item, index) {
+          let properDate = new Date(item['Date']);
+          item.DateNumber = moment(properDate).valueOf();
+          groupByChannelNew.push(item);
+        });
 
-      setMultiSeriesChannelData(multiSeriesData);
+        const arrayUniqueByKey = groupByChannelNew
+          .map((item) => item[channelGroupKey])
+          .filter((value, index, self) => self.indexOf(value) === index);
+        setUniqueChannels(arrayUniqueByKey);
+
+        let multiSeriesData = [];
+
+        arrayUniqueByKey.forEach(function (item, index) {
+          let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
+          multiSeriesData.push({ name: item, data: seriesObject });
+        });
+
+        setMultiSeriesChannelData(multiSeriesData);
+      }
 
       //!--------- group by channel performance
     }

@@ -79,7 +79,7 @@ export default function Header({ transparent }) {
       let config = confFnProd[domain].conf.getConfig('navConfig');
       setConf(config);
     }
-    if (URL.includes('screenerTest.thinkval.io') && domain) {
+    if (URL.includes('screenertest.thinkval.io') && domain) {
       let config = confFnProdTest[domain].conf.getConfig('navConfig');
       setConf(config);
     }
