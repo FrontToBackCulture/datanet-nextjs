@@ -142,7 +142,7 @@ export default function PromotionItemPage() {
       setFullConfig(config);
     }
     if (URL.includes('screenertest.thinkval.io') && userDomain) {
-      let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
+      let config = confFnProdTest[userDomain].conf.getConfig(code);
       setConf(config);
     }
     return config;

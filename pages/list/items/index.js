@@ -134,11 +134,11 @@ export default function PromotionItemsPage() {
       setConf(config);
     }
     if (URL.includes('screener.thinkval.io') && userDomain) {
-      let config = confFnProd[userDomain].conf.getConfig('navConfig');
+      let config = confFnProd[userDomain].conf.getConfig('code');
       setConf(config);
     }
     if (URL.includes('screenertest.thinkval.io') && userDomain) {
-      let config = confFnProdTest[userDomain].conf.getConfig('navConfig');
+      let config = confFnProdTest[userDomain].conf.getConfig('code');
       console.log('Index Config:', config);
       setConf(config);
     }
