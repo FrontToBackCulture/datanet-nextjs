@@ -499,6 +499,9 @@ export default function PromotionItemPage() {
                         onChange={handleChange}
                       >
                         <Tab label="Summary" {...a11yProps(0)} />
+                        {channelPerformanceTab && (
+                          <Tab label="Channel Performance" {...a11yProps(1)} />
+                        )}
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0} sx={{ padding: '0px' }}>
@@ -511,6 +514,23 @@ export default function PromotionItemPage() {
                       <SimpleAreaChart conf={fullConfig} chartData={chartData} />
                       <DataTable job={dataRows} conf={fullConfig} />
                     </TabPanel>
+                    {channelPerformanceTab && (
+                      <TabPanel value={value} index={1}>
+                        <MultiLineSeriesChart
+                          conf={fullConfig}
+                          chartData={multiSeriesChannelData}
+                          uniqueChannels={uniqueChannels}
+                        />
+                        <br />
+                        <Stack sx={{ marginTop: '10px' }} spacing={2}>
+                          <DataTableGroup
+                            job={multiSeriesChannelData}
+                            conf={fullConfig}
+                            // uniqueChannels={uniqueChannels}
+                          />
+                        </Stack>
+                      </TabPanel>
+                    )}
                   </Box>
                 </Grid>
               )}
