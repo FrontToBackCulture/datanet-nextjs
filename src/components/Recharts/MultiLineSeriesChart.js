@@ -116,8 +116,8 @@ export default function Example({ conf, chartData, uniqueChannels }) {
               <br />
               {`Day of Week: ${moment(label).format('dddd')}`}
               <br />
-              {payload.map((item) => (
-                <p style={{ color: item.color }}>
+              {payload.map((item, index) => (
+                <p key={index} style={{ color: item.color }}>
                   {item.name}: ${fNumber(item.value)}
                   <br />
                 </p>
