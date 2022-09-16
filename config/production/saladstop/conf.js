@@ -132,6 +132,54 @@ const config = {
         headerName: 'Avg Daily Order Count',
       },
     },
+    channelPerformanceSource: {
+      queryID: '4097',
+      domain: 'saladstop',
+      key: 'Store',
+      valueKey: 'sum Net Sales',
+      groupPeriodKey: 'Transaction Date',
+      groupKey: 'Order Channel',
+      title: 'Performance Trend by Channel',
+    },
+    channelFields: {
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Last Working Day Net Sales',
+      },
+      priorMetric: {
+        sourceColumn: 'priorMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Prior Working Day Net Sales',
+      },
+      metric1: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Net Sales % Δ',
+        condition: 'cellClassRules',
+      },
+      metric2: {
+        sourceColumn: 'aggregateMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Net Sales Last 3M',
+      },
+      metric3: {
+        sourceColumn: 'maxMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Max Daily Net Sales Last 3M',
+      },
+      metric4: {
+        sourceColumn: 'minMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Min Daily Net Sales Last 3M',
+      },
+    },
   },
   product: {
     staticSource: {
