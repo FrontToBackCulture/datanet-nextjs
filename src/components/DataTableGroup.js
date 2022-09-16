@@ -156,38 +156,7 @@ export default function DenseTable({ job, conf }) {
             <TableContainer component={Paper}>
               <Table size="small" aria-label="a dense table">
                 <TableBody>
-                  {entity.data.slice(0, 7).map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{
-                        '&:last-child td, &:last-child th': { border: 0 },
-                        borderBottom: '1px solid lightgrey',
-                      }}
-                    >
-                      <TableCell component="th" scope="row" style={{ color: '#7a7a7a' }}>
-                        {row.headerName}
-                      </TableCell>
-                      {/* <TableCell align="right">{row.value}</TableCell> */}
-                      {!row.condition && <TableCell align="right">{row.value}</TableCell>}
-                      {row.condition && parseFloat(row.value) < 0 && (
-                        <TableCell align="right" style={{ color: 'red' }}>
-                          {row.value}
-                        </TableCell>
-                      )}
-                      {row.condition && parseFloat(row.value) > 0 && (
-                        <TableCell align="right" style={{ color: 'green' }}>
-                          {row.value}
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TableContainer component={Paper}>
-              <Table size="small" aria-label="a dense table">
-                <TableBody>
-                  {entity.data.slice(7, 14).map((row) => (
+                  {entity.data.map((row) => (
                     <TableRow
                       key={row.name}
                       sx={{
