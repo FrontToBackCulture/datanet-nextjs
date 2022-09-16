@@ -95,6 +95,7 @@ export default function PromotionItemPage() {
   const [allChartData, setAllChartData] = useState([]);
   const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
   const [uniqueChannels, setUniqueChannels] = useState([]);
+  const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
 
   const isDesktop = useResponsive('up', 'md');
   const router = useRouter();
@@ -152,8 +153,15 @@ export default function PromotionItemPage() {
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
       let localJsonData;
-      let outletJsonData = outletData[contentType].getData();
-      let productJsonData = productData[contentType].getData();
+      let outletJsonData;
+      let productJsonData;
+      if (outletData[contentType]) {
+        outletJsonData = outletData[contentType].getData();
+      }
+      if (productData[contentType]) {
+        productJsonData = productData[contentType].getData();
+      }
+
       switch (dataType) {
         case 'outlet':
           localJsonData = outletJsonData;
@@ -304,9 +312,6 @@ export default function PromotionItemPage() {
       const changeKey = fullConfig.change.valueKey;
       const trendKey = fullConfig.chartSource.key;
       const chartGroupKey = fullConfig.chartSource.groupKey;
-      const channelGroupKey = fullConfig.channelPerformanceSource.groupKey;
-      const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey;
-      const channelValueKey = fullConfig.channelPerformanceSource.valueKey;
 
       // start merging of static and metric data
       let merged = [];
@@ -427,6 +432,10 @@ export default function PromotionItemPage() {
 
       //!--------- group by channel performance
       if (fullConfig.channelPerformanceSource) {
+        setChannelPerformanceTab(true);
+        const channelGroupKey = fullConfig.channelPerformanceSource.groupKey;
+        const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey;
+        const channelValueKey = fullConfig.channelPerformanceSource.valueKey;
         const { queryID, domain, key } = fullConfig.channelPerformanceSource;
 
         let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
@@ -452,6 +461,7 @@ export default function PromotionItemPage() {
           .map((item) => item[channelGroupKey])
           .filter((value, index, self) => self.indexOf(value) === index);
         setUniqueChannels(arrayUniqueByKey);
+        console.log('Unique Channels', arrayUniqueByKey);
 
         let multiSeriesData = [];
 
@@ -517,7 +527,9 @@ export default function PromotionItemPage() {
                         onChange={handleChange}
                       >
                         <Tab label="Summary" {...a11yProps(0)} />
-                        <Tab label="Channel Performance" {...a11yProps(1)} />
+                        {channelPerformanceTab && (
+                          <Tab label="Channel Performance" {...a11yProps(1)} />
+                        )}
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
@@ -528,21 +540,23 @@ export default function PromotionItemPage() {
                         <DataTable job={dataRows.slice(7, 14)} conf={fullConfig} />
                       </Stack>
                     </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <MultiLineSeriesChart
-                        conf={fullConfig}
-                        chartData={multiSeriesChannelData}
-                        uniqueChannels={uniqueChannels}
-                      />
-                      <br />
-                      <Stack sx={{ marginTop: '10px' }} spacing={2}>
-                        <DataTableGroup
-                          job={multiSeriesChannelData}
+                    {channelPerformanceTab && (
+                      <TabPanel value={value} index={1}>
+                        <MultiLineSeriesChart
                           conf={fullConfig}
+                          chartData={multiSeriesChannelData}
                           uniqueChannels={uniqueChannels}
                         />
-                      </Stack>
-                    </TabPanel>
+                        <br />
+                        <Stack sx={{ marginTop: '10px' }} spacing={2}>
+                          <DataTableGroup
+                            job={multiSeriesChannelData}
+                            conf={fullConfig}
+                            // uniqueChannels={uniqueChannels}
+                          />
+                        </Stack>
+                      </TabPanel>
+                    )}
                   </Box>
                 </Grid>
               )}

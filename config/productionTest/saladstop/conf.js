@@ -138,7 +138,7 @@ const config = {
       key: 'Store',
       valueKey: 'sum Net Sales',
       groupPeriodKey: 'Transaction Date',
-      groupKey: 'Channel Type',
+      groupKey: 'Order Channel',
       title: 'Performance Trend by Channel',
     },
     channelFields: {
@@ -166,6 +166,18 @@ const config = {
         link: false,
         type: 'currency',
         headerName: 'Net Sales Last 3M',
+      },
+      metric3: {
+        sourceColumn: 'maxMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Max Daily Net Sales Last 3M',
+      },
+      metric4: {
+        sourceColumn: 'minMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Min Daily Net Sales Last 3M',
       },
     },
   },

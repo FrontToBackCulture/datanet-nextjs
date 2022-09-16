@@ -12,15 +12,15 @@ import { Grid, Stack } from '@mui/material';
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../utils/formatNumber';
 
-export default function DenseTable({ job, conf, uniqueChannels }) {
+export default function DenseTable({ job, conf }) {
   const [fullData, setFullData] = useState([]);
   const [fullDisplayData, setFullDisplayData] = useState([]);
   const [fullFinalDisplayData, setFullFinalDisplayData] = useState([]);
   const [item, setItem] = useState([]);
   const [unique, setUnique] = useState([]);
+  const [trigger, setTrigger] = useState(false);
   //   console.log(conf);
-  console.log('DataTable Group Data', job);
-  console.log('DataTable Group Uniuq', uniqueChannels);
+  // console.log('DataTable Group Data', job);
 
   const simpleAggregate = (data, fields) => {
     let result = data.reduce((accumulator, row) => {
@@ -36,103 +36,115 @@ export default function DenseTable({ job, conf, uniqueChannels }) {
     return result;
   };
 
-  useEffect(async () => {
-    if (job.length > 0 && conf && uniqueChannels) {
-      setUnique(uniqueChannels);
-      setFullData(job);
-
-      await fullData.forEach(async function (item, index) {
-        item.aggregateMetric = await simpleAggregate(item.data, ['Net Sales']);
-
+  useEffect(() => {
+    // console.log('1st useEffect', job, conf);
+    if (job.length > 0 && conf) {
+      // console.log('Start Work');
+      //   setFullData(job);
+      const { valueKey, groupPeriodKey } = conf.channelPerformanceSource;
+      let newItemArray = [];
+      job.forEach((item, index) => {
+        let newItem = item;
+        newItem.aggregateMetric = simpleAggregate(item.data, [valueKey]);
         if (item.data.length > 0) {
           // get the the most recent date in the data set belonging to the selected item
           var mostRecentDate = new Date(
             Math.max.apply(
               null,
               item.data.map((e) => {
-                let mrd = new Date(moment(e['Date']).format('YYYY-MM-DD'));
+                let mrd = new Date(moment(e[groupPeriodKey]).format('YYYY-MM-DD'));
                 return new Date(mrd);
               })
             )
           );
-
           let latestMetric = 0,
             priorMetric = 0;
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = item.data.filter((e) => {
-            let d = new Date(moment(e['Date']).format('YYYY-MM-DD'));
+            let d = new Date(moment(e[groupPeriodKey]).format('YYYY-MM-DD'));
             return d.getTime() == mostRecentDate.getTime();
             // return d == mostRecentDate;
           })[0];
-          latestMetric = mostRecentObject['Net Sales'];
-
+          latestMetric = mostRecentObject[valueKey];
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (item.data.length > 1) {
             // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = item.data.sort((a, b) => a['Date'] - b['Date'])[
-              item.data.length - 2
-            ];
-            priorMetric = secondLatestDate['Net Sales'];
+            const secondLatestDate = item.data.sort(
+              (a, b) => a[groupPeriodKey] - b[groupPeriodKey]
+            )[item.data.length - 2];
+            priorMetric = secondLatestDate[valueKey];
           } else {
             priorMetric = 0;
           }
-
           // calculate change metrics
           let changeMetric = latestMetric - priorMetric;
           let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
-
-          item['latestMetric'] = latestMetric;
-          item['priorMetric'] = priorMetric;
-          item['changeMetric'] = changeMetric;
-          item['changeMetricPercent'] = changeMetricPercent;
+          newItem['latestMetric'] = latestMetric;
+          newItem['priorMetric'] = priorMetric;
+          newItem['changeMetric'] = changeMetric;
+          newItem['changeMetricPercent'] = changeMetricPercent;
         }
-
-        item.maxMetric = Math.max(...item.data.map((o) => o['Net Sales']));
-        item.minMetric = Math.min(...item.data.map((o) => o['Net Sales']));
-
-        setFullDisplayData((oldArray) => [...oldArray, item]);
+        newItem.maxMetric = Math.max(...item.data.map((o) => o[valueKey]));
+        newItem.minMetric = Math.min(...item.data.map((o) => o[valueKey]));
+        newItemArray.push(newItem);
+        // setFullDisplayData((oldArray) => [...oldArray, item]);
       });
+      setFullDisplayData(newItemArray);
     }
-  }, [job, conf, uniqueChannels]);
+  }, [job, conf]);
 
   useEffect(() => {
+    // console.log('FULL Entry', fullDisplayData);
     let arr = [];
     let { channelFields } = conf;
-
-    fullDisplayData.forEach((entity) => {
-      let arrFields = [];
-      let value;
-      for (let props in channelFields) {
-        value = entity[channelFields[props].sourceColumn];
-        if (value) {
-          switch (channelFields[props].type) {
-            case 'decimal':
-              value = fShortenNumber(value);
-              break;
-            case 'currency':
-              value = fCurrency(value);
-              break;
-            case 'number':
-              value = fNumber(value);
-              break;
-            case 'percent':
-              value = fPercent(value);
-              break;
-            default:
-              break;
+    // console.log('FULL FINAL DAISPLAY', fullDisplayData);
+    if (fullDisplayData.length > 0) {
+      // console.log('FULL FINAL DAISPLAY Loop', fullDisplayData);
+      fullDisplayData.forEach((entity) => {
+        let arrFields = [];
+        let value;
+        for (let props in channelFields) {
+          value = entity[channelFields[props].sourceColumn];
+          if (value) {
+            switch (channelFields[props].type) {
+              case 'decimal':
+                value = fShortenNumber(value);
+                break;
+              case 'currency':
+                value = fCurrency(value);
+                break;
+              case 'number':
+                value = fNumber(value);
+                break;
+              case 'percent':
+                value = fPercent(value);
+                break;
+              default:
+                break;
+            }
+          }
+          if (channelFields[props].condition) {
+            arrFields.push({
+              name: channelFields[props].headerName,
+              value: value,
+              headerName: channelFields[props].headerName,
+              condition: 'cellClassRules',
+            });
+          } else {
+            arrFields.push({
+              name: channelFields[props].headerName,
+              value: value,
+              headerName: channelFields[props].headerName,
+            });
           }
         }
-        arrFields.push({
-          name: channelFields[props].headerName,
-          value: value,
-          headerName: channelFields[props].headerName,
-        });
-      }
-      arr.push({ name: entity.name, data: arrFields });
-    });
-    setFullFinalDisplayData(arr);
-    console.log('For Table Display Why Ah DUn refresh pls:', arr);
+
+        arr.push({ name: entity.name, data: arrFields });
+      });
+      setFullFinalDisplayData(arr);
+      // console.log('For Table Display Why Ah DUn refresh plsff again:', arr);
+    }
   }, [fullDisplayData]);
 
   return (

@@ -27,8 +27,8 @@ export default function Example({ conf, chartData }) {
 
   useEffect(() => {
     if (chartData.length > 0) {
-      console.log('Re Chart: ', chartData);
-      console.log('Re Chart: ', chartData.length);
+      // console.log('Re Chart: ', chartData);
+      // console.log('Re Chart: ', chartData.length);
       setDat(chartData);
       setDisplayDat(chartData);
 
@@ -49,7 +49,7 @@ export default function Example({ conf, chartData }) {
   }, [conf, chartData]);
 
   useEffect(() => {
-    console.log('SimpleArea:', displayDat);
+    // console.log('SimpleArea:', displayDat);
   }, [displayDat]);
 
   function formatXAxis(tickItem) {
@@ -139,8 +139,8 @@ export default function Example({ conf, chartData }) {
         >
           <defs>
             <linearGradient id="yAxis" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+              <stop offset="5%" stopColor="#0bb4ff" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#0bb4ff" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
@@ -155,7 +155,7 @@ export default function Example({ conf, chartData }) {
           <Area
             type="monotone"
             dataKey={yAxis}
-            stroke="#8884d8"
+            stroke="#0bb4ff"
             // fill="#8884d8"
             // dot={{ stroke: 'purple', strokeWidth: 2 }}
             fillOpacity={1}

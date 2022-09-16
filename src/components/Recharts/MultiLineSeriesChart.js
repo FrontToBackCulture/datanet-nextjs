@@ -21,28 +21,31 @@ import Typography from '@mui/material/Typography';
 export default function Example({ conf, chartData, uniqueChannels }) {
   const [dat, setDat] = useState([]);
   const [displayDat, setDisplayDat] = useState([]);
+  const [displayToggleDat, setDisplayToggleDat] = useState([]);
   const [period, setPeriod] = useState(90);
   const [xAxis, setXAxis] = useState();
   const [yAxis, setYAxis] = useState();
   const [chartTitle, setChartTitle] = useState();
+  const [uChannels, setUChannels] = useState([]);
 
   const color = [
-    '#003f5c',
-    '#2f4b7c',
-    '##665191',
-    '#a05195',
-    '#d45087',
-    '#f95d6a',
-    '#ff7c43',
-    '#ffa600',
+    '#e60049',
+    '#0bb4ff',
+    '#50e991',
+    '#e6d800',
+    '#9b19f5',
+    '#ffa300',
+    '#dc0ab4',
+    '#b3d4ff',
+    '#00bfa0',
   ];
-
   useEffect(() => {
     if (chartData.length > 0) {
-      console.log('Re Chart: ', chartData);
-      console.log('Re Chart: ', chartData.length);
+      // console.log('Re Chart: ', chartData);
+      // console.log('Re Chart: ', chartData.length);
       setDat(chartData);
       setDisplayDat(chartData);
+      setDisplayToggleDat(chartData);
 
       let data, month, value;
       if (conf.channelPerformanceSource) {
@@ -61,15 +64,24 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   }, [conf, chartData]);
 
   useEffect(() => {
-    console.log('MultiSeries:', displayDat);
-  }, [displayDat]);
+    console.log(uniqueChannels);
+    if (uniqueChannels && uniqueChannels.length > 0) {
+      setUChannels(uniqueChannels);
+    }
+  }, [uniqueChannels]);
+
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
 
   function formatXAxis(tickItem) {
     if (chartData.length > 0) {
       // If using moment.js
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
       // return moment(tickItem).format('YYYY-MM-DD');
-      return fDate2(new Date(moment(tickItem).format('YYYY-MM-DD')));
+      if (isValidDate(new Date(moment(tickItem).format('YYYY-MM-DD')))) {
+        return fDate2(new Date(moment(tickItem).format('YYYY-MM-DD')));
+      }
     }
   }
 
@@ -104,7 +116,12 @@ export default function Example({ conf, chartData, uniqueChannels }) {
               <br />
               {`Day of Week: ${moment(label).format('dddd')}`}
               <br />
-              {`Value: ${fNumber(payload[0].value)}`}
+              {payload.map((item) => (
+                <p style={{ color: item.color }}>
+                  {item.name}: ${fNumber(item.value)}
+                  <br />
+                </p>
+              ))}
             </Typography>
             {/* <p className="label">{`${fDate2(label)} : ${fNumber(payload[0].value)}`}</p> */}
             {/* <p className="intro">{getIntroOfPage(label)}</p>
@@ -117,18 +134,22 @@ export default function Example({ conf, chartData, uniqueChannels }) {
     return null;
   };
 
-  const selectLine = (e) => {
-    console.log(e);
-    // setDisplayDat({
-    //   ...displayDat,
-    //   [e.value]: !displayDat[e.value],
-    //   hover: null,
-    // });
-  };
+  // const handleMouseEnter = (o) => {
+  //   console.log(o);
+  //   console.log(displayDat);
+  //   let removeLineKey = o.value;
+  //   let foundIndex = displayDat.findIndex((x) => x.name == removeLineKey);
+  //   console.log(foundIndex);
+  //   console.log(displayDat[foundIndex]);
+  //   // let postRemovedDisplayDate = displayDat.filter((item) => item.name != removeLineKey);
+  //   // setDisplayDat([]);
+  //   // setDisplayDat(postRemovedDisplayDate);
+  // };
 
   const handleClick = (period) => {
     let reducedData = [];
-    uniqueChannels.forEach(function (item, index) {
+    console.log(uChannels);
+    uChannels.forEach(function (item, index) {
       let channelData = dat.find((element) => element.name == item);
       let slicedData = channelData['data'].slice(Math.max(channelData['data'].length - period, 1));
       reducedData.push({ name: item, data: slicedData });
@@ -180,9 +201,18 @@ export default function Example({ conf, chartData, uniqueChannels }) {
             tick={{ fontSize: 12 }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend onClick={selectLine} />
+          {/* <Tooltip /> */}
+          {/* <Legend onClick={handleMouseEnter} /> */}
+          <Legend />
           {displayDat.map((s, index) => (
-            <Line dataKey={yAxis} data={s.data} name={s.name} key={s.name} stroke={color[index]} />
+            <Line
+              dataKey={yAxis}
+              data={s.data}
+              name={s.name}
+              key={s.name}
+              stroke={color[index]}
+              dot={false}
+            />
           ))}
         </LineChart>
       </ResponsiveContainer>
