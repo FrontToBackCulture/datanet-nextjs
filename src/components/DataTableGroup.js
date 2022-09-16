@@ -149,8 +149,8 @@ export default function DenseTable({ job, conf }) {
 
   return (
     <>
-      {fullFinalDisplayData.map((entity) => (
-        <Grid item xs={12} md={12} lg={12}>
+      {fullFinalDisplayData.map((entity, index) => (
+        <Grid key={entity} item xs={12} md={12} lg={12}>
           {entity.name}
           <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}>
             <TableContainer component={Paper}>
