@@ -1,7 +1,7 @@
 // react
 import React, { PureComponent, useState, useEffect } from 'react';
 // @mui
-import { Button, Stack, Box, Typography } from '@mui/material';
+import { Grid, Button, Stack, Box, Typography } from '@mui/material';
 // other library
 import moment from 'moment';
 import {
@@ -144,7 +144,8 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   const renderLegend = (props) => {
     const { payload } = props;
     return (
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+      // <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+      <Grid item xs={12} md={12} lg={12} style={{ textAlign: 'center' }}>
         {payload.map((entry, index) => {
           // return (
           //   <Button
@@ -177,7 +178,8 @@ export default function Example({ conf, chartData, uniqueChannels }) {
             );
           }
         })}
-      </Stack>
+        {/* </Stack> */}
+      </Grid>
     );
   };
 
