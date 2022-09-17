@@ -1,36 +1,38 @@
+//react
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// auth
-import { useUser } from '@auth0/nextjs-auth0';
 // next
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Grid, Stack, Divider, Container, Typography, Tabs, Tab, Box } from '@mui/material';
+import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/material';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
+// other library
+import moment from 'moment';
+// hooks
+import { useResponsive } from '../../../src/hooks';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 import confFn from '../../../config/development';
 import confFnProd from '../../../config/production';
 import confFnProdTest from '../../../config/productionTest';
-// hooks
-import { seRequest, useResponsive } from '../../../src/hooks';
+// api && lib
+import { readVAL } from '../../api/grpc';
+import * as gtag from '../../../lib/gtag';
 // layouts
 import Layout from '../../../src/layouts';
 // components
-import { Page, ErrorScreen, LoadingScreen, SocialsButton } from '../../../src/components';
-import DataTable from '../../../src/components/DataTable';
-import DataTableGroup from '../../../src/components/DataTableGroup';
+import { Page, ErrorScreen, LoadingScreen } from '../../../src/components';
+import DataTable from '../../../src/components/DataTable/DataTable';
+import DataTableGroup from '../../../src/components/DataTable/DataTableGroup';
 import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
 import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart';
 // sections
-import { PromotionItemHero } from '../../../src/sections/promotions';
-// api
-import { readVAL } from '../../api/grpc';
-// utils
-import moment from 'moment';
+import { ItemHero } from '../../../src/sections/list';
+// data
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
-import * as gtag from '../../../lib/gtag';
 
 // ----------------------------------------------------------------------
 
@@ -255,7 +257,7 @@ export default function PromotionItemPage() {
         setStaticDomain(conf.staticSource.domain);
         setMetricQueryID(conf.metricSource.queryID);
         setMetricDomain(conf.metricSource.domain);
-        if (user) {
+        if (user && URL.includes('screener.thinkval.io')) {
           gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
         }
       }
@@ -484,7 +486,7 @@ export default function PromotionItemPage() {
     return (
       <Page title={entity + ' | ' + job.name}>
         <RootStyle>
-          <PromotionItemHero job={job} entity={entity} />
+          <ItemHero job={job} entity={entity} />
           <Container>
             <Grid container spacing={12}>
               {!isDesktop && (

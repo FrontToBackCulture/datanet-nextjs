@@ -1,6 +1,9 @@
+// react
 import React, { PureComponent, useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+// @mui
+import { Button, Stack, Box, Typography } from '@mui/material';
+// other library
+import moment from 'moment';
 import {
   LineChart,
   Line,
@@ -12,11 +15,9 @@ import {
   ResponsiveContainer,
   Brush,
 } from 'recharts';
+// utils
 import { fDate2 } from '../../utils/formatTime';
 import { fNumber } from '../../utils/formatNumber';
-import moment from 'moment';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 export default function Example({ conf, chartData, uniqueChannels }) {
   const [dat, setDat] = useState([]);
@@ -27,6 +28,7 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   const [yAxis, setYAxis] = useState();
   const [chartTitle, setChartTitle] = useState();
   const [uChannels, setUChannels] = useState([]);
+  const [activeButton, setActiveButton] = useState([]);
 
   const color = [
     '#e60049',
@@ -67,8 +69,13 @@ export default function Example({ conf, chartData, uniqueChannels }) {
     console.log(uniqueChannels);
     if (uniqueChannels && uniqueChannels.length > 0) {
       setUChannels(uniqueChannels);
+      setActiveButton(uniqueChannels);
     }
   }, [uniqueChannels]);
+
+  useEffect(() => {
+    console.log('Active Button:', activeButton);
+  }, [activeButton]);
 
   function isValidDate(d) {
     return d instanceof Date && !isNaN(d);
@@ -134,17 +141,80 @@ export default function Example({ conf, chartData, uniqueChannels }) {
     return null;
   };
 
-  // const handleMouseEnter = (o) => {
-  //   console.log(o);
-  //   console.log(displayDat);
-  //   let removeLineKey = o.value;
-  //   let foundIndex = displayDat.findIndex((x) => x.name == removeLineKey);
-  //   console.log(foundIndex);
-  //   console.log(displayDat[foundIndex]);
-  //   // let postRemovedDisplayDate = displayDat.filter((item) => item.name != removeLineKey);
-  //   // setDisplayDat([]);
-  //   // setDisplayDat(postRemovedDisplayDate);
-  // };
+  const renderLegend = (props) => {
+    const { payload } = props;
+    return (
+      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+        {payload.map((entry, index) => {
+          // return (
+          //   <Button
+          //     variant="text"
+          //     style={{ color: entry.color }}
+          //     onClick={() => handleMouseEnter(entry)}
+          //   >
+          //     {entry.value}
+          //   </Button>
+          // );
+          if (activeButton.includes(entry.value)) {
+            return (
+              <Button
+                variant="text"
+                style={{ color: entry.color }}
+                onClick={() => handleMouseEnter(entry)}
+              >
+                {entry.value}
+              </Button>
+            );
+          } else {
+            return (
+              <Button
+                variant="text"
+                style={{ color: '#AAAFB4' }}
+                onClick={() => handleMouseEnter(entry)}
+              >
+                {entry.value}
+              </Button>
+            );
+          }
+        })}
+      </Stack>
+    );
+  };
+
+  const handleMouseEnter = (o) => {
+    console.log(o);
+    console.log(displayDat);
+    let selectedLineKey = o.value;
+    if (activeButton.includes(selectedLineKey)) {
+      setActiveButton(activeButton.filter((item) => item !== selectedLineKey));
+    } else {
+      setActiveButton((oldArray) => [...oldArray, selectedLineKey]);
+    }
+
+    let foundIndex;
+    foundIndex = displayDat.findIndex((x) => x.name == selectedLineKey);
+    console.log(foundIndex);
+    console.log(displayDat[foundIndex]);
+    if (displayDat[foundIndex].data.length > 0) {
+      setDisplayDat(
+        Object.values({ ...displayDat, [foundIndex]: { ...displayDat[foundIndex], data: [] } })
+      );
+    }
+    if (displayDat[foundIndex].data.length == 0) {
+      let originalIndex = dat.findIndex((x) => x.name == selectedLineKey);
+      let dataReInsert = dat[originalIndex].data;
+      setDisplayDat(
+        Object.values({
+          ...displayDat,
+          [foundIndex]: { ...displayDat[foundIndex], data: dataReInsert },
+        })
+      );
+    }
+
+    // let postRemovedDisplayDate = displayDat.filter((item) => item.name != removeLineKey);
+    // setDisplayDat([]);
+    // setDisplayDat(postRemovedDisplayDate);
+  };
 
   const handleClick = (period) => {
     let reducedData = [];
@@ -202,8 +272,9 @@ export default function Example({ conf, chartData, uniqueChannels }) {
           />
           <Tooltip content={<CustomTooltip />} />
           {/* <Tooltip /> */}
+          <Legend onClick={handleMouseEnter} content={renderLegend} />
           {/* <Legend onClick={handleMouseEnter} /> */}
-          <Legend />
+          {/* <Legend /> */}
           {displayDat.map((s, index) => (
             <Line
               dataKey={yAxis}

@@ -1,7 +1,8 @@
+// react
 import PropTypes from 'prop-types';
 // next
 import dynamic from 'next/dynamic';
-//
+// nav,header,footer
 const Header = dynamic(() => import('./header/Header'), { ssr: false });
 const HeaderSimple = dynamic(() => import('./header/HeaderSimple'), { ssr: false });
 const Footer = dynamic(() => import('./footer/Footer'), { ssr: false });

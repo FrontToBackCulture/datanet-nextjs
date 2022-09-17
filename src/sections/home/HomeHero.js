@@ -1,16 +1,12 @@
+// react
 import React, { useState, useEffect, useRef } from 'react';
-// icons
-import launchIcon from '@iconify/icons-carbon/launch';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Stack, Button, Container, Typography, Grid } from '@mui/material';
+import { Stack, Container, Typography, Grid } from '@mui/material';
 // hooks
 import { useBoundingClientRect } from '../../hooks';
-// routes
-import Routes from '../../routes';
 // components
 import Image from 'next/image';
-import { Iconify } from '../../components';
 
 // ----------------------------------------------------------------------
 
@@ -70,22 +66,8 @@ export default function HomeHero({ userDomain }) {
               {!domain && (
                 <Image src="https://www.thinkval.com/logos/val.png" width={143} height={53} />
               )}
-
-              <Typography sx={{ color: 'text.secondary' }}>
-                Datanet is built on top of VAL, a powerful no-code data warehouse that provides a
-                single source of truth across systems you used.
-              </Typography>
-
-              {/* <Stack direction="row" spacing={2.5}>
-                {['figma', 'javascript', 'typescript', 'material', 'react'].map((icon) => (
-                  <Image
-                    key={icon}
-                    alt={icon}
-                    src={`https://zone-assets-api.vercel.app/assets/icons/platform/ic_platform_${icon}.svg`}
-                    sx={{ width: 32, height: 32 }}
-                  />
-                ))}
-              </Stack> */}
+              Datanet is built on top of VAL, a powerful no-code data warehouse that provides a
+              single source of truth across systems you used.
             </Stack>
           </Grid>
         </Grid>

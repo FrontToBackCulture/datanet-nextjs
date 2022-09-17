@@ -1,9 +1,6 @@
-import PropTypes from 'prop-types';
+// react
 import { useState, useEffect } from 'react';
-// icons
-import menuIcon from '@iconify/icons-carbon/menu';
-import chevronRight from '@iconify/icons-carbon/chevron-right';
-import chevronDown from '@iconify/icons-carbon/chevron-down';
+import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,15 +17,17 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
-// routes
-import Routes from '../../routes';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
 // config
 import { DRAWER_WIDTH } from '../../config';
 // components
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components';
 import { IconButtonAnimate } from '../../components/animate';
-
-import { useUser } from '@auth0/nextjs-auth0';
+// icons
+import menuIcon from '@iconify/icons-carbon/menu';
+import chevronRight from '@iconify/icons-carbon/chevron-right';
+import chevronDown from '@iconify/icons-carbon/chevron-down';
 
 // ----------------------------------------------------------------------
 

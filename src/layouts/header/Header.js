@@ -1,26 +1,25 @@
+// react
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-//auth
-import { useUser } from '@auth0/nextjs-auth0';
 // next
 import NextLink from 'next/link';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, Stack, Button, AppBar, Divider, Container } from '@mui/material';
-// hooks
-import { useOffSetTop, useResponsive } from '../../hooks';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
 // routes
 import Routes from '../../routes';
+// hooks
+import { useOffSetTop, useResponsive } from '../../hooks';
 // config
 import { HEADER_DESKTOP_HEIGHT } from '../../config';
 // components
 import { Logo, Label } from '../../components';
-//
-import Searchbar from '../Searchbar';
-import LanguagePopover from '../LanguagePopover';
+// nav, header, footer
 import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
-
+// data
 import confFn from '../../../config/development';
 import confFnProd from '../../../config/production';
 import confFnProdTest from '../../../config/productionTest';

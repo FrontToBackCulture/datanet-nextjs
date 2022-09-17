@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
+// react
 import { useState, useEffect } from 'react';
-// icons
-import chevronDown from '@iconify/icons-carbon/chevron-down';
-import chevronUp from '@iconify/icons-carbon/chevron-up';
+import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -11,8 +9,11 @@ import { styled } from '@mui/material/styles';
 import { Link, Stack } from '@mui/material';
 // components
 import { Iconify } from '../../components';
-//
+// nav,header,footer
 import NavDesktopMenu from './NavDesktopMenu';
+// icons
+import chevronDown from '@iconify/icons-carbon/chevron-down';
+import chevronUp from '@iconify/icons-carbon/chevron-up';
 
 // ----------------------------------------------------------------------
 

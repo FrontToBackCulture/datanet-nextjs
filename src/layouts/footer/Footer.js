@@ -1,32 +1,18 @@
-import PropTypes from 'prop-types';
+// react
 import { useState } from 'react';
-// icons
-import chevronDown from '@iconify/icons-carbon/chevron-down';
-import chevronRight from '@iconify/icons-carbon/chevron-right';
+import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
 // @mui
 import Masonry from '@mui/lab/Masonry';
-import {
-  Box,
-  Grid,
-  Link,
-  Stack,
-  Button,
-  Divider,
-  Collapse,
-  Container,
-  Typography,
-  FilledInput,
-  InputAdornment,
-} from '@mui/material';
+import { Box, Grid, Link, Stack, Divider, Collapse, Container, Typography } from '@mui/material';
 // hooks
 import { useResponsive } from '../../hooks';
 // components
-import { Logo, Iconify, SocialsButton, AppStoreButton } from '../../components';
-//
-// import { PageLinks } from '../nav/NavConfig';
-
+import { Logo, Iconify } from '../../components';
+// icons
+import chevronDown from '@iconify/icons-carbon/chevron-down';
+import chevronRight from '@iconify/icons-carbon/chevron-right';
 // ----------------------------------------------------------------------
 
 export default function Footer() {

@@ -1,29 +1,31 @@
+//react
 import React, { useState, useEffect } from 'react';
-// auth
-import { useUser } from '@auth0/nextjs-auth0';
 // next
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Container } from '@mui/material';
+// auth
+import { useUser } from '@auth0/nextjs-auth0';
+// other lbrary
+import moment from 'moment';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 import confFn from '../../../config/development';
 import confFnProd from '../../../config/production';
 import confFnProdTest from '../../../config/productionTest';
+// api && lib
+import { readVAL } from '../../api/grpc';
+import { getAppMetaData } from '../../api/auth/auth0API';
+import * as gtag from '../../../lib/gtag';
 // layouts
 import Layout from '../../../src/layouts';
 // components
 import { Page, ErrorScreen } from '../../../src/components';
-import AgGrid from '../../../src/components/AgGrid';
-// api
-import { readVAL } from '../../api/grpc';
-import { getAppMetaData } from '../../api/auth/auth0API';
-import moment from 'moment';
+import AgGrid from '../../../src/components/AgGrid/AgGrid';
+// data
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
-
-import * as gtag from '../../../lib/gtag';
 
 // ----------------------------------------------------------------------
 
@@ -76,7 +78,7 @@ export default function PromotionItemsPage() {
   useEffect(() => {
     setRowData([]);
     getConfig();
-    if (user) {
+    if (user && URL.includes('screener.thinkval.io')) {
       gtag.event({ action: 'screenview', category: code, label: user.email, value: 1 });
     }
   }, [router.query, userDomain]);

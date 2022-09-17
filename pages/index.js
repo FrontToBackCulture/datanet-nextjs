@@ -1,3 +1,4 @@
+// react
 import React, { useState, useEffect } from 'react';
 // auth
 import { useUser } from '@auth0/nextjs-auth0';
@@ -6,7 +7,6 @@ import Layout from '../src/layouts';
 // components
 import { Page } from '../src/components';
 // sections
-import Image from 'next/image';
 import { HomeHero } from '../src/sections/home';
 
 // ----------------------------------------------------------------------
@@ -36,12 +36,6 @@ export default function HomePage() {
   return (
     <Page title="The starting point for your next project">
       <HomeHero userDomain={userDomain} />
-      <Image
-        alt="home-hero"
-        src="https://s3.ap-southeast-1.amazonaws.com/production.thinkval.static/datanet/Screener_Explain.png"
-        width={1509}
-        height={1800}
-      />
     </Page>
   );
 }

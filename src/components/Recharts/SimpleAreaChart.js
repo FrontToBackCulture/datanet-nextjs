@@ -1,6 +1,9 @@
+// react
 import React, { PureComponent, useState, useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+// @mui
+import { Button, Stack, Box, Typography } from '@mui/material';
+// other library
+import moment from 'moment';
 import {
   AreaChart,
   Area,
@@ -11,11 +14,9 @@ import {
   ResponsiveContainer,
   Brush,
 } from 'recharts';
+// utils
 import { fDate2 } from '../../utils/formatTime';
 import { fNumber } from '../../utils/formatNumber';
-import moment from 'moment';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
 export default function Example({ conf, chartData }) {
   const [dat, setDat] = useState([]);
