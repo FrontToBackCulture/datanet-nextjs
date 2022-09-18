@@ -10,13 +10,11 @@ import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/materia
 import { useUser } from '@auth0/nextjs-auth0';
 // other library
 import moment from 'moment';
+import { array, merge, aggregate, groupBy } from 'cuttle';
 // hooks
 import { useResponsive } from '../../../src/hooks';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
-import confFn from '../../../config/development';
-import confFnProd from '../../../config/production';
-import confFnProdTest from '../../../config/productionTest';
 // api && lib
 import { readVAL } from '../../api/grpc';
 import * as gtag from '../../../lib/gtag';
@@ -30,6 +28,8 @@ import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
 import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart';
 // sections
 import { ItemHero } from '../../../src/sections/list';
+// utils
+import { determineConfig } from '../../../src/utils/determineConfig';
 // data
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
@@ -134,21 +134,10 @@ export default function PromotionItemPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
-    let config;
-    let URL = window.location.href;
-    if (URL.includes('localhost') && userDomain) {
-      config = confFn[userDomain].conf.getConfig(code);
-      setFullConfig(config);
-    }
-    if (URL.includes('screener.thinkval.io') && userDomain) {
-      config = confFnProd[userDomain].conf.getConfig(code);
-      setFullConfig(config);
-    }
-    if (URL.includes('screenertest.thinkval.io') && userDomain) {
-      config = confFnProdTest[userDomain].conf.getConfig(code);
-      setFullConfig(config);
-    }
-    return config;
+    let config2used = determineConfig(URL, userDomain, code);
+    setFullConfig(config2used);
+
+    return config2used;
   };
 
   // get data from VAL
@@ -283,23 +272,6 @@ export default function PromotionItemPage() {
     }
   }, [metricQueryID, metricDomain]);
 
-  const groupBy = (data, tConfigs) => {
-    let groupByResult;
-    let arr = data;
-    let { groupKeys, sumKeys, excludeBlank } = tConfigs;
-    groupByResult = Object.values(
-      arr.reduce((acc, curr) => {
-        const group = groupKeys.map((k) => curr[k]).join('-');
-        acc[group] =
-          acc[group] ||
-          Object.fromEntries(groupKeys.map((k) => [k, curr[k]]).concat(sumKeys.map((k) => [k, 0])));
-        sumKeys.forEach((k) => (acc[group][k] += curr[k]));
-        return acc;
-      }, {})
-    );
-    return groupByResult;
-  };
-
   //once all data available starts massaging the end result data
   useEffect(async () => {
     if (
@@ -316,21 +288,7 @@ export default function PromotionItemPage() {
       const chartGroupKey = fullConfig.chartSource.groupKey;
 
       // start merging of static and metric data
-      let merged = [];
-      for (let i = 0; i < staticData.length; i++) {
-        // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        if (Array.isArray(metricData[0][metricKey])) {
-          merged.push({
-            ...staticData[i],
-            ...metricData.find((itmInner) => itmInner[metricKey][0] === staticData[i][staticKey]),
-          });
-        } else {
-          merged.push({
-            ...staticData[i],
-            ...metricData.find((itmInner) => itmInner[metricKey] === staticData[i][staticKey]),
-          });
-        }
-      }
+      let merged = merge.merge(staticData, metricData, staticKey, metricKey);
 
       console.log('Static Data', staticData);
       console.log('Metric Data', metricData);
@@ -351,44 +309,17 @@ export default function PromotionItemPage() {
 
         // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {
-          // get the the most recent date in the data set belonging to the selected item
-          var mostRecentDate = new Date(
-            Math.max.apply(
-              null,
-              filteredChart.map((e) => {
-                let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-                // console.log(
-                //   'Original:',
-                //   e[chartGroupKey],
-                //   ' Most Recent Object: ',
-                //   new Date(e[chartGroupKey]),
-                //   ' Suggested Most Recent Object: ',
-                //   new Date(mrd)
-                // );
-                // return new Date(e[chartGroupKey]);
-                return new Date(mrd);
-              })
-            )
-          );
-
           let latestMetric = 0,
             priorMetric = 0;
-          // get the the most recent date object in the trend data for the selected item
-          var mostRecentObject = filteredChart.filter((e) => {
-            let d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-            return d.getTime() == mostRecentDate.getTime();
-            // return d == mostRecentDate;
-          })[0];
-          latestMetric = mostRecentObject[changeKey];
+          // get the the most recent date in the data set belonging to the selected item
+          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey);
+          latestMetric = latestObject[changeKey];
 
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (filteredChart.length > 1) {
             // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = filteredChart.sort(
-              (a, b) => a[chartGroupKey] - b[chartGroupKey]
-            )[filteredChart.length - 2];
-            // console.log('Second Recent: ', secondLatestDate);
+            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
             priorMetric = secondLatestDate[changeKey];
           } else {
             priorMetric = 0;
@@ -446,7 +377,7 @@ export default function PromotionItemPage() {
         let cpdFiltered = cpd.filter((row) => row[key] == itemId);
         console.log('Channel Data Filtered', cpdFiltered);
 
-        let groupByChannel = await groupBy(cpdFiltered, {
+        let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
           groupKeys: [channelGroupPeriodKey, channelGroupKey],
           sumKeys: [channelValueKey],
           excludeBlank: false,

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 // other library
 import moment from 'moment';
+import { aggregate } from 'cuttle';
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
 
@@ -26,20 +27,6 @@ export default function DenseTable({ job, conf }) {
   //   console.log(conf);
   // console.log('DataTable Group Data', job);
 
-  const simpleAggregate = (data, fields) => {
-    let result = data.reduce((accumulator, row) => {
-      for (let i = 0; i < fields.length; i++) {
-        let value = 0;
-        if (row[fields[i]]) {
-          value = parseFloat(row[fields[i]]);
-        }
-        accumulator += value;
-      }
-      return accumulator;
-    }, 0);
-    return result;
-  };
-
   useEffect(() => {
     // console.log('1st useEffect', job, conf);
     if (job.length > 0 && conf) {
@@ -49,7 +36,7 @@ export default function DenseTable({ job, conf }) {
       let newItemArray = [];
       job.forEach((item, index) => {
         let newItem = item;
-        newItem.aggregateMetric = simpleAggregate(item.data, [valueKey]);
+        newItem.aggregateMetric = aggregate.simpleAggregate(item.data, [valueKey]);
         if (item.data.length > 0) {
           // get the the most recent date in the data set belonging to the selected item
           var mostRecentDate = new Date(

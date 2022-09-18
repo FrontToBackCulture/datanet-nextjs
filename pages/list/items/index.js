@@ -12,9 +12,6 @@ import moment from 'moment';
 import { array, merge, aggregate } from 'cuttle';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
-import confFn from '../../../config/development';
-import confFnProd from '../../../config/production';
-import confFnProdTest from '../../../config/productionTest';
 // api && lib
 import { readVAL } from '../../api/grpc';
 import { getAppMetaData } from '../../api/auth/auth0API';
