@@ -9,6 +9,7 @@ import { Container } from '@mui/material';
 import { useUser } from '@auth0/nextjs-auth0';
 // other lbrary
 import moment from 'moment';
+import { array, merge, aggregate } from 'cuttle';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 import confFn from '../../../config/development';
@@ -23,6 +24,8 @@ import Layout from '../../../src/layouts';
 // components
 import { Page, ErrorScreen } from '../../../src/components';
 import AgGrid from '../../../src/components/AgGrid/AgGrid';
+// utils
+import { determineConfig } from '../../../src/utils/determineConfig';
 // data
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
@@ -131,19 +134,8 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    if (URL.includes('localhost') && userDomain) {
-      let config = confFn[userDomain].conf.getConfig(code);
-      setConf(config);
-    }
-    if (URL.includes('screener.thinkval.io') && userDomain) {
-      let config = confFnProd[userDomain].conf.getConfig(code);
-      setConf(config);
-    }
-    if (URL.includes('screenertest.thinkval.io') && userDomain) {
-      let config = confFnProdTest[userDomain].conf.getConfig(code);
-      console.log('Index Config:', config, userDomain);
-      setConf(config);
-    }
+    let config2used = determineConfig(URL, userDomain, code);
+    setConf(config2used);
   };
 
   function getWeek(date) {
@@ -179,21 +171,7 @@ export default function PromotionItemsPage() {
       const chartGroupKey = conf.chartSource.groupKey;
 
       // start merging of static and metric data
-      let merged = [];
-      for (let i = 0; i < sD.length; i++) {
-        // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        if (Array.isArray(mD[0][metricKey])) {
-          merged.push({
-            ...sD[i],
-            ...mD.find((itmInner) => itmInner[metricKey][0] === sD[i][staticKey]),
-          });
-        } else {
-          merged.push({
-            ...sD[i],
-            ...mD.find((itmInner) => itmInner[metricKey] === sD[i][staticKey]),
-          });
-        }
-      }
+      let merged = merge.merge(sD, mD, staticKey, metricKey);
 
       //extract trend data set
       const trendKey = conf.chartSource.key;
@@ -219,48 +197,16 @@ export default function PromotionItemsPage() {
 
         // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {
-          // get the the most recent date in the data set belonging to the selected item
-          var mostRecentDate = new Date(
-            Math.max.apply(
-              null,
-              filteredChart.map((e) => {
-                // return moment(new Date(e[chartGroupKey])).format('YYYY-MM-DD');
-                let mrd = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-                // console.log(
-                //   'Original:',
-                //   e[chartGroupKey],
-                //   ' Most Recent Object: ',
-                //   new Date(e[chartGroupKey]),
-                //   ' Suggested Most Recent Object: ',
-                //   new Date(mrd)
-                // );
-                // return new Date(e[chartGroupKey]);
-                return new Date(mrd);
-              })
-            )
-          );
-
           let latestMetric = 0,
             priorMetric = 0;
-          // get the the most recent date object in the trend data for the selected item
-          var mostRecentObject = filteredChart.filter((e) => {
-            // var d = new Date(e[chartGroupKey]);
-            var d = new Date(moment(e[chartGroupKey]).format('YYYY-MM-DD'));
-            // console.log('D Time: ', d.getTime());
-            // console.log('Most Recent Time: ', mostRecentDate.getTime());
-            // console.log('D Time: ', d.getTime(), ' Most Recent Time: ', mostRecentDate.getTime());
-            return d.getTime() == mostRecentDate.getTime();
-            // return d == mostRecentDate;
-          })[0];
-          latestMetric = mostRecentObject[changeKey];
+          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey);
+          latestMetric = latestObject[changeKey];
 
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (filteredChart.length > 1) {
             // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = filteredChart.sort(
-              (a, b) => a[chartGroupKey] - b[chartGroupKey]
-            )[filteredChart.length - 2];
+            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
             priorMetric = secondLatestDate[changeKey];
           } else {
             priorMetric = 0;
@@ -276,39 +222,12 @@ export default function PromotionItemsPage() {
           item['changeMetricPercent'] = changeMetricPercent;
 
           // -----  test to get weekly
-
-          let sparklineObj = {};
-          sparklineObj[chartValueKey] = 0;
-          var groups = filteredChart.reduce(function (r, d) {
-              var week = parseInt(getWeek(new Date(d[chartGroupKey])));
-              r[week] = r[week] ? r[week].concat(d) : [d];
-              return r;
-            }, {}),
-            groupResult = Object.keys(groups).map(
-              (week) =>
-                (groups[week] = groups[week].reduce(
-                  (a, o) => (
-                    (a[chartValueKey] += o[chartValueKey] / groups[week].length),
-                    // (a.ConversionRate += o.ConversionRate / groups[week].length),
-                    // (a.VisitRate += o.VisitRate / groups[week].length),
-                    a
-                  ),
-                  // { Week: week, ROAS: 0, ConversionRate: 0, VisitRate: 0 }
-                  // { Week: week, 'Net Sales': 0, 'sum Quantity': 0 }
-                  { ...sparklineObj, Week: week }
-                ))
-            );
-
-          // console.log('Group Result:', groupResult);
-          // ----- test to get weekly
-
-          // sparkline based on daily data
-          // sparklineDataArray = filteredChart.map((x) => {
-          //   return [new Date(x[chartGroupKey]), x[chartValueKey]];
-          // });
-          // sparkline based on daily data
-
-          item['change'] = groupResult;
+          let weeklyChangeTrend = aggregate.group2Weekly(
+            filteredChart,
+            chartGroupKey,
+            chartValueKey
+          );
+          item['change'] = weeklyChangeTrend;
         }
 
         // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
@@ -316,9 +235,6 @@ export default function PromotionItemsPage() {
       });
 
       console.log('Combined: ', filteredItemTrendData);
-
-      //setRowData for AG-Grid
-      // console.log(merged);
       setRowData(merged);
     }
   }, [conf]);

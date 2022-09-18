@@ -1,5 +1,6 @@
 export * from './animate';
 export * from './skeleton';
+export * from './carousel';
 
 export { default as Logo } from './Logo';
 export { default as Page } from './Page';

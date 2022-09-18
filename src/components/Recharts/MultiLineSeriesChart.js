@@ -159,6 +159,7 @@ export default function Example({ conf, chartData, uniqueChannels }) {
           if (activeButton.includes(entry.value)) {
             return (
               <Button
+                key={entry.value}
                 variant="text"
                 style={{ color: entry.color }}
                 onClick={() => handleMouseEnter(entry)}
@@ -169,6 +170,7 @@ export default function Example({ conf, chartData, uniqueChannels }) {
           } else {
             return (
               <Button
+                key={entry.value}
                 variant="text"
                 style={{ color: '#AAAFB4' }}
                 onClick={() => handleMouseEnter(entry)}
