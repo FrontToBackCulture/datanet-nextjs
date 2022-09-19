@@ -33,7 +33,7 @@
     "autosuggest-highlight": "^3.2.1",
     "axios": "^0.24.0",
     "chart.js": "^3.9.1",
-    "cuttle": "git+https://github.com/FrontToBackCulture/cuttle.git#v0.0.11",
+    "cuttle": "git+https://github.com/FrontToBackCulture/cuttle.git#v0.0.13",
     "date-fns": "^2.28.0",
     "env-cmd": "^10.1.0",
     "framer-motion": "^6.2.8",

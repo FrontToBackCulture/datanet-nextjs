@@ -9,7 +9,7 @@ import { Container } from '@mui/material';
 import { useUser } from '@auth0/nextjs-auth0';
 // other lbrary
 import moment from 'moment';
-import { array, merge, aggregate, regexTest } from 'cuttle';
+import { array, merge, aggregate } from 'cuttle';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
@@ -59,7 +59,6 @@ export default function PromotionItemsPage() {
     if (user) {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
-      // let result = regexTest.extractDomainfromEmail(user.email);
       result = result.substring(1, result.length);
       setUserDomain(selectDomain(result));
     }
