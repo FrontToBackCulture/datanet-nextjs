@@ -29,7 +29,12 @@ import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeri
 // sections
 import { ItemHero } from '../../../src/sections/list';
 // utils
-import { determineConfig } from '../../../src/utils/determineConfig';
+import {
+  selectConfig,
+  selectObject,
+  selectLocalDataSource,
+  selectDomain,
+} from '../../../src/utils/selectScript';
 // data
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
@@ -110,19 +115,7 @@ export default function PromotionItemPage() {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
-      let domain;
-      switch (result) {
-        case 'saladstop':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        case 'thinkval':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        default:
-          break;
-      }
+      setUserDomain(selectDomain(result));
     }
   }, [user]);
 
@@ -134,7 +127,7 @@ export default function PromotionItemPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
-    let config2used = determineConfig(URL, userDomain, code);
+    let config2used = selectConfig(URL, userDomain, code);
     setFullConfig(config2used);
 
     return config2used;
@@ -144,25 +137,7 @@ export default function PromotionItemPage() {
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
       let localJsonData;
-      let outletJsonData;
-      let productJsonData;
-      if (outletData[contentType]) {
-        outletJsonData = outletData[contentType].getData();
-      }
-      if (productData[contentType]) {
-        productJsonData = productData[contentType].getData();
-      }
-
-      switch (dataType) {
-        case 'outlet':
-          localJsonData = outletJsonData;
-          break;
-        case 'product':
-          localJsonData = productJsonData;
-          break;
-        default:
-          break;
-      }
+      localJsonData = selectLocalDataSource(contentType, dataType);
       return localJsonData;
     }
     if (URL.includes('screener')) {
@@ -184,18 +159,7 @@ export default function PromotionItemPage() {
     let data;
     if (URL.includes('localhost')) {
       let localJsonData;
-      let outletJsonData = outletData[contentType].getData();
-      let productJsonData = productData[contentType].getData();
-      switch (dataType) {
-        case 'outlet':
-          localJsonData = outletJsonData;
-          break;
-        case 'product':
-          localJsonData = productJsonData;
-          break;
-        default:
-          break;
-      }
+      localJsonData = selectLocalDataSource(contentType, dataType);
       data = localJsonData;
     }
     if (URL.includes('screener')) {
@@ -214,13 +178,7 @@ export default function PromotionItemPage() {
     // console.log('Chart: ', data);
     let filteredChart = [];
     if (data.length > 0) {
-      if (Array.isArray(data[0][conf.metricSource.key])) {
-        // console.log('Chart Data Key is array:', data[0][conf.metricSource.key]);
-        filteredChart = await data.filter((trend) => trend[conf.chartSource.key][0] === itemId);
-      } else {
-        // console.log('Chart Data Key is not array:', data[conf.metricSource.key]);
-        filteredChart = await data.filter((trend) => trend[conf.chartSource.key] === itemId);
-      }
+      filteredChart = selectObject(data, conf.chartSource.key, conf.metricSource.key, itemId);
     }
 
     return filteredChart;
@@ -301,11 +259,7 @@ export default function PromotionItemPage() {
         let filteredChart;
         //filter by matching to the static data key
         // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        if (Array.isArray(allChartData[0][metricKey])) {
-          filteredChart = allChartData.filter((trend) => trend[trendKey][0] === item[staticKey]);
-        } else {
-          filteredChart = allChartData.filter((trend) => trend[trendKey] === item[staticKey]);
-        }
+        filteredChart = selectObject(allChartData, metricKey, trendKey, item[staticKey]);
 
         // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {

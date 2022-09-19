@@ -9,7 +9,7 @@ import { Container } from '@mui/material';
 import { useUser } from '@auth0/nextjs-auth0';
 // other lbrary
 import moment from 'moment';
-import { array, merge, aggregate } from 'cuttle';
+import { array, merge, aggregate, regexTest } from 'cuttle';
 // config
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
@@ -22,10 +22,12 @@ import Layout from '../../../src/layouts';
 import { Page, ErrorScreen } from '../../../src/components';
 import AgGrid from '../../../src/components/AgGrid/AgGrid';
 // utils
-import { determineConfig } from '../../../src/utils/determineConfig';
-// data
-import outletData from '../../../data/outlet';
-import productData from '../../../data/product';
+import {
+  selectConfig,
+  selectObject,
+  selectLocalDataSource,
+  selectDomain,
+} from '../../../src/utils/selectScript';
 
 // ----------------------------------------------------------------------
 
@@ -57,20 +59,9 @@ export default function PromotionItemsPage() {
     if (user) {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
+      // let result = regexTest.extractDomainfromEmail(user.email);
       result = result.substring(1, result.length);
-      let domain;
-      switch (result) {
-        case 'saladstop':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        case 'thinkval':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        default:
-          break;
-      }
+      setUserDomain(selectDomain(result));
     }
   }, [user]);
 
@@ -102,18 +93,7 @@ export default function PromotionItemsPage() {
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
       let localJsonData;
-      let outletJsonData = outletData[contentType].getData();
-      let productJsonData = productData[contentType].getData();
-      switch (dataType) {
-        case 'outlet':
-          localJsonData = outletJsonData;
-          break;
-        case 'product':
-          localJsonData = productJsonData;
-          break;
-        default:
-          break;
-      }
+      localJsonData = selectLocalDataSource(contentType, dataType);
       return localJsonData;
     }
     if (URL.includes('screener')) {
@@ -131,19 +111,9 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    let config2used = determineConfig(URL, userDomain, code);
+    let config2used = selectConfig(URL, userDomain, code);
     setConf(config2used);
   };
-
-  function getWeek(date) {
-    !(date instanceof Date) && (date = new Date());
-    var nDay = (date.getDay() + 6) % 7;
-    date.setDate(date.getDate() - nDay + 3);
-    var n1stThursday = date.valueOf();
-    date.setMonth(0, 1);
-    date.getDay() !== 4 && date.setMonth(0, 1 + ((4 - date.getDay() + 7) % 7));
-    return 1 + Math.ceil((n1stThursday - date) / 604800000);
-  }
 
   //once config have been extracted, process based on config instructions
   useEffect(async () => {
@@ -186,11 +156,7 @@ export default function PromotionItemsPage() {
         let filteredChart;
         //filter by matching to the static data key
         // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        if (Array.isArray(tD[0][metricKey])) {
-          filteredChart = tD.filter((trend) => trend[trendKey][0] === item[staticKey]);
-        } else {
-          filteredChart = tD.filter((trend) => trend[trendKey] === item[staticKey]);
-        }
+        filteredChart = selectObject(tD, metricKey, trendKey, item[staticKey]);
 
         // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {
@@ -201,7 +167,6 @@ export default function PromotionItemsPage() {
 
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (filteredChart.length > 1) {
-            // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
             const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
             priorMetric = secondLatestDate[changeKey];
