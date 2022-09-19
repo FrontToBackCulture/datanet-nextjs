@@ -72,6 +72,9 @@ export function selectDomain(domain) {
     case 'thinkval':
       result = 'saladstop';
       break;
+    case 'kctsoya':
+      result = 'kctsoya';
+      break;
     default:
       break;
   }
