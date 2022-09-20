@@ -19,10 +19,12 @@ import { Logo, Label } from '../../components';
 // nav, header, footer
 import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
-// data
-import confFn from '../../../config/development';
-import confFnProd from '../../../config/production';
-import confFnProdTest from '../../../config/productionTest';
+import {
+  selectConfig,
+  selectObject,
+  selectLocalDataSource,
+  selectDomain,
+} from '../../../src/utils/selectScript';
 
 // ----------------------------------------------------------------------
 
@@ -51,37 +53,14 @@ export default function Header({ transparent }) {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
-      let domain;
-      switch (result) {
-        case 'saladstop':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        case 'thinkval':
-          setUserDomain('saladstop');
-          domain = 'saladstop';
-          break;
-        default:
-          break;
-      }
-      getConfig(domain);
+      setUserDomain(selectDomain(result));
     }
   }, [user]);
 
   const getConfig = (domain) => {
     console.log(URL, domain, confFn[domain]);
-    if (URL.includes('localhost') && domain) {
-      let config = confFn[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
-    if (URL.includes('screener.thinkval.io') && domain) {
-      let config = confFnProd[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
-    if (URL.includes('screenertest.thinkval.io') && domain) {
-      let config = confFnProdTest[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
+    let config2used = selectConfig(URL, userDomain, code);
+    setConf(config2used);
   };
 
   useEffect(() => {
