@@ -58,6 +58,7 @@ export default function Header({ transparent }) {
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
       let domain = selectDomain(result);
+      setUserDomain(domain);
       getConfig(domain);
     }
   }, [user]);
