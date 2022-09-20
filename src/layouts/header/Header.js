@@ -64,7 +64,7 @@ export default function Header({ transparent }) {
 
   const getConfig = (domain) => {
     console.log(URL, domain, confFnProdTest[domain]);
-    let config2used = selectConfig(URL, userDomain, code);
+    let config2used = selectConfig(URL, userDomain, 'navConfig');
     setConf(config2used);
   };
 
