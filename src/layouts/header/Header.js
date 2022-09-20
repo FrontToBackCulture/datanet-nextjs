@@ -63,19 +63,9 @@ export default function Header({ transparent }) {
   }, [user]);
 
   const getConfig = (domain) => {
-    console.log(URL, domain, confFn[domain]);
-    if (URL.includes('localhost') && domain) {
-      let config = confFn[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
-    if (URL.includes('screener.thinkval.io') && domain) {
-      let config = confFnProd[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
-    if (URL.includes('screenertest.thinkval.io') && domain) {
-      let config = confFnProdTest[domain].conf.getConfig('navConfig');
-      setConf(config);
-    }
+    console.log(URL, domain, confFnProdTest[domain]);
+    let config2used = selectConfig(URL, userDomain, code);
+    setConf(config2used);
   };
 
   useEffect(() => {
