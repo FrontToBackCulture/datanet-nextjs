@@ -111,7 +111,7 @@ NavItemDesktop.propTypes = {
   }),
 };
 
-function NavItemDesktop({ item, isScrolling, isTransparent }) {
+function NavItemDesktop({ item, isScrolling, isTransparent, userDomain }) {
   const { title, path, code, children } = item;
 
   const { pathname, asPath } = useRouter();
@@ -181,7 +181,11 @@ function NavItemDesktop({ item, isScrolling, isTransparent }) {
   }
   // console.log(path);
   return (
-    <NextLink key={title} href={{ pathname: path, query: { title: title, code: code } }} passHref>
+    <NextLink
+      key={title}
+      href={{ pathname: path, query: { title: title, code: code, selectedDomain: userDomain } }}
+      passHref
+    >
       <RootLinkStyle active={isActiveRoot} scrolling={isScrolling} transparent={isTransparent}>
         <div>{title}</div>
       </RootLinkStyle>

@@ -3,9 +3,21 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Stack, Button, AppBar, Divider, Container } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Button,
+  AppBar,
+  Divider,
+  Container,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+} from '@mui/material';
 // auth
 import { useUser } from '@auth0/nextjs-auth0';
 // routes
@@ -36,12 +48,14 @@ Header.propTypes = {
   transparent: PropTypes.bool,
 };
 
-export default function Header({ transparent }) {
+export default function Header({ transparent, header2Layout }) {
   const { user, error, isLoading } = useUser();
   const [userDomain, setUserDomain] = useState();
+  const [userEmailDomain, setUserEmailDomain] = useState();
   const [conf, setConf] = useState();
   const [navConfig, setNavConfig] = useState([]);
 
+  const selectedDomain = localStorage.getItem('selectedDomain');
   const URL = window.location.href;
 
   const theme = useTheme();
@@ -52,21 +66,46 @@ export default function Header({ transparent }) {
 
   const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT);
 
+  const handleDomainChange = (event) => {
+    setUserDomain(event.target.value);
+    localStorage.setItem('selectedDomain', event.target.value);
+  };
+
   useEffect(() => {
     if (user) {
+      let domain;
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
-      let domain = selectDomain(result);
+      setUserEmailDomain(result);
+      console.log(userDomain);
+      if (!selectedDomain) {
+        if (result != 'thinkval') {
+          domain = selectDomain(result);
+        } else {
+          if (!userDomain) {
+            domain = 'thinkval';
+            setUserEmailDomain('thinkval');
+          } else {
+            domain = userDomain;
+          }
+        }
+      } else {
+        domain = selectedDomain;
+      }
+
       setUserDomain(domain);
+      header2Layout(domain);
       getConfig(domain);
     }
-  }, [user]);
+  }, [user, userDomain]);
 
   const getConfig = (domain) => {
-    console.log(URL, domain, confFnProdTest[domain]);
-    let config2used = selectConfig(URL, domain, 'navConfig');
-    setConf(config2used);
+    if (domain != 'thinkval') {
+      console.log(URL, domain, confFnProdTest[domain]);
+      let config2used = selectConfig(URL, domain, 'navConfig');
+      setConf(config2used);
+    }
   };
 
   useEffect(() => {
@@ -118,6 +157,7 @@ export default function Header({ transparent }) {
               isScrolling={isScrolling}
               isTransparent={transparent}
               navConfig={navConfig}
+              userDomain={userDomain}
             />
           )}
 
@@ -142,9 +182,45 @@ export default function Header({ transparent }) {
             )}
           </Stack>
           <Stack spacing={2} direction="row" alignItems="center">
-            {user && (
+            {user && userEmailDomain != 'thinkval' && (
               <>
                 {userDomain} &nbsp;&nbsp;
+                <Divider orientation="vertical" sx={{ height: 24 }} />
+                <NextLink href="/api/auth/logout" prefetch={false} passHref>
+                  <Button
+                    color="inherit"
+                    variant="outlined"
+                    sx={{
+                      ...(transparent && {
+                        color: 'common.white',
+                      }),
+                      ...(isScrolling && isLight && { color: 'text.primary' }),
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </NextLink>
+              </>
+            )}
+            {user && userEmailDomain == 'thinkval' && (
+              <>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-simple-select-label">Domain</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={userDomain}
+                      label="Domain"
+                      onChange={handleDomainChange}
+                    >
+                      <MenuItem value="thinkval">ThinkVAL</MenuItem>
+                      <MenuItem value="saladstop">Salad Stop!</MenuItem>
+                      <MenuItem value="kctsoya">KCT Soya</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                &nbsp;&nbsp;
                 <Divider orientation="vertical" sx={{ height: 24 }} />
                 <NextLink href="/api/auth/logout" prefetch={false} passHref>
                   <Button

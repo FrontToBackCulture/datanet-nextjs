@@ -132,6 +132,54 @@ const config = {
         headerName: 'Avg Daily Order Count',
       },
     },
+    channelPerformanceSource: {
+      queryID: '4097',
+      domain: 'saladstop',
+      key: 'Store',
+      valueKey: 'sum Net Sales',
+      groupPeriodKey: 'Transaction Date',
+      groupKey: 'Order Channel',
+      title: 'Performance Trend by Channel',
+    },
+    channelFields: {
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Last Working Day Net Sales',
+      },
+      priorMetric: {
+        sourceColumn: 'priorMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Prior Working Day Net Sales',
+      },
+      metric1: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Net Sales % Δ',
+        condition: 'cellClassRules',
+      },
+      metric2: {
+        sourceColumn: 'aggregateMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Net Sales Last 3M',
+      },
+      metric3: {
+        sourceColumn: 'maxMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Max Daily Net Sales Last 3M',
+      },
+      metric4: {
+        sourceColumn: 'minMetric',
+        link: false,
+        type: 'currency',
+        headerName: 'Min Daily Net Sales Last 3M',
+      },
+    },
   },
   product: {
     staticSource: {
@@ -247,11 +295,98 @@ const config = {
       },
     },
   },
-
+  promotion: {
+    staticSource: {
+      queryID: '4030',
+      domain: 'saladstop',
+      key: 'Storehub Product ID',
+    },
+    metricSource: {
+      queryID: '4031',
+      domain: 'saladstop',
+      key: 'Productid',
+    },
+    chartSource: {
+      queryID: '4032',
+      domain: 'saladstop',
+      key: 'Productid',
+      valueKey: 'sum Quantity',
+      groupKey: 'Transactiontime',
+      title: 'Daily Qty Promo Used Last 3M',
+    },
+    change: {
+      valueKey: 'sum Quantity',
+    },
+    listFields: {
+      shortCode: {
+        sourceColumn: 'Storehub Product ID',
+        link: true,
+        type: 'string',
+        headerName: 'Promo ID',
+        maxWidth: 150,
+      },
+      name: {
+        sourceColumn: 'POS Button Storehub',
+        link: false,
+        type: 'string',
+        headerName: 'Name',
+      },
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'number',
+        headerName: 'Last Working Day Qty Used',
+        maxWidth: 150,
+      },
+      percentChangeMetric: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Promo Used % Δ',
+        condition: 'cellClassRules',
+        maxWidth: 150,
+      },
+      metric1: {
+        sourceColumn: 'sum Quantity',
+        link: false,
+        type: 'number',
+        sort: 'desc',
+        headerName: 'Promo Used Count L3M',
+        maxWidth: 150,
+      },
+    },
+    detailFields: {
+      latestMetric: {
+        sourceColumn: 'latestMetric',
+        link: false,
+        type: 'number',
+        headerName: 'Last Working Day Promo Qty Used',
+      },
+      priorMetric: {
+        sourceColumn: 'priorMetric',
+        link: false,
+        type: 'number',
+        headerName: 'Prior Working Day Promo Qty Used',
+      },
+      metric1: {
+        sourceColumn: 'changeMetricPercent',
+        link: false,
+        type: 'percent',
+        headerName: 'Daily Qty Promo Used % Δ',
+        condition: 'cellClassRules',
+      },
+      metric2: {
+        sourceColumn: 'sum Quantity',
+        link: false,
+        type: 'number',
+        headerName: 'Promo Used Count L3M',
+      },
+    },
+  },
   navConfig: [
     // { title: 'Home', path: '/', code: 'home' },
     { title: 'Outlets', code: 'outlet' },
-    { title: 'Products', code: 'product' },
+    // { title: 'Products', code: 'product' },
     // { title: 'Promotions', code: 'promotion' },
   ],
 };

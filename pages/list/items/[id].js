@@ -39,6 +39,8 @@ import {
 import outletData from '../../../data/outlet';
 import productData from '../../../data/product';
 
+import { useDomainContext } from '../../../src/contexts/DomainProvider';
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -104,6 +106,9 @@ export default function PromotionItemPage() {
   const [uniqueChannels, setUniqueChannels] = useState([]);
   const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
 
+  const selectedDomain = useDomainContext();
+  console.log('ID SelectedDomain:', selectedDomain);
+
   const isDesktop = useResponsive('up', 'md');
   const router = useRouter();
   if (typeof window !== 'undefined') {
@@ -115,7 +120,11 @@ export default function PromotionItemPage() {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
-      setUserDomain(selectDomain(result));
+      if (selectedDomain) {
+        setUserDomain(selectDomain(selectedDomain));
+      } else {
+        setUserDomain(selectDomain(result));
+      }
     }
   }, [user]);
 

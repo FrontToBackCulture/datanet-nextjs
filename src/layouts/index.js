@@ -1,4 +1,5 @@
 // react
+import { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 // next
 import dynamic from 'next/dynamic';
@@ -8,6 +9,7 @@ const HeaderSimple = dynamic(() => import('./header/HeaderSimple'), { ssr: false
 const Footer = dynamic(() => import('./footer/Footer'), { ssr: false });
 const FooterSimple = dynamic(() => import('./footer/FooterSimple'), { ssr: false });
 
+import { DomainProvider } from '../contexts/DomainProvider';
 // ----------------------------------------------------------------------
 
 Layout.propTypes = {
@@ -19,6 +21,8 @@ Layout.propTypes = {
   transparentHeader: PropTypes.bool,
 };
 
+const DomainContext = createContext();
+
 export default function Layout({
   children,
   transparentHeader,
@@ -27,6 +31,12 @@ export default function Layout({
   simpleHeader,
   simpleFooter,
 }) {
+  const [selectedDomain, setSelectedDomain] = useState();
+  const header2Layout = (domain) => {
+    console.log('Layout', domain);
+    setSelectedDomain(domain);
+  };
+
   return (
     <>
       {disabledHeader ? null : (
@@ -34,14 +44,18 @@ export default function Layout({
           {simpleHeader ? (
             <HeaderSimple transparent={transparentHeader} />
           ) : (
-            <Header transparent={transparentHeader} />
+            <Header transparent={transparentHeader} header2Layout={header2Layout} />
           )}
         </>
       )}
-
-      {children}
+      <DomainProvider value={selectedDomain}>{children}</DomainProvider>
 
       {disabledFooter ? null : <>{simpleFooter ? <FooterSimple /> : <Footer />}</>}
     </>
   );
+}
+
+// Export useContext Hook.
+export function useDomainContext() {
+  return useContext(DomainContext);
 }

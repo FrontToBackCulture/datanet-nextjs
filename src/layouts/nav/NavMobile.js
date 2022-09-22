@@ -235,7 +235,11 @@ function NavItemMobile({ item }) {
   }
 
   return (
-    <NextLink key={title} href={{ pathname: path, query: { title: title, code: code } }} passHref>
+    <NextLink
+      key={title}
+      href={{ pathname: path, query: { title: title, code: code, selectedDomain: userDomain } }}
+      passHref
+    >
       <RootLinkStyle active={isActiveRoot}>
         <ListItemText disableTypography primary={title} />
       </RootLinkStyle>

@@ -29,6 +29,7 @@ import {
   selectDomain,
 } from '../../../src/utils/selectScript';
 
+import { useDomainContext } from '../../../src/contexts/DomainProvider';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -47,6 +48,9 @@ export default function PromotionItemsPage() {
   const [conf, setConf] = useState();
   const [listFields, setListFields] = useState();
 
+  const selectedDomain = useDomainContext();
+  console.log('Index SelectedDomain:', selectedDomain);
+
   const router = useRouter();
   if (typeof window !== 'undefined') {
     const URL = window.location.href;
@@ -60,7 +64,11 @@ export default function PromotionItemsPage() {
       const regex = /@(\w+)/g;
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
-      setUserDomain(selectDomain(result));
+      if (selectedDomain) {
+        setUserDomain(selectDomain(selectedDomain));
+      } else {
+        setUserDomain(selectDomain(result));
+      }
     }
   }, [user]);
 

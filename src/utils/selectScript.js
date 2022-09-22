@@ -70,7 +70,7 @@ export function selectDomain(domain) {
       result = 'saladstop';
       break;
     case 'thinkval':
-      result = 'saladstop';
+      result = 'thinkval';
       break;
     case 'kctsoya':
       result = 'kctsoya';
