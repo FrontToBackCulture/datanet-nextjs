@@ -124,7 +124,7 @@ export default function ListPage() {
       const metricKey = dataSources['metricSource'].key;
       const trendKey = dataSources['trendSource'].key;
       let mergeStaticMetricData;
-
+      console.log(rawData);
       console.log(rawData[`${code}Static`], rawData[`${code}Metrics`]);
       mergeStaticMetricData = merge.merge(
         rawData[`${code}Static`],
