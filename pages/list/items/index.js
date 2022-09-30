@@ -116,10 +116,7 @@ export default function ListPage() {
   }, [conf]);
 
   useEffect(() => {
-    console.log(conf);
-    console.log(code);
-    console.log(rawData);
-    if (conf && code && Object.keys(rawData).length > 0) {
+    if (conf && code && rawData) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
@@ -147,7 +144,7 @@ export default function ListPage() {
         setRowData(performCalcData);
       }
     }
-  }, [rawData]);
+  }, [conf, rawData]);
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
