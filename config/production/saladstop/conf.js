@@ -39,6 +39,7 @@ const config = {
         queryID: '4097',
         domain: 'saladstop',
         key: 'Store',
+        contentType: 'channel',
         valueKey: 'sum Net Sales',
         groupPeriodKey: 'Transaction Date',
         groupKey: 'Order Channel',
