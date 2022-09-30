@@ -110,14 +110,14 @@ export default function ListPage() {
       });
 
       console.log('Stage 1:', allData);
-      console.log(`${code}Static`, staticKey);
-      console.log(`${code}Metrics`, metricKey);
 
       setRawData(allData);
     }
   }, [conf]);
 
   useEffect(() => {
+    console.log(code);
+    console.log(rawData);
     if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
