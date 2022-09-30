@@ -125,8 +125,9 @@ export default function ListPage() {
 
       console.log('Stage 2:', allData);
 
+      let performCalcData;
       if ((allData, mergeStaticMetricData)) {
-        let performCalcData = await performCalc(allData, conf);
+        performCalcData = await performCalc(allData, conf);
         console.log('Perform Calculation:', performCalcData);
 
         setRowData(performCalcData);
