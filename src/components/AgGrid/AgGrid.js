@@ -191,13 +191,11 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
   }
 
   useEffect(() => {
-    if (conf) {
+    if (rowD && conf && entity) {
       setEntityConf(conf);
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
-    }
-    if (rowD && conf && entity) {
-      let { listFields } = conf;
+
       if (rowD && rowD.length > 0) {
         let colDefs = [];
         if (listFields) {

@@ -106,6 +106,7 @@ export default function PromotionItemPage() {
   const [overviewName, setOverviewName] = useState();
   const [tab1Name, setTab1Name] = useState();
   const [tab2Name, setTab2Name] = useState();
+  const [tab3Name, setTab3Name] = useState();
 
   const selectedDomain = useDomainContext();
 
