@@ -118,7 +118,7 @@ export default function ListPage() {
   }, [conf]);
 
   useEffect(() => {
-    if (conf && rawData) {
+    if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
       const staticKey = dataSources['staticSource'].key;
