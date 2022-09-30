@@ -148,7 +148,7 @@ export default function PromotionItemPage() {
       localJsonData = selectLocalDataSource(contentType, dataType, dom);
       return localJsonData;
     }
-    if (URL.includes('screener')) {
+    if (URL.includes('datanet')) {
       let valJobs = await readVAL({
         queryID: qId,
         domain: dom,
@@ -164,7 +164,7 @@ export default function PromotionItemPage() {
     if (router.isReady) {
       let { id, entity } = router.query;
       if (entity && userDomain) {
-        if (user && URL.includes('screener.thinkval.io')) {
+        if (user && URL.includes('datanet.thinkval.io')) {
           gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
         }
         setItemId(id);

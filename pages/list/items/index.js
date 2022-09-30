@@ -82,7 +82,7 @@ export default function ListPage() {
   useEffect(() => {
     setRowData([]);
     getConfig();
-    if (user && URL.includes('screener.thinkval.io')) {
+    if (user && URL.includes('datanet.thinkval.io')) {
       gtag.event({ action: 'screenview', category: code, label: user.email, value: 1 });
     }
   }, [router.query, userDomain]);
@@ -154,7 +154,7 @@ export default function ListPage() {
       localJsonData = selectLocalDataSource(contentType, dataType, dom);
       return localJsonData;
     }
-    if (URL.includes('screener')) {
+    if (URL.includes('datanet')) {
       let valJobs = await readVAL({
         queryID: id,
         domain: dom,

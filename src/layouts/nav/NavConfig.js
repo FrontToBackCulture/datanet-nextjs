@@ -13,7 +13,7 @@ import Routes from '../../routes';
 // if (URL.includes('melvinapps')) {
 //   configNavConfig = confFnStage.getConfig('navConfig');
 // }
-// if (URL.includes('screener')) {
+// if (URL.includes('datanet')) {
 //   configNavConfig = confFnProd.getConfig('navConfig');
 // }
 

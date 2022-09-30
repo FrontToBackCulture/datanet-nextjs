@@ -141,7 +141,7 @@ export default function PromotionItemPage() {
       localJsonData = selectLocalDataSource(contentType, dataType, dom);
       return localJsonData;
     }
-    if (URL.includes('screener')) {
+    if (URL.includes('datanet')) {
       let valJobs = await readVAL({
         queryID: qId,
         domain: dom,
@@ -163,7 +163,7 @@ export default function PromotionItemPage() {
       localJsonData = selectLocalDataSource(contentType, dataType, conf.chartSource.domain);
       data = localJsonData;
     }
-    if (URL.includes('screener')) {
+    if (URL.includes('datanet')) {
       let valChartData = await readVAL({
         queryID: conf.chartSource.queryID,
         domain: conf.chartSource.domain,
@@ -204,7 +204,7 @@ export default function PromotionItemPage() {
         setStaticDomain(conf.staticSource.domain);
         setMetricQueryID(conf.metricSource.queryID);
         setMetricDomain(conf.metricSource.domain);
-        if (user && URL.includes('screener.thinkval.io')) {
+        if (user && URL.includes('datanet.thinkval.io')) {
           gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
         }
       }

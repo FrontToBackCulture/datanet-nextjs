@@ -15,11 +15,11 @@ export function selectConfig(URL, userDomain, code) {
     let config = confFn[userDomain].conf.getConfig(code);
     result = config;
   }
-  if (URL.includes('screener.thinkval.io') && userDomain) {
+  if (URL.includes('datanet.thinkval.io') && userDomain) {
     let config = confFnProd[userDomain].conf.getConfig(code);
     result = config;
   }
-  if (URL.includes('screenertest.thinkval.io') && userDomain) {
+  if (URL.includes('datanettest.thinkval.io') && userDomain) {
     let config = confFnProdTest[userDomain].conf.getConfig(code);
     result = config;
   }
