@@ -104,11 +104,18 @@ export default function ListPage() {
       // iterate thru all the datasources define, cache and extract to UI
       let allData = {};
 
-      await Object.keys(dataSources).map(async (dataSet, index) => {
+      // await Object.keys(dataSources).map(async (dataSet, index) => {
+      //   let { domain, queryID, contentType, name } = dataSources[dataSet];
+      //   let data = await getDataFromVAL(queryID, domain, contentType, code, true);
+      //   allData[name] = data;
+      // });
+
+      for (const dataSet of Object.keys(dataSources)) {
+        console.log('Check', dataSet);
         let { domain, queryID, contentType, name } = dataSources[dataSet];
         let data = await getDataFromVAL(queryID, domain, contentType, code, true);
         allData[name] = data;
-      });
+      }
 
       console.log('Stage 1:', allData);
 
