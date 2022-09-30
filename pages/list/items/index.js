@@ -117,7 +117,7 @@ export default function ListPage() {
     }
   }, [conf]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (conf && rawData) {
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
@@ -133,12 +133,13 @@ export default function ListPage() {
         rawData[`${code}Static`].length > 0 &&
         rawData[`${code}Metrics`].length > 0
       ) {
-        mergeStaticMetricData = await merge.merge(
+        mergeStaticMetricData = merge.merge(
           rawData[`${code}Static`],
           rawData[`${code}Metrics`],
           staticKey,
           metricKey
         );
+        console.log('Merge:', mergeStaticMetricData);
         rawData['mergeStaticMetric'] = mergeStaticMetricData;
       }
 
@@ -146,7 +147,7 @@ export default function ListPage() {
 
       let performCalcData;
       if ((rawData, mergeStaticMetricData)) {
-        performCalcData = await performCalc(rawData, conf);
+        performCalcData = performCalc(rawData, conf);
         console.log('Perform Calculation:', performCalcData);
 
         setRowData(performCalcData);
