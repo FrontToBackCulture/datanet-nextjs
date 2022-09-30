@@ -490,7 +490,7 @@ const config = {
       },
     },
     variablesMetrics: {
-      productShortCode: {
+      promotionShortCode: {
         dataSource: 'staticSource',
         sourceColumn: 'Storehub Product ID',
         type: 'string',
