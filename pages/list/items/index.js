@@ -47,6 +47,7 @@ export default function ListPage() {
   const [userDomain, setUserDomain] = useState();
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
+  const [rawData, setRawData] = useState();
 
   // set domain to the selected domain in the header
   const selectedDomain = useDomainContext();
@@ -112,35 +113,46 @@ export default function ListPage() {
       console.log(`${code}Static`, staticKey);
       console.log(`${code}Metrics`, metricKey);
 
+      setRawData(allData);
+    }
+  }, [conf]);
+
+  useEffect(async () => {
+    if (conf && rawData) {
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+      const { staticSource, metricSource, trendSource } = dataSources;
+      const staticKey = dataSources['staticSource'].key;
+      const metricKey = dataSources['metricSource'].key;
+      const trendKey = dataSources['trendSource'].key;
       let mergeStaticMetricData;
       if (
-        allData &&
+        rawData &&
         code &&
-        allData[`${code}Static`] &&
-        allData[`${code}Metrics`] &&
-        allData[`${code}Static`].length > 0 &&
-        allData[`${code}Metrics`].length > 0
+        rawData[`${code}Static`] &&
+        rawData[`${code}Metrics`] &&
+        rawData[`${code}Static`].length > 0 &&
+        rawData[`${code}Metrics`].length > 0
       ) {
         mergeStaticMetricData = await merge.merge(
-          allData[`${code}Static`],
-          allData[`${code}Metrics`],
+          rawData[`${code}Static`],
+          rawData[`${code}Metrics`],
           staticKey,
           metricKey
         );
-        allData['mergeStaticMetric'] = mergeStaticMetricData;
+        rawData['mergeStaticMetric'] = mergeStaticMetricData;
       }
 
-      console.log('Stage 2:', allData);
+      console.log('Stage 2:', rawData);
 
       let performCalcData;
-      if ((allData, mergeStaticMetricData)) {
-        performCalcData = await performCalc(allData, conf);
+      if ((rawData, mergeStaticMetricData)) {
+        performCalcData = await performCalc(rawData, conf);
         console.log('Perform Calculation:', performCalcData);
 
         setRowData(performCalcData);
       }
     }
-  }, [conf]);
+  }, [rawData]);
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
