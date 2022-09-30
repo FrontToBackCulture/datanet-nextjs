@@ -109,8 +109,8 @@ export default function ListPage() {
       });
 
       console.log(allData);
-      console.log(code);
-      console.log(merge);
+      console.log(`${code}Static`, staticKey);
+      console.log(`${code}Metrics`, metricKey);
 
       let mergeStaticMetricData;
       if (allData) {
