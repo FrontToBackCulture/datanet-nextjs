@@ -103,6 +103,7 @@ export default function ListPage() {
       const trendKey = dataSources['trendSource'].key;
       // iterate thru all the datasources define, cache and extract to UI
       let allData = {};
+
       await Object.keys(dataSources).map(async (dataSet, index) => {
         let { domain, queryID, contentType, name } = dataSources[dataSet];
         let data = await getDataFromVAL(queryID, domain, contentType, code, true);
@@ -117,6 +118,7 @@ export default function ListPage() {
   }, [conf]);
 
   useEffect(() => {
+    console.log(rawData);
     if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
@@ -145,7 +147,7 @@ export default function ListPage() {
         setRowData(performCalcData);
       }
     }
-  }, [conf, rawData]);
+  }, [rawData]);
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
