@@ -108,7 +108,7 @@ export default function ListPage() {
         allData[name] = data;
       });
 
-      console.log(allData);
+      console.log('Stage 1:', allData);
       console.log(`${code}Static`, staticKey);
       console.log(`${code}Metrics`, metricKey);
 
@@ -123,11 +123,14 @@ export default function ListPage() {
         allData['mergeStaticMetric'] = mergeStaticMetricData;
       }
 
-      console.log(allData);
-      let performCalcData = await performCalc(allData, conf);
-      console.log('Perform Calculation:', performCalcData);
+      console.log('Stage 2:', allData);
 
-      setRowData(performCalcData);
+      if ((allData, mergeStaticMetricData)) {
+        let performCalcData = await performCalc(allData, conf);
+        console.log('Perform Calculation:', performCalcData);
+
+        setRowData(performCalcData);
+      }
     }
   }, [conf]);
 
