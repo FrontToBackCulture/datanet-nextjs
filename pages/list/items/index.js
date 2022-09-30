@@ -116,6 +116,8 @@ export default function ListPage() {
       if (
         allData &&
         code &&
+        allData[`${code}Static`] &&
+        allData[`${code}Metrics`] &&
         allData[`${code}Static`].length > 0 &&
         allData[`${code}Metrics`].length > 0
       ) {
