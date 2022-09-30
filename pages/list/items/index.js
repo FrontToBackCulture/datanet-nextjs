@@ -112,14 +112,16 @@ export default function ListPage() {
       console.log(code);
       console.log(merge);
 
-      let mergeStaticMetricData = await merge.merge(
-        allData[`${code}Static`],
-        allData[`${code}Metrics`],
-        staticKey,
-        metricKey
-      );
-
-      allData['mergeStaticMetric'] = mergeStaticMetricData;
+      let mergeStaticMetricData;
+      if (allData) {
+        mergeStaticMetricData = await merge.merge(
+          allData[`${code}Static`],
+          allData[`${code}Metrics`],
+          staticKey,
+          metricKey
+        );
+        allData['mergeStaticMetric'] = mergeStaticMetricData;
+      }
 
       console.log(allData);
       let performCalcData = await performCalc(allData, conf);
