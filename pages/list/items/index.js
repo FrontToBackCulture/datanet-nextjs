@@ -28,6 +28,7 @@ import {
   selectLocalDataSource,
   selectDomain,
 } from '../../../src/utils/selectScript';
+import { performCalc } from '../../../src/utils/metricCalc';
 
 import { useDomainContext } from '../../../src/contexts/DomainProvider';
 // ----------------------------------------------------------------------
@@ -41,16 +42,16 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function PromotionItemsPage() {
+export default function ListPage() {
   const { user, error, isLoading } = useUser();
   const [userDomain, setUserDomain] = useState();
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
-  const [listFields, setListFields] = useState();
 
+  // set domain to the selected domain in the header
   const selectedDomain = useDomainContext();
-  console.log('Index SelectedDomain:', selectedDomain);
 
+  // extract URL information
   const router = useRouter();
   if (typeof window !== 'undefined') {
     const URL = window.location.href;
@@ -59,6 +60,7 @@ export default function PromotionItemsPage() {
   //get parameters from url query
   const { title, code } = router.query;
 
+  // if user login perform checks on email to determine domain
   useEffect(() => {
     if (user) {
       const regex = /@(\w+)/g;
@@ -72,7 +74,10 @@ export default function PromotionItemsPage() {
     }
   }, [user]);
 
-  //whenever query change get the relevant config based on the code attribute in the query
+  //whenever query or userDomain change
+  //- get the relevant config
+  //- reset row data to blank
+  // - push event to GA4
   useEffect(() => {
     setRowData([]);
     getConfig();
@@ -81,26 +86,50 @@ export default function PromotionItemsPage() {
     }
   }, [router.query, userDomain]);
 
-  // //whenever users gets update
-  // useEffect(() => {
-  //   if (user && user.email) {
-  //     getUserAppMetaData(user.email);
-  //   }
-  // }, [user]);
+  //get config from the config file based on environment variable
+  const getConfig = () => {
+    let config2used = selectConfig(URL, userDomain, code);
+    setConf(config2used);
+  };
 
-  // //get user appmetadata
-  // const getUserAppMetaData = async (email) => {
-  //   console.log(user);
-  //   let appMetaData = await getAppMetaData(user.email);
-  //   console.log(appMetaData.data[0]['app_metadata']['domain']);
-  //   return appMetaData.data[0]['app_metadata']['domain'];
-  // };
+  //once config have been extracted, process based on config instructions
+  useEffect(async () => {
+    if (conf) {
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+      const { staticSource, metricSource, trendSource } = dataSources;
+      const staticKey = dataSources['staticSource'].key;
+      const metricKey = dataSources['metricSource'].key;
+      const trendKey = dataSources['trendSource'].key;
+      // iterate thru all the datasources define, cache and extract to UI
+      let allData = {};
+      await Object.keys(dataSources).map(async (dataSet, index) => {
+        let { domain, queryID, contentType, name } = dataSources[dataSet];
+        let data = await getDataFromVAL(queryID, domain, contentType, code, true);
+        allData[name] = data;
+      });
+
+      let mergeStaticMetricData = merge.merge(
+        allData[`${code}Static`],
+        allData[`${code}Metrics`],
+        staticKey,
+        metricKey
+      );
+
+      allData['mergeStaticMetric'] = mergeStaticMetricData;
+
+      console.log(allData);
+      let performCalcData = await performCalc(allData, conf);
+      console.log('Perform Calculation:', performCalcData);
+
+      setRowData(performCalcData);
+    }
+  }, [conf]);
 
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
       let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType);
+      localJsonData = selectLocalDataSource(contentType, dataType, dom);
       return localJsonData;
     }
     if (URL.includes('screener')) {
@@ -115,99 +144,6 @@ export default function PromotionItemsPage() {
     }
   };
 
-  //get the config from the config file based on environment variable
-  //TODO: currently not working and need to fix properly, need to change the last if in each environment
-  const getConfig = () => {
-    let config2used = selectConfig(URL, userDomain, code);
-    setConf(config2used);
-  };
-
-  //once config have been extracted, process based on config instructions
-  useEffect(async () => {
-    if (conf) {
-      setListFields(conf.listFields);
-      const staticQueryID = conf.staticSource.queryID;
-      const staticDomain = conf.staticSource.domain;
-      const staticKey = conf.staticSource.key;
-      //extract static data set
-      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', code, true);
-      //extract metric data set
-      const metricQueryID = conf.metricSource.queryID;
-      const metricDomain = conf.metricSource.domain;
-      const metricKey = conf.metricSource.key;
-      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', code, true);
-      //extract the metrics that will be used to calculate latestMetrics, priorMetrics and changeMetrics
-      const changeKey = conf.change.valueKey;
-      //extract the key for the trend data aka the chart data
-      const trendQueryID = conf.chartSource.queryID;
-      const trendDomain = conf.chartSource.domain;
-      const chartValueKey = conf.chartSource.valueKey;
-      const chartGroupKey = conf.chartSource.groupKey;
-
-      // start merging of static and metric data
-      let merged = merge.merge(sD, mD, staticKey, metricKey);
-
-      //extract trend data set
-      const trendKey = conf.chartSource.key;
-      let tD = await getDataFromVAL(trendQueryID, trendDomain, 'trend', code, true);
-
-      console.log('Static Data', sD);
-      console.log('Metric Data', mD);
-      console.log('Trend Data', tD);
-      console.log('Merged:', merged);
-
-      //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
-
-      const filteredItemTrendData = await merged.map((item) => {
-        // let sparklineDataArray = [];
-        let filteredChart;
-        //filter by matching to the static data key
-        // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        filteredChart = selectObject(tD, metricKey, trendKey, item[staticKey]);
-
-        // if data exists in the trend data for the item, start the calculating
-        if (filteredChart.length > 0) {
-          let latestMetric = 0,
-            priorMetric = 0;
-          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey);
-          latestMetric = latestObject[changeKey];
-
-          // if more than 1 rows of data exists in the trend data for the item, start the calculating
-          if (filteredChart.length > 1) {
-            // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
-            priorMetric = secondLatestDate[changeKey];
-          } else {
-            priorMetric = 0;
-          }
-
-          // calculate change metrics
-          let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
-
-          item['latestMetric'] = latestMetric;
-          item['priorMetric'] = priorMetric;
-          item['changeMetric'] = changeMetric;
-          item['changeMetricPercent'] = changeMetricPercent;
-
-          // -----  test to get weekly
-          let weeklyChangeTrend = aggregate.group2Weekly(
-            filteredChart,
-            chartGroupKey,
-            chartValueKey
-          );
-          item['change'] = weeklyChangeTrend;
-        }
-
-        // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
-        return item;
-      });
-
-      console.log('Combined: ', filteredItemTrendData);
-      setRowData(merged);
-    }
-  }, [conf]);
-
   //  if (errors != 200) {
   //     return <ErrorScreen />;
   //   }
@@ -216,14 +152,7 @@ export default function PromotionItemsPage() {
       <Page title={title}>
         <RootStyle>
           <Container>
-            <AgGrid
-              type={'list'}
-              fieldConf={listFields}
-              fullConf={conf}
-              entity={code}
-              rowD={rowData}
-              title={title}
-            />
+            <AgGrid type={'list'} conf={conf} entity={code} rowD={rowData} title={title} />
           </Container>
         </RootStyle>
       </Page>
@@ -245,6 +174,6 @@ export default function PromotionItemsPage() {
 
 // ----------------------------------------------------------------------
 
-PromotionItemsPage.getLayout = function getLayout(page) {
+ListPage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };

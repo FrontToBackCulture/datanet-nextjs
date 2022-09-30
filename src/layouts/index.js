@@ -33,7 +33,6 @@ export default function Layout({
 }) {
   const [selectedDomain, setSelectedDomain] = useState();
   const header2Layout = (domain) => {
-    console.log('Layout', domain);
     setSelectedDomain(domain);
   };
 

@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 // other library
 import moment from 'moment';
-import { aggregate } from 'cuttle';
+import { aggregate, array } from 'cuttle';
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
 
-export default function DenseTable({ job, conf }) {
+export default function DenseTable({ job, conf, tabType }) {
   const [fullData, setFullData] = useState([]);
   const [fullDisplayData, setFullDisplayData] = useState([]);
   const [fullFinalDisplayData, setFullFinalDisplayData] = useState([]);
@@ -30,14 +30,31 @@ export default function DenseTable({ job, conf }) {
   useEffect(() => {
     // console.log('1st useEffect', job, conf);
     if (job.length > 0 && conf) {
-      // console.log('Start Work');
-      //   setFullData(job);
-      const { valueKey, groupPeriodKey } = conf.channelPerformanceSource;
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+      const { staticSource, metricSource, trendSource } = dataSources;
+      let dataSourceDef = dataSources[detailFields[tabType]['chart'].dataSource];
+      const { valueKey, groupPeriodKey } = dataSourceDef;
       let newItemArray = [];
       job.forEach((item, index) => {
         let newItem = item;
-        newItem.aggregateMetric = aggregate.simpleAggregate(item.data, [valueKey]);
         if (item.data.length > 0) {
+          //! should be using aggregate.simpleAggregate but somehow returning 0 need to fix and this is doing the aggregate for Net Sales L3M
+          let fields = [valueKey];
+          let result = item.data.reduce((accumulator, row) => {
+            for (let i = 0; i < fields.length; i++) {
+              let value = 0;
+              if (row[fields[i]]) {
+                value = parseFloat(row[fields[i]]);
+              }
+              accumulator += value;
+            }
+            return accumulator;
+          }, 0);
+          // newItem.aggregateMetric = aggregate.simpleAggregate(item.data, [valueKey]);
+          newItem.aggregateMetric = result;
+          //! should be using aggregate.simpleAggregate but somehow returning 0 need to fix and this is doing the aggregate for Net Sales L3M
+
+          //! should be using cuttle
           // get the the most recent date in the data set belonging to the selected item
           var mostRecentDate = new Date(
             Math.max.apply(
@@ -60,7 +77,6 @@ export default function DenseTable({ job, conf }) {
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (item.data.length > 1) {
             // get the the 2nd recent date object in the trend data for the selected item
-            // get the the 2nd recent date object in the trend data for the selected item
             const secondLatestDate = item.data.sort(
               (a, b) => a[groupPeriodKey] - b[groupPeriodKey]
             )[item.data.length - 2];
@@ -70,7 +86,7 @@ export default function DenseTable({ job, conf }) {
           }
           // calculate change metrics
           let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
+          let changeMetricPercent = (latestMetric - priorMetric) / priorMetric;
           newItem['latestMetric'] = latestMetric;
           newItem['priorMetric'] = priorMetric;
           newItem['changeMetric'] = changeMetric;
@@ -78,6 +94,7 @@ export default function DenseTable({ job, conf }) {
         }
         newItem.maxMetric = Math.max(...item.data.map((o) => o[valueKey]));
         newItem.minMetric = Math.min(...item.data.map((o) => o[valueKey]));
+        //! should be using cuttle
         newItemArray.push(newItem);
         // setFullDisplayData((oldArray) => [...oldArray, item]);
       });
@@ -88,7 +105,9 @@ export default function DenseTable({ job, conf }) {
   useEffect(() => {
     // console.log('FULL Entry', fullDisplayData);
     let arr = [];
-    let { channelFields } = conf;
+    const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+    const { staticSource, metricSource, trendSource } = dataSources;
+    let channelFields = detailFields[tabType]['table'];
     // console.log('FULL FINAL DAISPLAY', fullDisplayData);
     if (fullDisplayData.length > 0) {
       // console.log('FULL FINAL DAISPLAY Loop', fullDisplayData);
@@ -141,15 +160,15 @@ export default function DenseTable({ job, conf }) {
   return (
     <>
       {fullFinalDisplayData.map((entity, index) => (
-        <Grid key={entity} item xs={12} md={12} lg={12}>
+        <Grid key={'tableName' + entity.name + index} item xs={12} md={12} lg={12}>
           {entity.name}
           <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}>
             <TableContainer component={Paper}>
-              <Table size="small" aria-label="a dense table">
+              <Table size="small">
                 <TableBody>
                   {entity.data.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={'tableRowName' + row.name + row.value}
                       sx={{
                         '&:last-child td, &:last-child th': { border: 0 },
                         borderBottom: '1px solid lightgrey',

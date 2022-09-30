@@ -18,7 +18,7 @@ import {
 import { fDate2 } from '../../utils/formatTime';
 import { fNumber } from '../../utils/formatNumber';
 
-export default function Example({ conf, chartData }) {
+export default function Example({ conf, chartData, tab }) {
   const [dat, setDat] = useState([]);
   const [displayDat, setDisplayDat] = useState([]);
   const [period, setPeriod] = useState(90);
@@ -27,16 +27,19 @@ export default function Example({ conf, chartData }) {
   const [chartTitle, setChartTitle] = useState();
 
   useEffect(() => {
-    if (chartData.length > 0) {
-      // console.log('Re Chart: ', chartData);
-      // console.log('Re Chart: ', chartData.length);
+    const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+    const { staticSource, metricSource, trendSource } = dataSources;
+    console.log('TabType', tab);
+    console.log('ChartData', chartData);
+    if (chartData.length > 0 && tab && conf) {
       setDat(chartData);
       setDisplayDat(chartData);
 
       let data, month, value;
-      if (conf.chartSource) {
-        const { chartSource } = conf;
-        const { groupKey, valueKey, title, metricName } = chartSource;
+      if (detailFields[tab]['chart']) {
+        let dataSourceDef = dataSources[detailFields[tab]['chart'].dataSource];
+        const { groupKey, valueKey, title } = dataSourceDef;
+        console.log('What is this popuplating?', groupKey, valueKey, title);
         setChartTitle(title);
         // console.log('React Chart:', chartData);
         if (chartData && chartData.length > 0 && conf) {
@@ -47,7 +50,7 @@ export default function Example({ conf, chartData }) {
         }
       }
     }
-  }, [conf, chartData]);
+  }, [conf, chartData, tab]);
 
   useEffect(() => {
     // console.log('SimpleArea:', displayDat);
@@ -88,16 +91,13 @@ export default function Example({ conf, chartData }) {
               opacity: [0.9, 0.8, 0.8],
             }}
           >
-            <Typography variant="caption" gutterBottom>
+            <Typography gutterBottom>
               {`Date: ${fDate2(label)}`}
               <br />
               {`Day of Week: ${moment(label).format('dddd')}`}
               <br />
               {`Value: ${fNumber(payload[0].value)}`}
             </Typography>
-            {/* <p className="label">{`${fDate2(label)} : ${fNumber(payload[0].value)}`}</p> */}
-            {/* <p className="intro">{getIntroOfPage(label)}</p>
-          <p className="desc">Anything you want can be displayed here.</p> */}
           </Box>
         </div>
       );
@@ -114,7 +114,7 @@ export default function Example({ conf, chartData }) {
 
   return (
     <>
-      <tspan fontSize="14">{chartTitle}</tspan>
+      <div fontSize="14">{chartTitle}</div>
       <Stack spacing={2} direction="row">
         <Button variant={period == 30 ? 'contained' : 'outlined'} onClick={() => handleClick(30)}>
           Last 30 days
@@ -126,45 +126,46 @@ export default function Example({ conf, chartData }) {
           Last 90 days
         </Button>
       </Stack>
-      <ResponsiveContainer width="100%" height="100%" minHeight={400}>
-        <AreaChart
-          width={500}
-          height={400}
-          data={displayDat}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <defs>
-            <linearGradient id="yAxis" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#0bb4ff" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#0bb4ff" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={xAxis} tickFormatter={formatXAxis} tick={{ fontSize: 12 }} />
-          <YAxis
-            type="number"
-            domain={['auto', 'auto']}
-            tickFormatter={DataFormater}
-            tick={{ fontSize: 12 }}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          <Area
-            type="monotone"
-            dataKey={yAxis}
-            stroke="#0bb4ff"
-            // fill="#8884d8"
-            // dot={{ stroke: 'purple', strokeWidth: 2 }}
-            fillOpacity={1}
-            fill="url(#yAxis)"
-          />
-          {/* <Brush tickFormatter={formatXAxis} startIndex={Math.round(displayDat.length * 0.45)} /> */}
-        </AreaChart>
-      </ResponsiveContainer>
+      {chartData.length > 0 && (
+        <ResponsiveContainer width="100%" height="100%" minHeight={400}>
+          <AreaChart
+            width={500}
+            height={400}
+            data={displayDat}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <defs>
+              <linearGradient id="yAxis" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#0bb4ff" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#0bb4ff" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey={xAxis} tickFormatter={formatXAxis} tick={{ fontSize: 12 }} />
+            <YAxis
+              type="number"
+              domain={['auto', 'auto']}
+              tickFormatter={DataFormater}
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Area
+              type="monotone"
+              dataKey={yAxis}
+              stroke="#0bb4ff"
+              // fill="#8884d8"
+              // dot={{ stroke: 'purple', strokeWidth: 2 }}
+              fillOpacity={1}
+              fill="url(#yAxis)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      )}
     </>
   );
 }

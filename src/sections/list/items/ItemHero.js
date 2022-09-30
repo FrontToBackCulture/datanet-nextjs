@@ -27,9 +27,9 @@ CareerJobHero.propTypes = {
   }),
 };
 
-export default function CareerJobHero({ job, entity }) {
+export default function CareerJobHero({ item, entity }) {
   // const { shortCode, name, metric1, metric1PercentChange } = job;
-  const { shortCode, name, latestMetric, percentChangeMetric, metric1, metric2 } = job;
+  const { name, latestMetric, percentChangeMetric } = item;
   // console.log(job);
   // let metric1PercentChange = 0.5;
 
@@ -38,14 +38,9 @@ export default function CareerJobHero({ job, entity }) {
       <Container>
         <Stack spacing={{ xs: 3, md: 2 }} sx={{ color: 'common.black' }}>
           <Typography variant="p" component="p">
-            {name} ({shortCode})
+            {name}
           </Typography>
-          <Typography
-            variant="caption"
-            component="caption"
-            sx={{ textAlign: 'left' }}
-            style={{ marginTop: '0px', color: 'grey' }}
-          >
+          <Typography sx={{ textAlign: 'left' }} style={{ marginTop: '0px', color: 'grey' }}>
             Data updated with yesterday transactions.
           </Typography>
           <Typography variant="h3" component="h3" style={{ marginTop: '0px' }}>
@@ -62,9 +57,7 @@ export default function CareerJobHero({ job, entity }) {
               )}
             </Stack>
           </Typography>
-          <Typography variant="caption" style={{ marginTop: '0px', color: 'grey' }}>
-            As of 09:00AM SGT.
-          </Typography>
+          <Typography style={{ marginTop: '0px', color: 'grey' }}>As of 09:00AM SGT.</Typography>
         </Stack>
         {/* </Stack> */}
       </Container>

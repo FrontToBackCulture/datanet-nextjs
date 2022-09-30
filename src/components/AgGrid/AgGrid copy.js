@@ -15,14 +15,14 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-material.css';
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
 
-export default function AGGrid({ rowD, type, conf, entity, title }) {
+export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title }) {
   const gridRef = useRef();
   const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
   const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
   const [gridApi, setGridApi] = useState();
   const [rowData, setRowData] = useState([]);
   const [columnDefs, setColumnDefs] = useState([]);
-  const [entityConf, setEntityConf] = useState(conf);
+  const [entityConf, setEntityConf] = useState(fullConf);
 
   const onGridReady = (params) => {
     setGridApi(params);
@@ -57,6 +57,30 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
       autoHeight: true,
     };
   }, []);
+
+  function LinkComponent(props) {
+    // console.log('Link: ', entity, entityConf);
+    let link;
+    if (props.value) {
+      link = props.value.replace('/', '%2F');
+    } else {
+      link = '';
+    }
+    return (
+      <NextLink
+        // key={id}
+        // as={Routes[type].job(link)}
+        href={{
+          // pathname: Routes[type].job('[id]'),
+          pathname: Routes[type].job(link),
+          query: { entity: entity },
+        }}
+        passHref
+      >
+        <a>{props.value}</a>
+      </NextLink>
+    );
+  }
 
   const statusBar = useMemo(() => {
     return {
@@ -107,34 +131,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
 
   const rowGroupPanelShow = 'always';
 
-  const autoSizeAll = useCallback((skipHeader) => {
-    const allColumnIds = [];
-    gridRef.current.columnApi.getColumns().forEach((column) => {
-      allColumnIds.push(column.getId());
-    });
-    gridRef.current.columnApi.autoSizeColumns(allColumnIds, skipHeader);
-  }, []);
-
-  const onFilterTextBoxChanged = useCallback(() => {
-    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value);
-  }, []);
-
-  function headerHeightGetter() {
-    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')];
-    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight);
-    var tallestHeaderTextHeight = Math.max(...clientHeights);
-
-    return tallestHeaderTextHeight;
-  }
-
-  const onBtShowLoading = useCallback(() => {
-    gridRef.current.api.showLoadingOverlay();
-  }, []);
-
-  const onBtShowNoRows = useCallback(() => {
-    gridRef.current.api.showNoRowsOverlay();
-  }, []);
-
   function decimalFormatter(params) {
     if (params && params.value) {
       return fShortenNumber(params.value);
@@ -167,47 +163,52 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
     }
   }
 
-  function LinkComponent(props) {
-    let { linkKey, data, value } = props;
-    let keyValue = data[linkKey];
-    let link;
-    // replace special character to enable href to work
-    if (keyValue) {
-      link = keyValue.replace('/', '%2F');
-    } else {
-      link = '';
-    }
-    return (
-      <NextLink
-        href={{
-          pathname: Routes[type].job(link),
-          query: { entity: entity },
-        }}
-        passHref
-      >
-        <a>{value}</a>
-      </NextLink>
-    );
-  }
+  const autoSizeAll = useCallback((skipHeader) => {
+    const allColumnIds = [];
+    gridRef.current.columnApi.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    gridRef.current.columnApi.autoSizeColumns(allColumnIds, skipHeader);
+  }, []);
 
   useEffect(() => {
-    if (conf) {
-      setEntityConf(conf);
-      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
-      const { staticSource, metricSource, trendSource } = dataSources;
+    let chartValueKey, chartGroupKey;
+    if (fullConf) {
+      setEntityConf(fullConf);
+      chartValueKey = fullConf.chartSource.valueKey;
+      chartGroupKey = fullConf.chartSource.groupKey;
     }
-    if (rowD && conf && entity) {
-      let { listFields } = conf;
+    if (rowD && fullConf && entity) {
+      // console.log('AG GRID USE: ', fullConf, entity);
+      // if (rowD && rowD.length > 0 && rowD[0][Object.keys(rowD[0])[0]]) {
       if (rowD && rowD.length > 0) {
+        // console.log('1st object 1st attribute:', rowD[0][Object.keys(rowD[0])[0]]);
         let colDefs = [];
-        if (listFields) {
-          const fields2Show = Object.keys(listFields);
+        if (fieldConf) {
+          const fields2Show = Object.keys(fieldConf);
           fields2Show.forEach((field2Show) => {
             let colDefsObj = {};
-            let variableMetric = conf['variablesMetrics'][listFields[field2Show].variablesMetrics];
-            colDefsObj.field = variableMetric.sourceColumn;
-            colDefsObj.headerName = variableMetric.headerName;
-            switch (variableMetric.type) {
+            colDefsObj.field = fieldConf[field2Show].sourceColumn;
+            if (fieldConf[field2Show].link) {
+              colDefsObj.cellRenderer = LinkComponent;
+              colDefsObj.pinned = 'left';
+            }
+            if (fieldConf[field2Show].sort) {
+              colDefsObj.sort = fieldConf[field2Show].sort;
+            }
+            if (fieldConf[field2Show].headerName) {
+              colDefsObj.headerName = fieldConf[field2Show].headerName;
+            }
+            if (fieldConf[field2Show].maxWidth) {
+              colDefsObj.maxWidth = fieldConf[field2Show].maxWidth;
+            }
+            if (fieldConf[field2Show].condition) {
+              colDefsObj.cellClassRules = {
+                'rag-green': 'x > 0',
+                'rag-red': 'x < 0',
+              };
+            }
+            switch (fieldConf[field2Show].type) {
               case 'decimal':
                 colDefsObj.valueFormatter = decimalFormatter;
                 break;
@@ -223,43 +224,36 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
               default:
                 break;
             }
-            if (listFields[field2Show].link) {
-              colDefsObj.cellRenderer = LinkComponent;
-              colDefsObj.cellRendererParams = {
-                linkKey: conf.dataSources.staticSource.key,
-              };
-              colDefsObj.pinned = 'left';
-            }
-            if (listFields[field2Show].sort) {
-              colDefsObj.sort = listFields[field2Show].sort;
-            }
-            if (listFields[field2Show].maxWidth) {
-              colDefsObj.maxWidth = listFields[field2Show].maxWidth;
-            }
-            if (listFields[field2Show].condition) {
-              colDefsObj.cellClassRules = {
-                'rag-green': 'x > 0',
-                'rag-red': 'x < 0',
-              };
-            }
             colDefs.push(colDefsObj);
           });
           colDefs.push({
             field: 'change',
             cellRenderer: 'agSparklineCellRenderer',
             headerName: 'Weekly Trend',
+            // cellRendererParams: {
+            //   sparklineOptions: {
+            //     type: 'area',
+            //     axis: {
+            //       type: 'time',
+            //     },
+            //     marker: {
+            //       size: 3,
+            //     },
+            //   },
+            // },
             cellRendererParams: {
               sparklineOptions: {
                 type: 'area',
                 // set xKey and yKey to the keys which can be used to retrieve X and Y values from the supplied data
                 xKey: 'Week',
-                yKey: trendSource.valueKey,
+                yKey: chartValueKey,
                 marker: {
                   size: 3,
                 },
               },
             },
           });
+          // console.log(colDefs);
           setColumnDefs(colDefs);
         } else {
           const keys = Object.keys(rowD[0]);
@@ -273,11 +267,29 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
           setColumnDefs(colDefs);
         }
       }
-      console.log('Columns:', columnDefs);
-      console.log('Rows:', rowD);
       setRowData(rowD);
     }
-  }, [rowD, type, conf, entity]);
+  }, [rowD, type, fieldConf, fullConf, entity]);
+
+  const onFilterTextBoxChanged = useCallback(() => {
+    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value);
+  }, []);
+
+  function headerHeightGetter() {
+    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')];
+    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight);
+    var tallestHeaderTextHeight = Math.max(...clientHeights);
+
+    return tallestHeaderTextHeight;
+  }
+
+  const onBtShowLoading = useCallback(() => {
+    gridRef.current.api.showLoadingOverlay();
+  }, []);
+
+  const onBtShowNoRows = useCallback(() => {
+    gridRef.current.api.showNoRowsOverlay();
+  }, []);
 
   return (
     <div style={containerStyle}>

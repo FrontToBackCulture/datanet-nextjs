@@ -19,7 +19,7 @@ import {
 import { fDate2 } from '../../utils/formatTime';
 import { fNumber } from '../../utils/formatNumber';
 
-export default function Example({ conf, chartData, uniqueChannels }) {
+export default function Example({ conf, chartData, uniqueChannels, tab }) {
   const [dat, setDat] = useState([]);
   const [displayDat, setDisplayDat] = useState([]);
   const [displayToggleDat, setDisplayToggleDat] = useState([]);
@@ -42,17 +42,17 @@ export default function Example({ conf, chartData, uniqueChannels }) {
     '#00bfa0',
   ];
   useEffect(() => {
-    if (chartData.length > 0) {
-      // console.log('Re Chart: ', chartData);
-      // console.log('Re Chart: ', chartData.length);
+    if (chartData.length > 0 && tab && conf) {
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+      const { staticSource, metricSource, trendSource } = dataSources;
       setDat(chartData);
       setDisplayDat(chartData);
       setDisplayToggleDat(chartData);
 
       let data, month, value;
-      if (conf.channelPerformanceSource) {
-        const { channelPerformanceSource } = conf;
-        const { groupKey, valueKey, title, metricName, groupPeriodKey } = channelPerformanceSource;
+      if (detailFields[tab]['chart']) {
+        let dataSourceDef = dataSources[detailFields[tab]['chart'].dataSource];
+        const { groupKey, valueKey, title, groupPeriodKey } = dataSourceDef;
         setChartTitle(title);
         // console.log('React Chart:', chartData);
         if (chartData && chartData.length > 0 && conf) {
@@ -66,16 +66,13 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   }, [conf, chartData]);
 
   useEffect(() => {
-    console.log(uniqueChannels);
     if (uniqueChannels && uniqueChannels.length > 0) {
       setUChannels(uniqueChannels);
       setActiveButton(uniqueChannels);
     }
   }, [uniqueChannels]);
 
-  useEffect(() => {
-    console.log('Active Button:', activeButton);
-  }, [activeButton]);
+  useEffect(() => {}, [activeButton]);
 
   function isValidDate(d) {
     return d instanceof Date && !isNaN(d);
@@ -112,27 +109,22 @@ export default function Example({ conf, chartData, uniqueChannels }) {
         <div className="custom-tooltip">
           <Box
             sx={{
-              width: 180,
+              width: 250,
               height: 80,
               backgroundColor: 'white',
               opacity: [0.9, 0.8, 0.8],
             }}
           >
-            <Typography variant="caption" gutterBottom>
-              {`Date: ${fDate2(label)}`}
-              <br />
-              {`Day of Week: ${moment(label).format('dddd')}`}
-              <br />
-              {payload.map((item, index) => (
-                <p key={index} style={{ color: item.color }}>
-                  {item.name}: ${fNumber(item.value)}
-                  <br />
-                </p>
-              ))}
-            </Typography>
-            {/* <p className="label">{`${fDate2(label)} : ${fNumber(payload[0].value)}`}</p> */}
-            {/* <p className="intro">{getIntroOfPage(label)}</p>
-          <p className="desc">Anything you want can be displayed here.</p> */}
+            <Typography gutterBottom>{`Date: ${fDate2(label)}`}</Typography>
+            <br />
+            <Typography gutterBottom>{`Day of Week: ${moment(label).format('dddd')}`}</Typography>
+            <br />
+            {payload.map((item, index) => (
+              <div key={'toolTipNameValue' + index} style={{ color: item.color }}>
+                {item.name}: ${fNumber(item.value)}
+                <br />
+              </div>
+            ))}
           </Box>
         </div>
       );
@@ -186,8 +178,6 @@ export default function Example({ conf, chartData, uniqueChannels }) {
   };
 
   const handleMouseEnter = (o) => {
-    console.log(o);
-    console.log(displayDat);
     let selectedLineKey = o.value;
     if (activeButton.includes(selectedLineKey)) {
       setActiveButton(activeButton.filter((item) => item !== selectedLineKey));
@@ -197,8 +187,6 @@ export default function Example({ conf, chartData, uniqueChannels }) {
 
     let foundIndex;
     foundIndex = displayDat.findIndex((x) => x.name == selectedLineKey);
-    console.log(foundIndex);
-    console.log(displayDat[foundIndex]);
     if (displayDat[foundIndex].data.length > 0) {
       setDisplayDat(
         Object.values({ ...displayDat, [foundIndex]: { ...displayDat[foundIndex], data: [] } })
@@ -222,20 +210,18 @@ export default function Example({ conf, chartData, uniqueChannels }) {
 
   const handleClick = (period) => {
     let reducedData = [];
-    console.log(uChannels);
     uChannels.forEach(function (item, index) {
       let channelData = dat.find((element) => element.name == item);
       let slicedData = channelData['data'].slice(Math.max(channelData['data'].length - period, 1));
       reducedData.push({ name: item, data: slicedData });
     });
-    console.log('FilteredData', reducedData);
     setPeriod(period);
     setDisplayDat(reducedData);
   };
 
   return (
     <>
-      <tspan fontSize="14">{chartTitle}</tspan>
+      <div fontSize="14">{chartTitle}</div>
       <Stack spacing={2} direction="row">
         <Button variant={period == 30 ? 'contained' : 'outlined'} onClick={() => handleClick(30)}>
           Last 30 days
@@ -284,7 +270,7 @@ export default function Example({ conf, chartData, uniqueChannels }) {
               dataKey={yAxis}
               data={s.data}
               name={s.name}
-              key={s.name}
+              key={'line' + s.name}
               stroke={color[index]}
               dot={false}
             />

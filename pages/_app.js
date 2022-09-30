@@ -55,7 +55,7 @@ MyApp.propTypes = {
 export default function MyApp(props) {
   const { Component, pageProps } = props;
 
-  console.log('GTAG:', gtag.GA_TRACKING_ID);
+  // console.log('GTAG:', gtag.GA_TRACKING_ID);
 
   const router = useRouter();
   useEffect(() => {

@@ -35,9 +35,7 @@ import {
   selectLocalDataSource,
   selectDomain,
 } from '../../../src/utils/selectScript';
-// data
-import outletData from '../../../data/outlet';
-import productData from '../../../data/product';
+import { performCalc } from '../../../src/utils/metricCalc';
 
 import { useDomainContext } from '../../../src/contexts/DomainProvider';
 
@@ -58,14 +56,10 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      // aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 0 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
     </div>
   );
 }
@@ -79,7 +73,7 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    // 'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 
@@ -90,8 +84,9 @@ export default function PromotionItemPage() {
   const [userDomain, setUserDomain] = useState();
   const [value, setValue] = useState(0);
   const [job, setJob] = useState();
+  const [item, setItem] = useState();
   const [dataRows, setDataRows] = useState([]);
-  const [fullConfig, setFullConfig] = useState({});
+  const [conf, setConf] = useState({});
   const [itemId, setItemId] = useState();
   const [entity, setEntity] = useState();
   const [chartData, setChartData] = useState([]);
@@ -105,9 +100,14 @@ export default function PromotionItemPage() {
   const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
   const [uniqueChannels, setUniqueChannels] = useState([]);
   const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
+  const [tab1, setTab1] = useState(false);
+  const [tab2, setTab2] = useState(false);
+  const [tab3, setTab3] = useState(false);
+  const [overviewName, setOverviewName] = useState();
+  const [tab1Name, setTab1Name] = useState();
+  const [tab2Name, setTab2Name] = useState();
 
   const selectedDomain = useDomainContext();
-  console.log('ID SelectedDomain:', selectedDomain);
 
   const isDesktop = useResponsive('up', 'md');
   const router = useRouter();
@@ -134,10 +134,9 @@ export default function PromotionItemPage() {
   };
 
   //get the config from the config file based on environment variable
-  //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
     let config2used = selectConfig(URL, userDomain, code);
-    setFullConfig(config2used);
+    setConf(config2used);
 
     return config2used;
   };
@@ -146,7 +145,7 @@ export default function PromotionItemPage() {
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
       let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType);
+      localJsonData = selectLocalDataSource(contentType, dataType, dom);
       return localJsonData;
     }
     if (URL.includes('screener')) {
@@ -161,226 +160,158 @@ export default function PromotionItemPage() {
     }
   };
 
-  // get chart aka trend data from VAL
-  const getChartData = async (conf) => {
-    let contentType = 'trend';
-    let dataType = entity;
-    let data;
-    if (URL.includes('localhost')) {
-      let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType);
-      data = localJsonData;
-    }
-    if (URL.includes('screener')) {
-      let valChartData = await readVAL({
-        queryID: conf.chartSource.queryID,
-        domain: conf.chartSource.domain,
-        contentType: 'trend',
-        dataType: entity,
-        cache: true,
-      });
-      data = valChartData.data;
-    }
-
-    console.log('All Chart Datat: ', data);
-    setAllChartData(data);
-    // console.log('Chart: ', data);
-    let filteredChart = [];
-    if (data.length > 0) {
-      filteredChart = selectObject(data, conf.chartSource.key, conf.metricSource.key, itemId);
-    }
-
-    return filteredChart;
-  };
-
-  // if (jobError) {
-  //   return <ErrorScreen />;
-  // }
-
   useEffect(async () => {
     if (router.isReady) {
-      // console.log(router.query);
       let { id, entity } = router.query;
-      // console.log(entity);
       if (entity && userDomain) {
-        // let configJson = JSON.parse(conf);
-        setEntity(entity);
-        let conf = await getConfig(entity);
-        console.log('ID config', id, entity, userDomain, conf);
-        setFullConfig(conf);
-        setItemId(id);
-        setStaticQueryID(conf.staticSource.queryID);
-        setStaticDomain(conf.staticSource.domain);
-        setMetricQueryID(conf.metricSource.queryID);
-        setMetricDomain(conf.metricSource.domain);
         if (user && URL.includes('screener.thinkval.io')) {
           gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
         }
+        setItemId(id);
+        setEntity(entity);
+        let conf = await getConfig(entity);
+        const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+        const { staticSource, metricSource, trendSource } = dataSources;
+        const { overview, tab1, tab2 } = detailFields;
+        const staticKey = dataSources['staticSource'].key;
+        const metricKey = dataSources['metricSource'].key;
+        const trendKey = dataSources['trendSource'].key;
+
+        if (detailFields.overview) {
+          setOverviewName(detailFields.overview.name);
+        }
+
+        if (detailFields.tab1) {
+          setTab1(true);
+          setTab1Name(detailFields.tab1.name);
+        }
+
+        if (detailFields.tab2) {
+          setTab2(true);
+          setTab2Name(detailFields.tab2.name);
+        }
+
+        if (detailFields.tab3) {
+          setTab3(true);
+          setTab3Name(detailFields.tab3.name);
+        }
+
+        // iterate thru all the datasources define, cache and extract to UI
+        let allData = {};
+        await Object.keys(dataSources).map(async (dataSet, index) => {
+          let { domain, queryID, contentType, name } = dataSources[dataSet];
+          let data = await getDataFromVAL(queryID, domain, contentType, entity, true);
+          allData[name] = data;
+        });
+
+        let mergeStaticMetricData = merge.merge(
+          allData[`${entity}Static`],
+          allData[`${entity}Metrics`],
+          staticKey,
+          metricKey
+        );
+
+        allData['mergeStaticMetric'] = mergeStaticMetricData;
+        console.log('ID All Data:', allData);
+
+        let performCalcData = await performCalc(allData, conf);
+        console.log('Perform Calculation:', performCalcData);
+
+        //filter the selected item from the newly merged data with trend
+        let filtered = performCalcData.find((merge) => merge[staticKey] === id);
+        console.log('Melvin Filtered:', filtered);
+
+        // for item hero -----------------------------------------
+        //fetch the fields to show from static and metric
+        const fields2ShowList = Object.keys(listFields);
+        let itemObj = {};
+        fields2ShowList.forEach((field2Show) => {
+          let variableMetric = conf['variablesMetrics'][listFields[field2Show].variablesMetrics];
+          itemObj[field2Show] = filtered[variableMetric.sourceColumn];
+        });
+        setItem(itemObj);
+        // for item hero -----------------------------------------
+
+        //fetch the fields to show at the table level for overview aka landing page of each item   --------------------
+        const fields2ShowDetail = Object.keys(overview['table']);
+        let itemArray2 = [];
+        fields2ShowDetail.forEach((field2Show) => {
+          let variableMetric =
+            conf['variablesMetrics'][overview['table'][field2Show].variablesMetrics];
+          itemArray2.push({
+            name: variableMetric.headerName,
+            value: filtered[variableMetric.sourceColumn],
+          });
+        });
+        setDataRows(itemArray2);
+        //fetch the fields to show at the table level for overview aka landing page of each item   --------------------
+
+        //fetch the data for the chart for overview aka landing page    --------------------
+        let filteredChart = [];
+        if (allData[dataSources[overview['chart']['dataSource']].name].length > 0) {
+          filteredChart = selectObject(
+            allData[dataSources[overview['chart']['dataSource']].name],
+            trendKey,
+            metricKey,
+            id
+          );
+          setChartData(filteredChart);
+        }
+        //fetch the data for the chart  for overview aka landing page  --------------------
+
+        //! Need to think how to refactor, this contain data for both group table and multiseries chart --------- group by channel performance
+        if (detailFields.tab1) {
+          const channelGroupKey = dataSources[detailFields.tab1.chart.dataSource].groupKey;
+          const channelGroupPeriodKey =
+            dataSources[detailFields.tab1.chart.dataSource].groupPeriodKey;
+          const channelValueKey = dataSources[detailFields.tab1.chart.dataSource].valueKey;
+          const { queryID, domain, key } = dataSources[detailFields.tab1.chart.dataSource];
+
+          let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
+
+          let cpdFiltered = cpd.filter((row) => row[key] == id);
+
+          let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
+            groupKeys: [channelGroupPeriodKey, channelGroupKey],
+            sumKeys: [channelValueKey],
+            excludeBlank: false,
+          });
+
+          let groupByChannelNew = [];
+          groupByChannel.forEach(function (item, index) {
+            let properDate = new Date(item[channelGroupPeriodKey]);
+            item.DateNumber = moment(properDate).valueOf();
+            groupByChannelNew.push(item);
+          });
+
+          const arrayUniqueByKey = groupByChannelNew
+            .map((item) => item[channelGroupKey])
+            .filter((value, index, self) => self.indexOf(value) === index);
+          setUniqueChannels(arrayUniqueByKey);
+
+          let multiSeriesData = [];
+
+          arrayUniqueByKey.forEach(function (item, index) {
+            let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
+            multiSeriesData.push({ name: item, data: seriesObject });
+          });
+
+          console.log('ID MultiSeries:', multiSeriesData);
+          setMultiSeriesChannelData(multiSeriesData);
+        }
+
+        //!--------- group by channel performance
       }
     }
   }, [router.isReady, userDomain]);
 
-  //once static query and domain available extract static and trend aka chart data
-  useEffect(async () => {
-    if (staticQueryID && staticDomain) {
-      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', entity, true);
-      setStaticData(sD);
-      let finalChartValue = await getChartData(fullConfig);
-      console.log('FINAL CHART VALUE:', finalChartValue);
-      setChartData(finalChartValue);
-    }
-  }, [staticQueryID, staticDomain]);
-
-  //once metric query and domain available extract metric data
-  useEffect(async () => {
-    if (metricQueryID && metricDomain) {
-      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', entity, true);
-      setMetriccData(mD);
-    }
-  }, [metricQueryID, metricDomain]);
-
-  //once all data available starts massaging the end result data
-  useEffect(async () => {
-    if (
-      staticData &&
-      metricData &&
-      staticData.length > 0 &&
-      metricData.length > 0 &&
-      allChartData.length > 0
-    ) {
-      const staticKey = fullConfig.staticSource.key;
-      const metricKey = fullConfig.metricSource.key;
-      const changeKey = fullConfig.change.valueKey;
-      const trendKey = fullConfig.chartSource.key;
-      const chartGroupKey = fullConfig.chartSource.groupKey;
-
-      // start merging of static and metric data
-      let merged = merge.merge(staticData, metricData, staticKey, metricKey);
-
-      console.log('Static Data', staticData);
-      console.log('Metric Data', metricData);
-      console.log('Trend Data', allChartData);
-      console.log('Chart Specific Data', chartData);
-      console.log('Merged:', merged);
-
-      //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
-      const filteredItemTrendData = await merged.map((item) => {
-        let filteredChart;
-        //filter by matching to the static data key
-        // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        filteredChart = selectObject(allChartData, metricKey, trendKey, item[staticKey]);
-
-        // if data exists in the trend data for the item, start the calculating
-        if (filteredChart.length > 0) {
-          let latestMetric = 0,
-            priorMetric = 0;
-          // get the the most recent date in the data set belonging to the selected item
-          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey);
-          latestMetric = latestObject[changeKey];
-
-          // if more than 1 rows of data exists in the trend data for the item, start the calculating
-          if (filteredChart.length > 1) {
-            // get the the 2nd recent date object in the trend data for the selected item
-            // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
-            priorMetric = secondLatestDate[changeKey];
-          } else {
-            priorMetric = 0;
-          }
-
-          // calculate change metrics
-          let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
-
-          item['latestMetric'] = latestMetric;
-          item['priorMetric'] = priorMetric;
-          item['changeMetric'] = changeMetric;
-          item['changeMetricPercent'] = changeMetricPercent;
-        }
-
-        // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
-        return item;
-      });
-
-      merged = filteredItemTrendData;
-
-      const { detailFields, listFields } = fullConfig;
-      //filter the selected item from the newly merged data with trend
-      let filtered = merged.find((merge) => merge[staticKey] === itemId);
-      console.log('Selected Job: ', filtered);
-      //fetch the fields to show from static and metric
-      const fields2ShowList = Object.keys(listFields);
-      let jobObj = {};
-      fields2ShowList.forEach((field2Show) => {
-        jobObj[field2Show] = filtered[listFields[field2Show].sourceColumn];
-      });
-      //fetch the fields to show at the table level
-      const fields2ShowDetail = Object.keys(detailFields);
-      let jobArray = [];
-      fields2ShowDetail.forEach((field2Show) => {
-        jobArray.push({
-          name: detailFields[field2Show].sourceColumn,
-          value: filtered[detailFields[field2Show].sourceColumn],
-        });
-      });
-      setJob(jobObj);
-      setDataRows(jobArray);
-
-      //!--------- group by channel performance
-      if (fullConfig.channelPerformanceSource) {
-        setChannelPerformanceTab(true);
-        const channelGroupKey = fullConfig.channelPerformanceSource.groupKey;
-        const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey;
-        const channelValueKey = fullConfig.channelPerformanceSource.valueKey;
-        const { queryID, domain, key } = fullConfig.channelPerformanceSource;
-
-        let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
-        console.log('Channel Data', cpd);
-
-        let cpdFiltered = cpd.filter((row) => row[key] == itemId);
-        console.log('Channel Data Filtered', cpdFiltered);
-
-        let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
-          groupKeys: [channelGroupPeriodKey, channelGroupKey],
-          sumKeys: [channelValueKey],
-          excludeBlank: false,
-        });
-
-        let groupByChannelNew = [];
-        groupByChannel.forEach(function (item, index) {
-          let properDate = new Date(item[channelGroupPeriodKey]);
-          item.DateNumber = moment(properDate).valueOf();
-          groupByChannelNew.push(item);
-        });
-
-        const arrayUniqueByKey = groupByChannelNew
-          .map((item) => item[channelGroupKey])
-          .filter((value, index, self) => self.indexOf(value) === index);
-        setUniqueChannels(arrayUniqueByKey);
-        console.log('Unique Channels', arrayUniqueByKey);
-
-        let multiSeriesData = [];
-
-        arrayUniqueByKey.forEach(function (item, index) {
-          let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
-          multiSeriesData.push({ name: item, data: seriesObject });
-        });
-
-        console.log('ID MultiSeries:', multiSeriesData);
-        setMultiSeriesChannelData(multiSeriesData);
-      }
-
-      //!--------- group by channel performance
-    }
-  }, [staticData, metricData, allChartData, chartData]);
-
-  if (!job) {
+  if (!item) {
     return <LoadingScreen />;
   } else {
     return (
-      <Page title={entity + ' | ' + job.name}>
+      <Page title={entity + ' | ' + item.name}>
         <RootStyle>
-          <ItemHero job={job} entity={entity} />
+          <ItemHero item={item} entity={entity} />
           <Container>
             <Grid container spacing={12}>
               {!isDesktop && (
@@ -394,34 +325,34 @@ export default function PromotionItemPage() {
                         allowScrollButtonsMobile
                         onChange={handleChange}
                       >
-                        <Tab label="Summary" {...a11yProps(0)} />
-                        {channelPerformanceTab && (
-                          <Tab label="Channel Performance" {...a11yProps(1)} />
-                        )}
+                        <Tab label={overviewName} {...a11yProps(0)} />
+                        {tab1 && <Tab label={tab1Name} {...a11yProps(1)} />}
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0} sx={{ padding: '0px' }}>
                       {/* <ReactChartsLine
                         widgetHeight={'40vh'}
-                        conf={fullConfig}
+                        conf={conf}
                         chartData={chartData}
                       /> */}
                       <br />
-                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
-                      <DataTable job={dataRows} conf={fullConfig} />
+                      <SimpleAreaChart conf={conf} chartData={chartData} tab={'overview'} />
+                      <DataTable job={dataRows} conf={conf} tabType={'overview'} />
                     </TabPanel>
-                    {channelPerformanceTab && (
+                    {tab1 && (
                       <TabPanel value={value} index={1}>
                         <MultiLineSeriesChart
-                          conf={fullConfig}
+                          conf={conf}
                           chartData={multiSeriesChannelData}
                           uniqueChannels={uniqueChannels}
+                          tab={'tab1'}
                         />
                         <br />
                         <Stack sx={{ marginTop: '10px' }} spacing={2}>
                           <DataTableGroup
                             job={multiSeriesChannelData}
-                            conf={fullConfig}
+                            conf={conf}
+                            tabType={'tab1'}
                             // uniqueChannels={uniqueChannels}
                           />
                         </Stack>
@@ -442,32 +373,32 @@ export default function PromotionItemPage() {
                         allowScrollButtonsMobile
                         onChange={handleChange}
                       >
-                        <Tab label="Summary" {...a11yProps(0)} />
-                        {channelPerformanceTab && (
-                          <Tab label="Channel Performance" {...a11yProps(1)} />
-                        )}
+                        <Tab label={overviewName} {...a11yProps(0)} />
+                        {tab1 && <Tab label={tab1Name} {...a11yProps(1)} />}
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                      <SimpleAreaChart conf={fullConfig} chartData={chartData} />
+                      <SimpleAreaChart conf={conf} chartData={chartData} tab={'overview'} />
                       <br />
                       <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}>
-                        <DataTable job={dataRows.slice(0, 7)} conf={fullConfig} />
-                        <DataTable job={dataRows.slice(7, 14)} conf={fullConfig} />
+                        <DataTable job={dataRows.slice(0, 7)} conf={conf} tabType={'overview'} />
+                        <DataTable job={dataRows.slice(7, 14)} conf={conf} tabType={'overview'} />
                       </Stack>
                     </TabPanel>
-                    {channelPerformanceTab && (
+                    {tab1 && (
                       <TabPanel value={value} index={1}>
                         <MultiLineSeriesChart
-                          conf={fullConfig}
+                          conf={conf}
                           chartData={multiSeriesChannelData}
                           uniqueChannels={uniqueChannels}
+                          tab={'tab1'}
                         />
                         <br />
                         <Stack sx={{ marginTop: '10px' }} spacing={2}>
                           <DataTableGroup
                             job={multiSeriesChannelData}
-                            conf={fullConfig}
+                            conf={conf}
+                            tabType={'tab1'}
                             // uniqueChannels={uniqueChannels}
                           />
                         </Stack>

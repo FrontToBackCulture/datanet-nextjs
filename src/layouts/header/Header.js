@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -31,16 +30,7 @@ import { Logo, Label } from '../../components';
 // nav, header, footer
 import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
-// data
-import confFn from '../../../config/development';
-import confFnProd from '../../../config/production';
-import confFnProdTest from '../../../config/productionTest';
-import {
-  selectConfig,
-  selectObject,
-  selectLocalDataSource,
-  selectDomain,
-} from '../../../src/utils/selectScript';
+import { selectConfig, selectDomain } from '../../../src/utils/selectScript';
 
 // ----------------------------------------------------------------------
 
@@ -78,7 +68,6 @@ export default function Header({ transparent, header2Layout }) {
       let result = user.email.match(regex)[0];
       result = result.substring(1, result.length);
       setUserEmailDomain(result);
-      console.log(userDomain);
       if (!selectedDomain) {
         if (result != 'thinkval') {
           domain = selectDomain(result);
@@ -93,7 +82,6 @@ export default function Header({ transparent, header2Layout }) {
       } else {
         domain = selectedDomain;
       }
-
       setUserDomain(domain);
       header2Layout(domain);
       getConfig(domain);
@@ -101,11 +89,8 @@ export default function Header({ transparent, header2Layout }) {
   }, [user, userDomain]);
 
   const getConfig = (domain) => {
-    if (domain != 'thinkval') {
-      console.log(URL, domain, confFnProdTest[domain]);
-      let config2used = selectConfig(URL, domain, 'navConfig');
-      setConf(config2used);
-    }
+    let config2used = selectConfig(URL, domain, 'navConfig');
+    setConf(config2used);
   };
 
   useEffect(() => {
@@ -118,7 +103,6 @@ export default function Header({ transparent, header2Layout }) {
           code: config.code,
         });
       });
-      console.log('configArray', configNavConfigArray);
       setNavConfig(configNavConfigArray);
     }
   }, [conf]);

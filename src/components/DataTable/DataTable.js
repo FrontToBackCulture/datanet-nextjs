@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
 
-export default function DenseTable({ job, conf }) {
+export default function DenseTable({ job, conf, tabType }) {
   const [item, setItem] = useState([]);
   //   console.log(conf);
   //   console.log(job);
@@ -13,22 +13,26 @@ export default function DenseTable({ job, conf }) {
     if (job.length > 0 && conf) {
       // console.log(job);
       let itemMetrics = [];
-      let { detailFields } = conf;
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
+      const { staticSource, metricSource, trendSource } = dataSources;
       //   console.log(detailFields);
       itemMetrics = job.map((field) => {
-        // console.log(field);
-        let fieldSetting = Object.keys(detailFields).filter(function (row) {
-          if (detailFields[row].sourceColumn === field.name) {
-            field.headerName = detailFields[row].headerName;
-            if (detailFields[row].condition) {
+        let fieldSetting = Object.keys(detailFields[tabType]['table']).filter(function (row) {
+          let variableMetric =
+            conf['variablesMetrics'][detailFields[tabType]['table'][row].variablesMetrics];
+          if (variableMetric.headerName === field.name) {
+            field.headerName = variableMetric.headerName;
+            if (variableMetric.condition) {
               field.condition = 'cellClassRules';
             }
             return row;
           }
         });
-        // console.log(fieldSetting);
+
         if (field.value) {
-          switch (detailFields[fieldSetting[0]].type) {
+          switch (
+            variablesMetrics[detailFields[tabType]['table'][fieldSetting[0]].variablesMetrics].type
+          ) {
             case 'decimal':
               field.value = fShortenNumber(field.value);
               break;
@@ -55,11 +59,11 @@ export default function DenseTable({ job, conf }) {
 
   return (
     <TableContainer component={Paper}>
-      <Table size="small" aria-label="a dense table">
+      <Table size="small">
         <TableBody>
           {item.map((row) => (
             <TableRow
-              key={row.name}
+              key={'tableRowNormalTable' + row.name}
               sx={{
                 '&:last-child td, &:last-child th': { border: 0 },
                 borderBottom: '1px solid lightgrey',

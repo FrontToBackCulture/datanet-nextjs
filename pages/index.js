@@ -25,7 +25,10 @@ export default function HomePage() {
           setUserDomain('saladstop');
           break;
         case 'thinkval':
-          setUserDomain('saladstop');
+          setUserDomain('thinkval');
+          break;
+        case 'kctsoya':
+          setUserDomain('kctsoya');
           break;
         default:
           break;

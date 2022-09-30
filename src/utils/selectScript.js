@@ -3,11 +3,13 @@ import confFn from '../../config/development';
 import confFnProd from '../../config/production';
 import confFnProdTest from '../../config/productionTest';
 // data
-import outletData from '../../data/outlet';
-import productData from '../../data/product';
+// import outletData from '../../data/outlet';
+// import productData from '../../data/product';
+import localData from '../../data';
 
 export function selectConfig(URL, userDomain, code) {
   let result;
+  console.log('url: ', URL, 'domain: ', userDomain, 'type: ', code);
 
   if (URL.includes('localhost') && userDomain) {
     let config = confFn[userDomain].conf.getConfig(code);
@@ -37,16 +39,18 @@ export function selectObject(arr, checkKey, selectKey, item) {
   return result;
 }
 
-export function selectLocalDataSource(contentType, dataType) {
+export function selectLocalDataSource(contentType, dataType, domain) {
   let result;
   let outletJsonData;
   let productJsonData;
   let localJsonData;
-  if (outletData[contentType]) {
-    outletJsonData = outletData[contentType].getData();
+  if (dataType == 'outlet' && localData[domain][dataType][contentType]) {
+    // outletJsonData = outletData[contentType].getData();
+    outletJsonData = localData[domain][dataType][contentType].getData();
   }
-  if (productData[contentType]) {
-    productJsonData = productData[contentType].getData();
+  if (dataType == 'product' && localData[domain][dataType][contentType]) {
+    // productJsonData = productData[contentType].getData();
+    productJsonData = localData[domain][dataType][contentType].getData();
   }
   switch (dataType) {
     case 'outlet':
