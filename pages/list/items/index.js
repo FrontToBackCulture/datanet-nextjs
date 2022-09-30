@@ -119,7 +119,7 @@ export default function ListPage() {
     console.log(conf);
     console.log(code);
     console.log(rawData);
-    if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
+    if (conf && code && Object.keys(rawData).length > 0) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
