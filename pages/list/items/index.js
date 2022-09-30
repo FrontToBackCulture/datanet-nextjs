@@ -125,23 +125,15 @@ export default function ListPage() {
       const metricKey = dataSources['metricSource'].key;
       const trendKey = dataSources['trendSource'].key;
       let mergeStaticMetricData;
-      if (
-        rawData &&
-        code &&
-        rawData[`${code}Static`] &&
-        rawData[`${code}Metrics`] &&
-        rawData[`${code}Static`].length > 0 &&
-        rawData[`${code}Metrics`].length > 0
-      ) {
-        mergeStaticMetricData = merge.merge(
-          rawData[`${code}Static`],
-          rawData[`${code}Metrics`],
-          staticKey,
-          metricKey
-        );
-        console.log('Merge:', mergeStaticMetricData);
-        rawData['mergeStaticMetric'] = mergeStaticMetricData;
-      }
+
+      mergeStaticMetricData = merge.merge(
+        rawData[`${code}Static`],
+        rawData[`${code}Metrics`],
+        staticKey,
+        metricKey
+      );
+      console.log('Merge:', mergeStaticMetricData);
+      rawData['mergeStaticMetric'] = mergeStaticMetricData;
 
       console.log('Stage 2:', rawData);
 
