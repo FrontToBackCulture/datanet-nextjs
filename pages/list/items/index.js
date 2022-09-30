@@ -47,7 +47,7 @@ export default function ListPage() {
   const [userDomain, setUserDomain] = useState();
   const [rowData, setRowData] = useState([]);
   const [conf, setConf] = useState();
-  const [rawData, setRawData] = useState();
+  const [rawData, setRawData] = useState({});
 
   // set domain to the selected domain in the header
   const selectedDomain = useDomainContext();
@@ -111,12 +111,13 @@ export default function ListPage() {
 
       console.log('Stage 1:', allData);
 
+      // setRawData({ ...rawData, allData });
       setRawData(allData);
     }
   }, [conf]);
 
   useEffect(() => {
-    if (conf && code && rawData) {
+    if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
       const { staticSource, metricSource, trendSource } = dataSources;
@@ -124,8 +125,7 @@ export default function ListPage() {
       const metricKey = dataSources['metricSource'].key;
       const trendKey = dataSources['trendSource'].key;
       let mergeStaticMetricData;
-      console.log(rawData);
-      console.log(rawData[`${code}Static`], rawData[`${code}Metrics`]);
+
       mergeStaticMetricData = merge.merge(
         rawData[`${code}Static`],
         rawData[`${code}Metrics`],
