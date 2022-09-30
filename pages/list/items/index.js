@@ -108,7 +108,11 @@ export default function ListPage() {
         allData[name] = data;
       });
 
-      let mergeStaticMetricData = merge.merge(
+      console.log(allData);
+      console.log(code);
+      console.log(merge);
+
+      let mergeStaticMetricData = await merge.merge(
         allData[`${code}Static`],
         allData[`${code}Metrics`],
         staticKey,
