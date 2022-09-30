@@ -115,9 +115,9 @@ export default function ListPage() {
       let mergeStaticMetricData;
       if (
         allData &&
+        code &&
         allData[`${code}Static`].length > 0 &&
-        allData[`${code}Metrics`].length > 0 &&
-        code
+        allData[`${code}Metrics`].length > 0
       ) {
         mergeStaticMetricData = await merge.merge(
           allData[`${code}Static`],
