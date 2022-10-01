@@ -17,7 +17,7 @@ import { useResponsive } from '../../../src/hooks';
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
 import { readVAL } from '../../api/grpc';
-import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet';
+import { dataNetMerge, dataNetPerformCalc, dataNetConvert2MultiSeries } from '../../api/datanet';
 import * as gtag from '../../../lib/gtag';
 // layouts
 import Layout from '../../../src/layouts';
@@ -284,49 +284,60 @@ export default function PromotionItemPage() {
 
         //! Need to think how to refactor, this contain data for both group table and multiseries chart --------- group by channel performance
         if (detailFields.tab1) {
-          const channelGroupKey = dataSources[detailFields.tab1.chart.dataSource].groupKey;
-          const channelGroupPeriodKey =
-            dataSources[detailFields.tab1.chart.dataSource].groupPeriodKey;
-          const channelValueKey = dataSources[detailFields.tab1.chart.dataSource].valueKey;
-          const { queryID, domain, key } = dataSources[detailFields.tab1.chart.dataSource];
+          const { tab1 } = detailFields;
+          const { chart } = tab1;
+          const { queryID, domain, key, groupKey, groupPeriodKey, valueKey, contentType } =
+            dataSources[chart.dataSource];
+          let cpd = allData[dataSources[chart.dataSource].name];
 
-          let cpd = await getDataFromVAL(
-            queryID,
-            domain,
-            dataSources[detailFields.tab1.chart.dataSource].contentType,
-            entity,
-            true
-          );
-
+          // filter data specific to this id
           let cpdFiltered = cpd.filter((row) => row[key] == id);
 
-          let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
-            groupKeys: [channelGroupPeriodKey, channelGroupKey],
-            sumKeys: [channelValueKey],
-            excludeBlank: false,
-          });
+          let convert2MultiSeriesParams = {
+            data: cpdFiltered,
+            conf: conf,
+            domain: userDomain,
+            dataType: entity,
+            contentType: contentType,
+            itemId: id,
+          };
 
-          let groupByChannelNew = [];
-          groupByChannel.forEach(function (item, index) {
-            let properDate = new Date(item[channelGroupPeriodKey]);
-            item.DateNumber = moment(properDate).valueOf();
-            groupByChannelNew.push(item);
-          });
-
-          const arrayUniqueByKey = groupByChannelNew
-            .map((item) => item[channelGroupKey])
-            .filter((value, index, self) => self.indexOf(value) === index);
+          let multiSeriesData = await dataNetConvert2MultiSeries(convert2MultiSeriesParams);
+          let arrayUniqueByKey = multiSeriesData.data.uniqueKey;
+          multiSeriesData = multiSeriesData.data.multiSeriesData;
           setUniqueChannels(arrayUniqueByKey);
+          setMultiSeriesChannelData(multiSeriesData);
 
-          let multiSeriesData = [];
+          // perform groupBy Sum on data
+          // let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
+          //   groupKeys: [groupPeriodKey, groupKey],
+          //   sumKeys: [valueKey],
+          //   excludeBlank: false,
+          // });
 
-          arrayUniqueByKey.forEach(function (item, index) {
-            let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
-            multiSeriesData.push({ name: item, data: seriesObject });
-          });
+          // set the date properly for each row of data
+          // let groupByChannelNew = [];
+          // groupByChannel.forEach(function (item, index) {
+          //   let properDate = new Date(item[groupPeriodKey]);
+          //   item.DateNumber = moment(properDate).valueOf();
+          //   groupByChannelNew.push(item);
+          // });
+
+          // find unique group by key
+          // const arrayUniqueByKey = groupByChannelNew
+          //   .map((item) => item[groupKey])
+          //   .filter((value, index, self) => self.indexOf(value) === index);
+          // setUniqueChannels(arrayUniqueByKey);
+
+          // create multi-series data
+          // let multiSeriesData = [];
+          // arrayUniqueByKey.forEach(function (item, index) {
+          //   let seriesObject = groupByChannelNew.filter((row) => row[groupKey] == item);
+          //   multiSeriesData.push({ name: item, data: seriesObject });
+          // });
 
           console.log('ID MultiSeries:', multiSeriesData);
-          setMultiSeriesChannelData(multiSeriesData);
+          // setMultiSeriesChannelData(multiSeriesData);
         }
 
         //!--------- group by channel performance

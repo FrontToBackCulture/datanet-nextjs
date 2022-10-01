@@ -28,3 +28,13 @@ export async function dataNetPerformCalc(params) {
   };
   return axios(config).then((res) => res);
 }
+
+export async function dataNetConvert2MultiSeries(params) {
+  const config = {
+    method: 'post',
+    url: `${host}/${api}/convert2MultiSeries`,
+    headers: {},
+    data: params,
+  };
+  return axios(config).then((res) => res);
+}
