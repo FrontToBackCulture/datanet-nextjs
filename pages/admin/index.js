@@ -44,7 +44,7 @@ export default function MaintenancePage() {
   const [configData, setConfigData] = useState(configInitialData);
 
   const clearCache = () => {
-    console.log(clearCache);
+    console.log(clearCache());
   };
 
   // if form data change
