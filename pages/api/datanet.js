@@ -16,6 +16,15 @@ export async function dataNetMerge(params) {
     headers: {},
     data: params,
   };
-  console.log('what is the env:', process.env);
+  return axios(config).then((res) => res);
+}
+
+export async function dataNetPerformCalc(params) {
+  const config = {
+    method: 'post',
+    url: `${host}/${api}/performCalc`,
+    headers: {},
+    data: params,
+  };
   return axios(config).then((res) => res);
 }

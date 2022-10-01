@@ -17,6 +17,7 @@ import { useResponsive } from '../../../src/hooks';
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
 import { readVAL } from '../../api/grpc';
+import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet';
 import * as gtag from '../../../lib/gtag';
 // layouts
 import Layout from '../../../src/layouts';
@@ -205,17 +206,38 @@ export default function PromotionItemPage() {
           allData[name] = data;
         }
 
-        let mergeStaticMetricData = merge.merge(
-          allData[`${entity}Static`],
-          allData[`${entity}Metrics`],
-          staticKey,
-          metricKey
-        );
+        let mergeParams = {
+          arr1: allData[`${entity}Static`],
+          arr2: allData[`${entity}Metrics`],
+          arr1Key: staticKey,
+          arr2Key: metricKey,
+          domain: userDomain,
+          dataType: entity,
+        };
+
+        let mergeStaticMetricData = await dataNetMerge(mergeParams);
+        mergeStaticMetricData = mergeStaticMetricData.data;
+
+        // let mergeStaticMetricData = merge.merge(
+        //   allData[`${entity}Static`],
+        //   allData[`${entity}Metrics`],
+        //   staticKey,
+        //   metricKey
+        // );
 
         allData['mergeStaticMetric'] = mergeStaticMetricData;
         console.log('ID All Data:', allData);
 
-        let performCalcData = await performCalc(allData, conf);
+        let performCalcParams = {
+          data: allData,
+          conf: conf,
+          domain: userDomain,
+          dataType: entity,
+        };
+
+        // let performCalcData = await performCalc(allData, conf);
+        let performCalcData = await dataNetPerformCalc(performCalcParams);
+        performCalcData = performCalcData.data;
         console.log('Perform Calculation:', performCalcData);
 
         //filter the selected item from the newly merged data with trend

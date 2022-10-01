@@ -14,7 +14,7 @@ import { array, merge, aggregate } from 'cuttle';
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
 import { readVAL } from '../../api/grpc';
-import { dataNetMerge } from '../../api/datanet';
+import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet';
 import { getAppMetaData } from '../../api/auth/auth0API';
 import * as gtag from '../../../lib/gtag';
 // layouts
@@ -159,9 +159,18 @@ export default function ListPage() {
 
       console.log('Stage 2:', rawData);
 
+      let performCalcParams = {
+        data: rawData,
+        conf: conf,
+        domain: userDomain,
+        dataType: code,
+      };
+
       let performCalcData;
       if ((rawData, mergeStaticMetricData)) {
-        performCalcData = performCalc(rawData, conf);
+        // performCalcData = performCalc(rawData, conf);
+        performCalcData = await dataNetPerformCalc(performCalcParams);
+        performCalcData = performCalcData.data;
         console.log('Perform Calculation:', performCalcData);
 
         setRowData(performCalcData);
