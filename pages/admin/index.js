@@ -38,13 +38,18 @@ export default function MaintenancePage() {
   const exampleInitialData = exampleForm.data;
   const [exampleData, setExampleData] = useState(exampleInitialData);
 
-  const configSchema = configForm.general.schema;
-  const configUischema = configForm.general.uischema;
-  const configInitialData = configForm.general.data;
-  const [configData, setConfigData] = useState(configInitialData);
+  const configGeneralSchema = configForm.general.schema;
+  const configGeneralUischema = configForm.general.uischema;
+  const configGeneralInitialData = configForm.general.data;
+  const [configGeneralData, setConfigGeneralData] = useState(configGeneralInitialData);
 
-  const resetCache = () => {
-    console.log(clearCache());
+  const configOutletSchema = configForm.outlet.schema;
+  const configOutletUischema = configForm.outlet.uischema;
+  const configOutletInitialData = configForm.outlet.data;
+  const [configOutletData, setConfigOutletData] = useState(configOutletInitialData);
+
+  const resetCache = async () => {
+    console.log(await clearCache());
   };
 
   // if form data change
@@ -52,8 +57,11 @@ export default function MaintenancePage() {
     console.log(exampleData);
   }, [exampleData]);
   useEffect(() => {
-    console.log(configData);
-  }, [configData]);
+    console.log(configGeneralData);
+  }, [configGeneralData]);
+  useEffect(() => {
+    console.log(configOutletData);
+  }, [configOutletData]);
 
   return (
     <Page title="Maintenance">
@@ -68,17 +76,27 @@ export default function MaintenancePage() {
           CONFIG
           <br />
           <JsonForms
-            schema={configSchema}
-            uischema={configUischema}
-            data={configData}
+            schema={configGeneralSchema}
+            uischema={configGeneralUischema}
+            data={configGeneralData}
             renderers={materialRenderers}
             cells={materialCells}
-            onChange={({ data, _errors }) => setConfigData(data)}
+            onChange={({ data, _errors }) => setConfigGeneralData(data)}
           />
         </div>
         <br />
-        <br />
-        <br />
+        <div className="App">
+          OUTLET
+          <br />
+          <JsonForms
+            schema={configOutletSchema}
+            uischema={configOutletUischema}
+            data={configOutletData}
+            renderers={materialRenderers}
+            cells={materialCells}
+            onChange={({ data, _errors }) => setConfigOutletData(data)}
+          />
+        </div>
 
         {/* <div className="App">
           EXAMPLE

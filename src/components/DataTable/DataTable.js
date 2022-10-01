@@ -22,7 +22,7 @@ export default function DenseTable({ job, conf, tabType }) {
             conf['variablesMetrics'][detailFields[tabType]['table'][row].variablesMetrics];
           if (variableMetric.headerName === field.name) {
             field.headerName = variableMetric.headerName;
-            if (variableMetric.condition) {
+            if (detailFields[tabType]['table'][row].condition) {
               field.condition = 'cellClassRules';
             }
             return row;

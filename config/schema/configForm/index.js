@@ -1,4 +1,4 @@
 module.exports = {
   general: require('./general'),
-  // navconfig: require('./navconfig'),
+  outlet: require('./outlet'),
 };

@@ -90,13 +90,6 @@ export default function PromotionItemPage() {
   const [itemId, setItemId] = useState();
   const [entity, setEntity] = useState();
   const [chartData, setChartData] = useState([]);
-  const [staticQueryID, setStaticQueryID] = useState();
-  const [staticDomain, setStaticDomain] = useState();
-  const [metricQueryID, setMetricQueryID] = useState();
-  const [metricDomain, setMetricDomain] = useState();
-  const [staticData, setStaticData] = useState();
-  const [metricData, setMetriccData] = useState();
-  const [allChartData, setAllChartData] = useState([]);
   const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
   const [uniqueChannels, setUniqueChannels] = useState([]);
   const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
@@ -275,7 +268,13 @@ export default function PromotionItemPage() {
           const channelValueKey = dataSources[detailFields.tab1.chart.dataSource].valueKey;
           const { queryID, domain, key } = dataSources[detailFields.tab1.chart.dataSource];
 
-          let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
+          let cpd = await getDataFromVAL(
+            queryID,
+            domain,
+            dataSources[detailFields.tab1.chart.dataSource].contentType,
+            entity,
+            true
+          );
 
           let cpdFiltered = cpd.filter((row) => row[key] == id);
 

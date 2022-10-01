@@ -1,0 +1,228 @@
+{
+  "$id": "https://datanet.thinkval.io/configGeneral.schema.json",
+  "title": "Outlet",
+  "description": "The outlet definition of config required for datanet",
+  "type": "object",
+  "properties": {
+    "outlet": {
+      "type": "object",
+      "properties": {
+        "dataSources": {
+          "type": "object",
+          "properties": {
+            "staticSource": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            },
+            "metricSource": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            },
+            "trendSource": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "valueKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            },
+            "tab1Chart": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "valueKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupPeriodKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            },
+            "tab2Chart": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "valueKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupPeriodKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            },
+            "tab3Chart": {
+              "type": "object",
+              "properties": {
+                "queryID": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "domain": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "key": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "contentType": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "valueKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "groupPeriodKey": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "Query ID of static source",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

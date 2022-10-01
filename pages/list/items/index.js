@@ -14,6 +14,7 @@ import { array, merge, aggregate } from 'cuttle';
 import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
 // api && lib
 import { readVAL } from '../../api/grpc';
+import { dataNetMerge } from '../../api/datanet';
 import { getAppMetaData } from '../../api/auth/auth0API';
 import * as gtag from '../../../lib/gtag';
 // layouts
@@ -78,7 +79,7 @@ export default function ListPage() {
   //whenever query or userDomain change
   //- get the relevant config
   //- reset row data to blank
-  // - push event to GA4
+  //- push event to GA4
   useEffect(() => {
     setRowData([]);
     getConfig();
@@ -124,8 +125,9 @@ export default function ListPage() {
     }
   }, [conf]);
 
-  useEffect(() => {
+  useEffect(async () => {
     console.log(rawData);
+
     if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
@@ -133,14 +135,25 @@ export default function ListPage() {
       const staticKey = dataSources['staticSource'].key;
       const metricKey = dataSources['metricSource'].key;
       const trendKey = dataSources['trendSource'].key;
-      let mergeStaticMetricData;
 
-      mergeStaticMetricData = merge.merge(
-        rawData[`${code}Static`],
-        rawData[`${code}Metrics`],
-        staticKey,
-        metricKey
-      );
+      let mergeParams = {
+        arr1: rawData[`${code}Static`],
+        arr2: rawData[`${code}Metrics`],
+        arr1Key: staticKey,
+        arr2Key: metricKey,
+        domain: userDomain,
+        dataType: code,
+      };
+
+      let mergeStaticMetricData = await dataNetMerge(mergeParams);
+      mergeStaticMetricData = mergeStaticMetricData.data;
+
+      // mergeStaticMetricData = merge.merge(
+      //   rawData[`${code}Static`],
+      //   rawData[`${code}Metrics`],
+      //   staticKey,
+      //   metricKey
+      // );
       console.log('Merge:', mergeStaticMetricData);
       rawData['mergeStaticMetric'] = mergeStaticMetricData;
 

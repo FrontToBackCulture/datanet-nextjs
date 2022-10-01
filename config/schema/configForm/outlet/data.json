@@ -1,0 +1,41 @@
+{
+  "outlet": {
+    "dataSources": {
+      "staticSource": {
+        "queryID": "4012",
+        "domain": "saladstop",
+        "key": "Outlet",
+        "contentType": "static",
+        "name": "outletStatic"
+      },
+      "metricSource": {
+        "queryID": "4007",
+        "domain": "saladstop",
+        "key": "Store",
+        "contentType": "metric",
+        "name": "outletMetrics"
+      },
+      "trendSource": {
+        "queryID": "4055",
+        "domain": "saladstop",
+        "key": "Store",
+        "contentType": "trend",
+        "name": "outletNetSalesTrend",
+        "valueKey": "Net Sales",
+        "groupKey": "Date",
+        "title": "Daily Net Sales Last 3M"
+      },
+      "tab1Chart": {
+        "queryID": "4097",
+        "domain": "saladstop",
+        "key": "Store",
+        "contentType": "channel",
+        "name": "outletChannelTrend",
+        "valueKey": "sum Net Sales",
+        "groupKey": "Order Channel",
+        "groupPeriodKey": "Transaction Date",
+        "title": "Performance Trend by Channel"
+      }
+    }
+  }
+}
