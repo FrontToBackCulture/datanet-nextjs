@@ -1,0 +1,41 @@
+{
+  "type": "Group",
+  "label": "General Group",
+  "elements": [
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Name",
+              "scope": "#/properties/general/properties/companyName"
+            },
+            {
+              "type": "Control",
+              "label": "Description",
+              "scope": "#/properties/general/properties/companyDescription"
+            },
+            {
+              "type": "Control",
+              "label": "Logo URL",
+              "scope": "#/properties/general/properties/logoLocation"
+            }
+          ]
+        },
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Navigation Config",
+              "scope": "#/properties/navConfig"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

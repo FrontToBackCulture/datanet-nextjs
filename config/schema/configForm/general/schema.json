@@ -1,0 +1,47 @@
+{
+  "$id": "https://datanet.thinkval.io/configGeneral.schema.json",
+  "title": "General",
+  "description": "The general Portion of config required for datanet",
+  "type": "object",
+  "properties": {
+    "general": {
+      "type": "object",
+      "properties": {
+        "companyName": {
+          "description": "The company name which the config is for",
+          "type": "string"
+        },
+        "companyDescription": {
+          "description": "The company name which the config is for",
+          "type": "string"
+        },
+        "logoLocation": {
+          "description": "The company name which the config is for",
+          "type": "string"
+        }
+      },
+      "required": ["companyName"]
+    },
+    "navConfig": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/navConfig" }
+    }
+  },
+  "$defs": {
+    "navConfig": {
+      "type": "object",
+      "required": ["title", "code"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The name to show on the menu item"
+        },
+        "code": {
+          "type": "string",
+          "description": "The id to pass on to different pages to indicate which data set to use"
+        }
+      }
+    }
+  },
+  "required": ["navConfig"]
+}

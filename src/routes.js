@@ -24,6 +24,7 @@ const Routes = {
     posts: '/list/blog',
     post: (slug) => `/list/blog/${slug}`,
   },
+  admin: '/admin/',
   // Common
   loginCover: '/auth/login-cover',
   registerCover: '/auth/register-cover',

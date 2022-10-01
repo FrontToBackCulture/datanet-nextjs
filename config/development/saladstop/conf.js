@@ -7,7 +7,6 @@ const config = {
   navConfig: [
     { title: 'Outlets', code: 'outlet' },
     { title: 'Products', code: 'product' },
-    { title: 'Promotions', code: 'promotion' },
   ],
   outlet: {
     dataSources: {

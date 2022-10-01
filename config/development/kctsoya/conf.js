@@ -1,94 +1,148 @@
 const config = {
+  general: {
+    companyName: '',
+    companyDescription: '',
+    logoLocation: '',
+  },
+  navConfig: [{ title: 'Products', code: 'product' }],
   product: {
-    staticSource: {
-      queryID: '82',
-      domain: 'kctsoya',
-      key: 'Stock ID',
+    dataSources: {
+      staticSource: {
+        queryID: '82',
+        domain: 'kctsoya',
+        key: 'Stock ID',
+        contentType: 'static',
+        name: 'productStatic',
+      },
+      metricSource: {
+        queryID: '85',
+        domain: 'kctsoya',
+        key: 'Stk ID',
+        contentType: 'metric',
+        name: 'productMetrics',
+      },
+      trendSource: {
+        queryID: '84',
+        domain: 'kctsoya',
+        key: 'Stk ID',
+        contentType: 'trend',
+        name: 'productNetSalesTrend',
+        valueKey: 'sum SGD Net Price',
+        groupKey: 'Doc Date',
+        title: 'Net Sales Trend',
+      },
     },
-    metricSource: {
-      queryID: '85',
-      domain: 'kctsoya',
-      key: 'Stk ID',
+    calculatedMetrics: {
+      lastWorkingDayQtySales: {
+        dataSource: 'mergeStaticMetric',
+        timeseriesSource: 'productNetSalesTrend',
+        columnName: 'latestMetric',
+        calcType: 'latest',
+      },
+      priorWorkingDayQtySales: {
+        dataSource: 'mergeStaticMetric',
+        timeseriesSource: 'productNetSalesTrend',
+        columnName: 'priorMetric',
+        calcType: '2ndLatest',
+      },
+      changeWorkingDayQtySales: {
+        dataSource: 'mergeStaticMetric',
+        columnName: 'changeMetric',
+        calcType: 'formula',
+        formula: 'latestMetric-priorMetric',
+      },
+      percentChangeWorkingDayQtySales: {
+        dataSource: 'mergeStaticMetric',
+        columnName: 'changeMetricPercent',
+        calcType: 'formula',
+        formula: 'changeMetric/priorMetric',
+      },
+      weeklyTrend: {
+        dataSource: 'mergeStaticMetric',
+        columnName: 'change',
+        calcType: 'weeklyTrend',
+      },
     },
-    chartSource: {
-      queryID: '84',
-      domain: 'kctsoya',
-      key: 'Stk ID',
-      valueKey: 'sum SGD Net Price',
-      groupKey: 'Doc Date',
-      title: 'Net Sales Trend',
-    },
-    change: {
-      valueKey: 'sum SGD Net Price',
-    },
-    listFields: {
-      shortCode: {
+    variablesMetrics: {
+      productShortCode: {
+        dataSource: 'staticSource',
         sourceColumn: 'Stock ID',
-        link: true,
         type: 'string',
         headerName: 'Stock ID',
-        maxWidth: 150,
+        description: '',
       },
-      name: {
+      productName: {
+        dataSource: 'staticSource',
         sourceColumn: 'Product Name',
-        link: false,
         type: 'string',
         headerName: 'Name',
+        description: '',
+      },
+      lastWorkingDaySales: {
+        sourceColumn: 'latestMetric',
+        type: 'currency',
+        headerName: 'Last Working Day Sales',
+      },
+      priorWorkingDaySales: {
+        sourceColumn: 'priorMetric',
+        type: 'currency',
+        headerName: 'Prior Working Day Sales',
+      },
+      workingDayNetSalesPercentChange: {
+        sourceColumn: 'changeMetricPercent',
+        type: 'percent',
+        headerName: 'Daily Sales % Δ',
+      },
+      sumQuantity: {
+        sourceColumn: 'sum Stk Qty',
+        type: 'number',
+        headerName: 'Qty Sold L3M',
+      },
+    },
+    listFields: {
+      name: {
+        variablesMetrics: 'productName',
+        link: true,
+        maxWidth: 250,
       },
       latestMetric: {
-        sourceColumn: 'latestMetric',
-        link: false,
-        type: 'number',
-        headerName: 'Last Working Day  Net Price',
+        variablesMetrics: 'lastWorkingDaySales',
         maxWidth: 150,
       },
       percentChangeMetric: {
-        sourceColumn: 'changeMetricPercent',
-        link: false,
-        type: 'percent',
-        headerName: 'Daily  Net Price % Δ',
+        variablesMetrics: 'workingDayNetSalesPercentChange',
         condition: 'cellClassRules',
         maxWidth: 150,
       },
-      metric1: {
-        sourceColumn: 'sum Stk Qty',
-        link: false,
-        type: 'number',
-        sort: 'desc',
-        headerName: 'Qty Sold L3M',
+      metric3: {
+        variablesMetrics: 'sumQuantity',
         maxWidth: 150,
+        sort: 'desc',
       },
     },
     detailFields: {
-      latestMetric: {
-        sourceColumn: 'latestMetric',
-        link: false,
-        type: 'number',
-        headerName: 'Last Working Day  Net Price',
-        maxWidth: 150,
-      },
-      percentChangeMetric: {
-        sourceColumn: 'changeMetricPercent',
-        link: false,
-        type: 'percent',
-        headerName: 'Daily  Net Price % Δ',
-        condition: 'cellClassRules',
-        maxWidth: 150,
-      },
-      metric1: {
-        sourceColumn: 'sum Stk Qty',
-        link: false,
-        type: 'number',
-        sort: 'desc',
-        headerName: 'Qty Sold L3M',
-        maxWidth: 150,
+      overview: {
+        name: 'Summary',
+        chart: {
+          dataSource: 'trendSource',
+        },
+        table: {
+          metric1: {
+            variablesMetrics: 'lastWorkingDaySales',
+          },
+          metric2: {
+            variablesMetrics: 'priorWorkingDaySales',
+          },
+          metric3: {
+            variablesMetrics: 'workingDayNetSalesPercentChange',
+          },
+          metric4: {
+            variablesMetrics: 'sumQuantity',
+          },
+        },
       },
     },
   },
-  navConfig: [
-    // { title: 'Home', path: '/', code: 'home' },
-    { title: 'Products', code: 'product' },
-  ],
 };
 
 function getConfig(code) {

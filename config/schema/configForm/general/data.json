@@ -1,0 +1,11 @@
+{
+  "general": {
+    "companyName": "Salad Stop!",
+    "companyDescription": "",
+    "logoLocation": ""
+  },
+  "navConfig": [
+    { "title": "Outlets", "code": "outlet" },
+    { "title": "Products", "code": "product" }
+  ]
+}

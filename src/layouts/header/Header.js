@@ -26,11 +26,14 @@ import { useOffSetTop, useResponsive } from '../../hooks';
 // config
 import { HEADER_DESKTOP_HEIGHT } from '../../config';
 // components
-import { Logo, Label } from '../../components';
+import { Logo, Label, Iconify } from '../../components';
+import { IconButtonAnimate } from '../../components/animate';
 // nav, header, footer
 import { NavMobile, NavDesktop } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
 import { selectConfig, selectDomain } from '../../../src/utils/selectScript';
+// icons
+import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network';
 
 // ----------------------------------------------------------------------
 
@@ -188,6 +191,20 @@ export default function Header({ transparent, header2Layout }) {
             )}
             {user && userEmailDomain == 'thinkval' && (
               <>
+                <NextLink
+                  href={{
+                    pathname: Routes.admin,
+                  }}
+                >
+                  <IconButtonAnimate
+                    color="inherit"
+                    sx={{
+                      ...(isScrolling && { color: 'text.primary' }),
+                    }}
+                  >
+                    <Iconify icon={contentDeliveryNetwork} sx={{ width: 20, height: 20 }} />
+                  </IconButtonAnimate>
+                </NextLink>
                 <Box sx={{ minWidth: 120 }}>
                   <FormControl fullWidth size="small">
                     <InputLabel id="demo-simple-select-label">Domain</InputLabel>
