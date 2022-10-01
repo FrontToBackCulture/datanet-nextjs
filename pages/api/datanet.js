@@ -16,6 +16,6 @@ export async function dataNetMerge(params) {
     headers: {},
     data: params,
   };
-
+  console.log('what is the env:', process.env);
   return axios(config).then((res) => res);
 }
