@@ -43,7 +43,7 @@ export default function MaintenancePage() {
   const configInitialData = configForm.general.data;
   const [configData, setConfigData] = useState(configInitialData);
 
-  const clearCache = () => {
+  const resetCache = () => {
     console.log(clearCache());
   };
 
@@ -59,7 +59,7 @@ export default function MaintenancePage() {
     <Page title="Maintenance">
       <RootStyle>
         <Stack spacing={2} direction="row">
-          <Button variant="contained" onClick={() => clearCache()}>
+          <Button variant="contained" onClick={() => resetCache()}>
             Clear Cache
           </Button>
         </Stack>
