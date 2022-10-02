@@ -58,6 +58,7 @@ export default function NavMobile({ navConfig, sx, userDomain }) {
   const { user, error, isLoading } = useUser();
   const { pathname } = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  console.log('Melvin Mobile', userDomain);
   useEffect(() => {
     if (drawerOpen) {
       handleDrawerClose();
@@ -94,7 +95,7 @@ export default function NavMobile({ navConfig, sx, userDomain }) {
 
           <List sx={{ px: 0 }}>
             {navConfig.map((link) => (
-              <NavItemMobile key={link.title} item={link} />
+              <NavItemMobile key={link.title} item={link} userDomain={userDomain} />
             ))}
           </List>
 
@@ -144,7 +145,7 @@ NavItemMobile.propTypes = {
   }),
 };
 
-function NavItemMobile({ item }) {
+function NavItemMobile({ item, userDomain }) {
   const { pathname, asPath } = useRouter();
 
   const { title, path, code, children } = item;
