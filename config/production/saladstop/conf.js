@@ -220,6 +220,7 @@ const config = {
           },
           metric3: {
             variablesMetrics: 'workingDayNetSalesPercentChange',
+            condition: 'cellClassRules',
           },
           metric4: {
             variablesMetrics: 'outletSumNetSalesL3M',
