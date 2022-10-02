@@ -138,8 +138,12 @@ export default function ListPage() {
       mergeStaticMetricData = mergeStaticMetricData.data;
       rawData['mergeStaticMetric'] = mergeStaticMetricData;
 
+      let performCalcRequiredData = {};
+      performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData;
+      performCalcRequiredData[trendSource.name] = rawData[trendSource.name];
+
       let performCalcParams = {
-        data: rawData,
+        data: performCalcRequiredData,
         conf: conf,
         domain: userDomain,
         dataType: code,
