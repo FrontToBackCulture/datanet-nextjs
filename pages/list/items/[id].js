@@ -213,7 +213,7 @@ export default function PromotionItemPage() {
 
         let performCalcRequiredData = {};
         performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData;
-        performCalcRequiredData[trendSource.name] = rawData[trendSource.name];
+        performCalcRequiredData[trendSource.name] = allData[trendSource.name];
 
         let performCalcParams = {
           data: performCalcRequiredData,
