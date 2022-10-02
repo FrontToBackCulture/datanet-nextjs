@@ -219,7 +219,7 @@ export default function PromotionItemPage() {
           data: performCalcRequiredData,
           conf: conf,
           domain: userDomain,
-          dataType: code,
+          dataType: entity,
         };
 
         let performCalcData = await dataNetPerformCalc(performCalcParams);
