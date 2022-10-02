@@ -1,0 +1,41 @@
+{
+  "type": "Group",
+  "label": "Optional Data Sources",
+  "elements": [
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Tab1 Source",
+              "scope": "#/properties/outlet/properties/dataSources/properties/tab1Chart"
+            }
+          ]
+        },
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Tab2 Source",
+              "scope": "#/properties/outlet/properties/dataSources/properties/tab2Chart"
+            }
+          ]
+        },
+        {
+          "type": "VerticalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "label": "Tab3 Source",
+              "scope": "#/properties/outlet/properties/dataSources/properties/tab3Chart"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

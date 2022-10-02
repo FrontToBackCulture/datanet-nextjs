@@ -115,9 +115,10 @@ export default function DenseTable({ job, conf, tabType }) {
         let arrFields = [];
         let value;
         for (let props in channelFields) {
-          value = entity[channelFields[props].sourceColumn];
+          let variableMetric = conf['variablesMetrics'][channelFields[props].variablesMetrics];
+          value = entity[variableMetric.sourceColumn];
           if (value) {
-            switch (channelFields[props].type) {
+            switch (variableMetric.type) {
               case 'decimal':
                 value = fShortenNumber(value);
                 break;
@@ -136,16 +137,16 @@ export default function DenseTable({ job, conf, tabType }) {
           }
           if (channelFields[props].condition) {
             arrFields.push({
-              name: channelFields[props].headerName,
+              name: variableMetric.headerName,
               value: value,
-              headerName: channelFields[props].headerName,
+              headerName: variableMetric.headerName,
               condition: 'cellClassRules',
             });
           } else {
             arrFields.push({
-              name: channelFields[props].headerName,
+              name: variableMetric.headerName,
               value: value,
-              headerName: channelFields[props].headerName,
+              headerName: variableMetric.headerName,
             });
           }
         }

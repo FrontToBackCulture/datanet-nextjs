@@ -1,0 +1,17 @@
+{
+  "outlet": {
+    "dataSources": {
+      "tab1Chart": {
+        "queryID": "4097",
+        "domain": "saladstop",
+        "key": "Store",
+        "contentType": "channel",
+        "name": "outletChannelTrend",
+        "valueKey": "sum Net Sales",
+        "groupKey": "Order Channel",
+        "groupPeriodKey": "Transaction Date",
+        "title": "Performance Trend by Channel"
+      }
+    }
+  }
+}

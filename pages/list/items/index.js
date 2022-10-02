@@ -103,31 +103,19 @@ export default function ListPage() {
       const metricKey = dataSources['metricSource'].key;
       const trendKey = dataSources['trendSource'].key;
       // iterate thru all the datasources define, cache and extract to UI
+
       let allData = {};
-
-      // await Object.keys(dataSources).map(async (dataSet, index) => {
-      //   let { domain, queryID, contentType, name } = dataSources[dataSet];
-      //   let data = await getDataFromVAL(queryID, domain, contentType, code, true);
-      //   allData[name] = data;
-      // });
-
       for (const dataSet of Object.keys(dataSources)) {
         console.log('Check', dataSet);
         let { domain, queryID, contentType, name } = dataSources[dataSet];
         let data = await getDataFromVAL(queryID, domain, contentType, code, true);
         allData[name] = data;
       }
-
-      console.log('Stage 1:', allData);
-
-      // setRawData({ ...rawData, allData });
       setRawData(allData);
     }
   }, [conf]);
 
   useEffect(async () => {
-    console.log(rawData);
-
     if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
       console.log('I got in');
       const { dataSources, variablesMetrics, listFields, detailFields } = conf;
@@ -145,19 +133,10 @@ export default function ListPage() {
         dataType: code,
       };
 
+      //merge static and metric
       let mergeStaticMetricData = await dataNetMerge(mergeParams);
       mergeStaticMetricData = mergeStaticMetricData.data;
-
-      // mergeStaticMetricData = merge.merge(
-      //   rawData[`${code}Static`],
-      //   rawData[`${code}Metrics`],
-      //   staticKey,
-      //   metricKey
-      // );
-      console.log('Merge:', mergeStaticMetricData);
       rawData['mergeStaticMetric'] = mergeStaticMetricData;
-
-      console.log('Stage 2:', rawData);
 
       let performCalcParams = {
         data: rawData,
@@ -168,13 +147,14 @@ export default function ListPage() {
 
       let performCalcData;
       if ((rawData, mergeStaticMetricData)) {
-        // performCalcData = performCalc(rawData, conf);
         performCalcData = await dataNetPerformCalc(performCalcParams);
         performCalcData = performCalcData.data;
         console.log('Perform Calculation:', performCalcData);
 
         setRowData(performCalcData);
       }
+
+      console.log(rawData);
     }
   }, [rawData]);
 

@@ -84,16 +84,13 @@ export default function PromotionItemPage() {
   const { user, error, isLoading } = useUser();
   const [userDomain, setUserDomain] = useState();
   const [value, setValue] = useState(0);
-  const [job, setJob] = useState();
   const [item, setItem] = useState();
   const [dataRows, setDataRows] = useState([]);
   const [conf, setConf] = useState({});
-  const [itemId, setItemId] = useState();
   const [entity, setEntity] = useState();
   const [chartData, setChartData] = useState([]);
   const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
   const [uniqueChannels, setUniqueChannels] = useState([]);
-  const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
   const [tab1, setTab1] = useState(false);
   const [tab2, setTab2] = useState(false);
   const [tab3, setTab3] = useState(false);
@@ -162,7 +159,6 @@ export default function PromotionItemPage() {
         if (user && URL.includes('datanet.thinkval.io')) {
           gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
         }
-        setItemId(id);
         setEntity(entity);
         let conf = await getConfig(entity);
         const { dataSources, variablesMetrics, listFields, detailFields } = conf;
@@ -193,12 +189,6 @@ export default function PromotionItemPage() {
 
         // iterate thru all the datasources define, cache and extract to UI
         let allData = {};
-        // await Object.keys(dataSources).map(async (dataSet, index) => {
-        //   let { domain, queryID, contentType, name } = dataSources[dataSet];
-        //   let data = await getDataFromVAL(queryID, domain, contentType, entity, true);
-        //   allData[name] = data;
-        // });
-
         for (const dataSet of Object.keys(dataSources)) {
           console.log('Check', dataSet);
           let { domain, queryID, contentType, name } = dataSources[dataSet];
@@ -215,16 +205,9 @@ export default function PromotionItemPage() {
           dataType: entity,
         };
 
+        //merge static and metric
         let mergeStaticMetricData = await dataNetMerge(mergeParams);
         mergeStaticMetricData = mergeStaticMetricData.data;
-
-        // let mergeStaticMetricData = merge.merge(
-        //   allData[`${entity}Static`],
-        //   allData[`${entity}Metrics`],
-        //   staticKey,
-        //   metricKey
-        // );
-
         allData['mergeStaticMetric'] = mergeStaticMetricData;
         console.log('ID All Data:', allData);
 
@@ -235,7 +218,6 @@ export default function PromotionItemPage() {
           dataType: entity,
         };
 
-        // let performCalcData = await performCalc(allData, conf);
         let performCalcData = await dataNetPerformCalc(performCalcParams);
         performCalcData = performCalcData.data;
         console.log('Perform Calculation:', performCalcData);
@@ -282,7 +264,7 @@ export default function PromotionItemPage() {
         }
         //fetch the data for the chart  for overview aka landing page  --------------------
 
-        //! Need to think how to refactor, this contain data for both group table and multiseries chart --------- group by channel performance
+        //group by channel performance   --------------------
         if (detailFields.tab1) {
           const { tab1 } = detailFields;
           const { chart } = tab1;
@@ -302,45 +284,16 @@ export default function PromotionItemPage() {
             itemId: id,
           };
 
+          // convert data into multiseries
           let multiSeriesData = await dataNetConvert2MultiSeries(convert2MultiSeriesParams);
           let arrayUniqueByKey = multiSeriesData.data.uniqueKey;
           multiSeriesData = multiSeriesData.data.multiSeriesData;
           setUniqueChannels(arrayUniqueByKey);
           setMultiSeriesChannelData(multiSeriesData);
-
-          // perform groupBy Sum on data
-          // let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
-          //   groupKeys: [groupPeriodKey, groupKey],
-          //   sumKeys: [valueKey],
-          //   excludeBlank: false,
-          // });
-
-          // set the date properly for each row of data
-          // let groupByChannelNew = [];
-          // groupByChannel.forEach(function (item, index) {
-          //   let properDate = new Date(item[groupPeriodKey]);
-          //   item.DateNumber = moment(properDate).valueOf();
-          //   groupByChannelNew.push(item);
-          // });
-
-          // find unique group by key
-          // const arrayUniqueByKey = groupByChannelNew
-          //   .map((item) => item[groupKey])
-          //   .filter((value, index, self) => self.indexOf(value) === index);
-          // setUniqueChannels(arrayUniqueByKey);
-
-          // create multi-series data
-          // let multiSeriesData = [];
-          // arrayUniqueByKey.forEach(function (item, index) {
-          //   let seriesObject = groupByChannelNew.filter((row) => row[groupKey] == item);
-          //   multiSeriesData.push({ name: item, data: seriesObject });
-          // });
-
           console.log('ID MultiSeries:', multiSeriesData);
-          // setMultiSeriesChannelData(multiSeriesData);
         }
 
-        //!--------- group by channel performance
+        //group by channel performance   --------------------
       }
     }
   }, [router.isReady, userDomain]);
@@ -370,30 +323,24 @@ export default function PromotionItemPage() {
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0} sx={{ padding: '0px' }}>
-                      {/* <ReactChartsLine
-                        widgetHeight={'40vh'}
-                        conf={conf}
-                        chartData={chartData}
-                      /> */}
                       <br />
                       <SimpleAreaChart conf={conf} chartData={chartData} tab={'overview'} />
                       <DataTable job={dataRows} conf={conf} tabType={'overview'} />
                     </TabPanel>
                     {tab1 && (
                       <TabPanel value={value} index={1}>
+                        <br />
                         <MultiLineSeriesChart
                           conf={conf}
                           chartData={multiSeriesChannelData}
                           uniqueChannels={uniqueChannels}
                           tab={'tab1'}
                         />
-                        <br />
                         <Stack sx={{ marginTop: '10px' }} spacing={2}>
                           <DataTableGroup
                             job={multiSeriesChannelData}
                             conf={conf}
                             tabType={'tab1'}
-                            // uniqueChannels={uniqueChannels}
                           />
                         </Stack>
                       </TabPanel>
@@ -418,8 +365,8 @@ export default function PromotionItemPage() {
                       </Tabs>
                     </Box>
                     <TabPanel value={value} index={0}>
-                      <SimpleAreaChart conf={conf} chartData={chartData} tab={'overview'} />
                       <br />
+                      <SimpleAreaChart conf={conf} chartData={chartData} tab={'overview'} />
                       <Stack sx={{ marginTop: '10px' }} direction="row" spacing={2}>
                         <DataTable job={dataRows.slice(0, 7)} conf={conf} tabType={'overview'} />
                         <DataTable job={dataRows.slice(7, 14)} conf={conf} tabType={'overview'} />
@@ -427,19 +374,18 @@ export default function PromotionItemPage() {
                     </TabPanel>
                     {tab1 && (
                       <TabPanel value={value} index={1}>
+                        <br />
                         <MultiLineSeriesChart
                           conf={conf}
                           chartData={multiSeriesChannelData}
                           uniqueChannels={uniqueChannels}
                           tab={'tab1'}
                         />
-                        <br />
                         <Stack sx={{ marginTop: '10px' }} spacing={2}>
                           <DataTableGroup
                             job={multiSeriesChannelData}
                             conf={conf}
                             tabType={'tab1'}
-                            // uniqueChannels={uniqueChannels}
                           />
                         </Stack>
                       </TabPanel>

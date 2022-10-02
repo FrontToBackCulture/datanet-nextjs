@@ -43,10 +43,15 @@ export default function MaintenancePage() {
   const configGeneralInitialData = configForm.general.data;
   const [configGeneralData, setConfigGeneralData] = useState(configGeneralInitialData);
 
-  const configOutletSchema = configForm.outlet.schema;
-  const configOutletUischema = configForm.outlet.uischema;
-  const configOutletInitialData = configForm.outlet.data;
-  const [configOutletData, setConfigOutletData] = useState(configOutletInitialData);
+  const configMDSSchema = configForm.outlet.mandatoryDataSources.schema;
+  const configMDSUischema = configForm.outlet.mandatoryDataSources.uischema;
+  const configMDSInitialData = configForm.outlet.mandatoryDataSources.data;
+  const [configMDSData, setConfigMDSData] = useState(configMDSInitialData);
+
+  const configATDSSchema = configForm.outlet.additionalTabDataSources.schema;
+  const configATDSUischema = configForm.outlet.additionalTabDataSources.uischema;
+  const configATDSInitialData = configForm.outlet.additionalTabDataSources.data;
+  const [configATDSData, setConfigATDSData] = useState(configATDSInitialData);
 
   const resetCache = async () => {
     console.log(await clearCache());
@@ -60,8 +65,11 @@ export default function MaintenancePage() {
     console.log(configGeneralData);
   }, [configGeneralData]);
   useEffect(() => {
-    console.log(configOutletData);
-  }, [configOutletData]);
+    console.log(configMDSData);
+  }, [configMDSData]);
+  useEffect(() => {
+    console.log(configATDSData);
+  }, [configATDSData]);
 
   return (
     <Page title="Maintenance">
@@ -73,8 +81,6 @@ export default function MaintenancePage() {
         </Stack>
         <br />
         <div className="App">
-          CONFIG
-          <br />
           <JsonForms
             schema={configGeneralSchema}
             uischema={configGeneralUischema}
@@ -86,15 +92,24 @@ export default function MaintenancePage() {
         </div>
         <br />
         <div className="App">
-          OUTLET
-          <br />
           <JsonForms
-            schema={configOutletSchema}
-            uischema={configOutletUischema}
-            data={configOutletData}
+            schema={configMDSSchema}
+            uischema={configMDSUischema}
+            data={configMDSData}
             renderers={materialRenderers}
             cells={materialCells}
-            onChange={({ data, _errors }) => setConfigOutletData(data)}
+            onChange={({ data, _errors }) => setConfigMDSData(data)}
+          />
+        </div>
+        <br />
+        <div className="App">
+          <JsonForms
+            schema={configATDSSchema}
+            uischema={configATDSUischema}
+            data={configATDSData}
+            renderers={materialRenderers}
+            cells={materialCells}
+            onChange={({ data, _errors }) => setConfigATDSData(data)}
           />
         </div>
 

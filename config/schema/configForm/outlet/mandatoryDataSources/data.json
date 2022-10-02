@@ -24,17 +24,6 @@
         "valueKey": "Net Sales",
         "groupKey": "Date",
         "title": "Daily Net Sales Last 3M"
-      },
-      "tab1Chart": {
-        "queryID": "4097",
-        "domain": "saladstop",
-        "key": "Store",
-        "contentType": "channel",
-        "name": "outletChannelTrend",
-        "valueKey": "sum Net Sales",
-        "groupKey": "Order Channel",
-        "groupPeriodKey": "Transaction Date",
-        "title": "Performance Trend by Channel"
       }
     }
   }
