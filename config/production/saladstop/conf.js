@@ -48,45 +48,38 @@ const config = {
     },
     calculatedMetrics: {
       lastWorkingDayNetSales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'outletNetSalesTrend',
         columnName: 'latestMetric',
         calcType: 'latest',
       },
       priorWorkingDayNetSales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'outletNetSalesTrend',
         columnName: 'priorMetric',
         calcType: '2ndLatest',
       },
       changeWorkingDayNetSales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetric',
         calcType: 'formula',
         formula: 'latestMetric-priorMetric',
       },
       percentChangeWorkingDayNetSales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetricPercent',
         calcType: 'formula',
         formula: 'changeMetric/priorMetric',
       },
       weeklyTrend: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'change',
         calcType: 'weeklyTrend',
       },
     },
     variablesMetrics: {
       outletShortCode: {
-        dataSource: 'staticSource',
         sourceColumn: 'Outlet',
         type: 'string',
         headerName: 'Outlet',
         description: '',
       },
       outletName: {
-        dataSource: 'staticSource',
         sourceColumn: 'Outlet Name',
         type: 'string',
         headerName: 'Outlet Name',
@@ -108,28 +101,24 @@ const config = {
         headerName: 'Daily Net Sales % Δ',
       },
       outletSumNetSalesL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'sum Net Sales',
         type: 'currency',
         headerName: 'Net Sales L3M',
         description: '',
       },
       maxNetSalesL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'max Net Sales',
         type: 'currency',
         headerName: 'Daily Max Net Sales L3M',
         description: '',
       },
       minNetSalesL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'min Net Sales',
         type: 'currency',
         headerName: 'Daily Min Net Sales L3M',
         description: '',
       },
       averageOrderCountL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'average Average Order Value',
         link: false,
         type: 'number',
@@ -137,7 +126,6 @@ const config = {
         description: '',
       },
       sumOrderCountL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'sum Order Count',
         link: false,
         type: 'number',
@@ -145,11 +133,42 @@ const config = {
         description: '',
       },
       averageDailyOrderCountL3M: {
-        dataSource: 'metricSource',
         sourceColumn: 'average Order Count',
         link: false,
         type: 'number',
         headerName: 'Avg Daily Order Count',
+        description: '',
+      },
+      lastWorkingDayChannelNetSales: {
+        sourceColumn: 'latestMetric',
+        type: 'currency',
+        headerName: 'Last Working Day Net Sales',
+      },
+      priorWorkingDayChannelNetSales: {
+        sourceColumn: 'priorMetric',
+        type: 'currency',
+        headerName: 'Prior Working Day Net Sales',
+      },
+      workingDayChannelNetSalesPercentChange: {
+        sourceColumn: 'changeMetricPercent',
+        type: 'percent',
+        headerName: 'Daily Net Sales % Δ',
+      },
+      outletSumChannelNetSalesL3M: {
+        sourceColumn: 'aggregateMetric',
+        type: 'currency',
+        headerName: 'Net Sales L3M',
+      },
+      maxChannelNetSalesL3M: {
+        sourceColumn: 'maxMetric',
+        type: 'currency',
+        headerName: 'Daily Max Net Sales L3M',
+        description: '',
+      },
+      minChannelNetSalesL3M: {
+        sourceColumn: 'minMetric',
+        type: 'currency',
+        headerName: 'Daily Min Net Sales L3M',
         description: '',
       },
     },
@@ -229,41 +248,23 @@ const config = {
         },
         table: {
           metric1: {
-            sourceColumn: 'latestMetric',
-            link: false,
-            type: 'currency',
-            headerName: 'Last Working Day Net Sales',
+            variablesMetrics: 'lastWorkingDayChannelNetSales',
           },
           metric2: {
-            sourceColumn: 'priorMetric',
-            link: false,
-            type: 'currency',
-            headerName: 'Prior Working Day Net Sales',
+            variablesMetrics: 'priorWorkingDayChannelNetSales',
           },
           metric3: {
-            sourceColumn: 'changeMetricPercent',
-            link: false,
-            type: 'percent',
-            headerName: 'Daily Net Sales % Δ',
+            variablesMetrics: 'workingDayChannelNetSalesPercentChange',
             condition: 'cellClassRules',
           },
           metric4: {
-            sourceColumn: 'aggregateMetric',
-            link: false,
-            type: 'currency',
-            headerName: 'Net Sales Last 3M',
+            variablesMetrics: 'outletSumChannelNetSalesL3M',
           },
           metric5: {
-            sourceColumn: 'maxMetric',
-            link: false,
-            type: 'currency',
-            headerName: 'Max Daily Net Sales Last 3M',
+            variablesMetrics: 'maxChannelNetSalesL3M',
           },
           metric6: {
-            sourceColumn: 'minMetric',
-            link: false,
-            type: 'currency',
-            headerName: 'Min Daily Net Sales Last 3M',
+            variablesMetrics: 'minChannelNetSalesL3M',
           },
         },
       },
@@ -299,45 +300,38 @@ const config = {
     },
     calculatedMetrics: {
       lastWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'productNetQtySoldTrend',
         columnName: 'latestMetric',
         calcType: 'latest',
       },
       priorWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'productNetQtySoldTrend',
         columnName: 'priorMetric',
         calcType: '2ndLatest',
       },
       changeWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetric',
         calcType: 'formula',
         formula: 'latestMetric-priorMetric',
       },
       percentChangeWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetricPercent',
         calcType: 'formula',
         formula: 'changeMetric/priorMetric',
       },
       weeklyTrend: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'change',
         calcType: 'weeklyTrend',
       },
     },
     variablesMetrics: {
       productShortCode: {
-        dataSource: 'staticSource',
         sourceColumn: 'ID',
         type: 'string',
         headerName: 'Product ID',
         description: '',
       },
       productName: {
-        dataSource: 'staticSource',
         sourceColumn: 'Name',
         type: 'string',
         headerName: 'Name',
@@ -461,45 +455,38 @@ const config = {
     },
     calculatedMetrics: {
       lastWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'promotionNetQtySoldTrend',
         columnName: 'latestMetric',
         calcType: 'latest',
       },
       priorWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         timeseriesSource: 'promotionNetQtySoldTrend',
         columnName: 'priorMetric',
         calcType: '2ndLatest',
       },
       changeWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetric',
         calcType: 'formula',
         formula: 'latestMetric-priorMetric',
       },
       percentChangeWorkingDayQtySales: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'changeMetricPercent',
         calcType: 'formula',
         formula: 'changeMetric/priorMetric',
       },
       weeklyTrend: {
-        dataSource: 'mergeStaticMetric',
         columnName: 'change',
         calcType: 'weeklyTrend',
       },
     },
     variablesMetrics: {
       promotionShortCode: {
-        dataSource: 'staticSource',
         sourceColumn: 'Storehub Product ID',
         type: 'string',
         headerName: 'Promotion ID',
         description: '',
       },
       promotionName: {
-        dataSource: 'staticSource',
         sourceColumn: 'POS Button Storehub',
         type: 'string',
         headerName: 'Name',
