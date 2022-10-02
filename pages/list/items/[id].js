@@ -211,11 +211,15 @@ export default function PromotionItemPage() {
         allData['mergeStaticMetric'] = mergeStaticMetricData;
         console.log('ID All Data:', allData);
 
+        let performCalcRequiredData = {};
+        performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData;
+        performCalcRequiredData[trendSource.name] = rawData[trendSource.name];
+
         let performCalcParams = {
-          data: allData,
+          data: performCalcRequiredData,
           conf: conf,
           domain: userDomain,
-          dataType: entity,
+          dataType: code,
         };
 
         let performCalcData = await dataNetPerformCalc(performCalcParams);
