@@ -1,7 +1,7 @@
 // API
 // ----------------------------------------------------------------------
 
-export const GOOGLE_API = process.env.GOOGLE_API;
+export const GOOGLE_API = process.env.NEXT_PUBLIC_GOOGLE_API;
 
 // MARKDOWN FILE DIRECTORY
 // ----------------------------------------------------------------------
