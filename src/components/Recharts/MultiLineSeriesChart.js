@@ -223,14 +223,14 @@ export default function Example({ conf, chartData, uniqueChannels, tab }) {
     <>
       <div fontSize="14">{chartTitle}</div>
       <Stack spacing={2} direction="row">
-        <Button variant={period == 30 ? 'contained' : 'outlined'} onClick={() => handleClick(30)}>
+        <Button variant={period == 30 ? 'contained' : 'outlined'} onClick={() => handleClick(7)}>
+          Last 7 days
+        </Button>
+        <Button variant={period == 60 ? 'contained' : 'outlined'} onClick={() => handleClick(14)}>
+          Last 14 days
+        </Button>
+        <Button variant={period == 90 ? 'contained' : 'outlined'} onClick={() => handleClick(30)}>
           Last 30 days
-        </Button>
-        <Button variant={period == 60 ? 'contained' : 'outlined'} onClick={() => handleClick(60)}>
-          Last 60 days
-        </Button>
-        <Button variant={period == 90 ? 'contained' : 'outlined'} onClick={() => handleClick(90)}>
-          Last 90 days
         </Button>
       </Stack>
       <ResponsiveContainer width="100%" height="100%" minHeight={400}>
