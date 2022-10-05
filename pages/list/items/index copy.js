@@ -16,8 +16,6 @@ import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config
 import { readVAL } from '../../api/grpc'
 import { getAppMetaData } from '../../api/auth/auth0API'
 import * as gtag from '../../../lib/gtag'
-// layouts
-import Layout from '../../../src/layouts'
 // components
 import { Page, ErrorScreen } from '../../../src/components'
 import AgGrid from '../../../src/components/AgGrid/AgGrid'
@@ -206,30 +204,24 @@ export default function PromotionItemsPage() {
     }
   }, [conf])
 
+  //  if (errors != 200) {
+  //     return <ErrorScreen />;
+  //   }
   return (
-    <Layout>
-      <Page title={title}>
-        <RootStyle>
-          <Container>
-            {user ? (
-              <AgGrid
-                type="list"
-                fieldConf={listFields}
-                fullConf={conf}
-                entity={code}
-                rowD={rowData}
-                title={title}
-              />
-            ) : (
-              <>
-                Please login to see data
-                <br />
-                <br />
-              </>
-            )}
-          </Container>
-        </RootStyle>
-      </Page>
-    </Layout>
+    <Page title={title}>
+      <RootStyle>
+        <Container>
+          {user ? (
+            <AgGrid type={'list'} conf={conf} entity={code} rowD={rowData} title={title} />
+          ) : (
+            <>
+              Please login to see data
+              <br />
+              <br />
+            </>
+          )}
+        </Container>
+      </RootStyle>
+    </Page>
   )
 }

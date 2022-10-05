@@ -18,8 +18,6 @@ import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config
 // api && lib
 import { readVAL } from '../../api/grpc'
 import * as gtag from '../../../lib/gtag'
-// layouts
-import Layout from '../../../src/layouts'
 // components
 import { Page, ErrorScreen, LoadingScreen } from '../../../src/components'
 import DataTable from '../../../src/components/DataTable/DataTable'

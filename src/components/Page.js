@@ -1,18 +1,27 @@
+// import { Stack } from '@mui/material'
+// import Head from 'next/head'
+// import { forwardRef } from 'react'
+
+// const Page = forwardRef(({ children, meta, title, ...other }, ref) => (
+//   <>
+//     <Head>
+//       <title>{`${title} | VAL DATANET`}</title>
+//       {meta}
+//     </Head>
+
+//     <Stack ref={ref} {...other} height={1}>
+//       {children}
+//     </Stack>
+//   </>
+// ))
 import { Box } from '@mui/material'
-import Head from 'next/head'
-import { forwardRef } from 'react'
+import { Footer, FooterSimple } from '../layouts/footer'
 
-const Page = forwardRef(({ children, meta, title, ...other }, ref) => (
+const Page = ({ children, simpleFooter = false }) => (
   <>
-    <Head>
-      <title>{`${title} | VAL DATANET`}</title>
-      {meta}
-    </Head>
-
-    <Box ref={ref} {...other}>
-      {children}
-    </Box>
+    <Box flexGrow={1}>{children}</Box>
+    {simpleFooter ? <FooterSimple /> : <Footer />}
   </>
-))
+)
 
 export default Page

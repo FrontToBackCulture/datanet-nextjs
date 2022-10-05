@@ -1,28 +1,24 @@
 import { createContext, useContext, useState } from 'react'
-import dynamic from 'next/dynamic'
 
-const Header = dynamic(() => import('./header/Header'), { ssr: false })
-const Footer = dynamic(() => import('./footer/Footer'), { ssr: false })
-const FooterSimple = dynamic(() => import('./footer/FooterSimple'), { ssr: false })
+import Header from './header/Header'
 
 import { DomainProvider } from '../contexts/DomainProvider'
+import { Stack } from '@mui/material'
 
 const DomainContext = createContext()
 
-export default function Layout({ children, simpleFooter }) {
+export default function Layout({ children }) {
   const [selectedDomain, setSelectedDomain] = useState()
   const header2Layout = (domain) => {
     setSelectedDomain(domain)
   }
 
   return (
-    <>
+    <Stack height={1}>
       <Header header2Layout={header2Layout} />
 
       <DomainProvider value={selectedDomain}>{children}</DomainProvider>
-
-      {simpleFooter ? <FooterSimple /> : <Footer />}
-    </>
+    </Stack>
   )
 }
 
