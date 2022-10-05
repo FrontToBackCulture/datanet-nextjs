@@ -40,9 +40,7 @@ export default function HomePage() {
   }, [user]);
 
   return (
-    <Page title="The starting point for your next project">
-      <HomeHero userDomain={userDomain} />
-    </Page>
+    <HomeHero userDomain={userDomain} />
   );
 }
 

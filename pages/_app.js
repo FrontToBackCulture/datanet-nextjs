@@ -74,6 +74,7 @@ export default function MyApp(props) {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>The starting point for your next project</title>
       </Head>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
