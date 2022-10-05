@@ -39,11 +39,11 @@ export default function HomePage() {
     }
   }, [user])
 
-  return <HomeHero userDomain={userDomain} />
-}
-
-// ----------------------------------------------------------------------
-
-HomePage.getLayout = function getLayout(page) {
-  return <Layout simpleFooter>{page}</Layout>
+  return (
+    <Page title="The starting point for your next project">
+      <Layout simpleFooter>
+        <HomeHero userDomain={userDomain} />
+      </Layout>
+    </Page>
+  )
 }

@@ -472,9 +472,3 @@ export default function PromotionItemPage() {
     )
   }
 }
-
-// ----------------------------------------------------------------------
-
-PromotionItemPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>
-}

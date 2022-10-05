@@ -29,7 +29,6 @@ import { SettingsProvider } from '../src/contexts/SettingsContext'
 import ThemeProvider from '../src/theme'
 // components
 // import Settings from '../src/components/settings';
-import RtlLayout from '../src/components/RtlLayout'
 import ProgressBar from '../src/components/ProgressBar'
 import ThemeColorPresets from '../src/components/ThemeColorPresets'
 import MotionLazyContainer from '../src/components/animate/MotionLazyContainer'
@@ -68,13 +67,10 @@ export default function MyApp(props) {
     }
   }, [router.events])
 
-  const getLayout = Component.getLayout ?? ((page) => page)
-
   return (
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <title>The starting point for your next project</title>
       </Head>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
@@ -103,11 +99,9 @@ export default function MyApp(props) {
             <ThemeProvider>
               <ThemeColorPresets>
                 <MotionLazyContainer>
-                  <RtlLayout>
-                    {/* <Settings /> */}
-                    <ProgressBar />
-                    {getLayout(<Component {...pageProps} />)}
-                  </RtlLayout>
+                  {/* <Settings /> */}
+                  <ProgressBar />
+                  <Component {...pageProps} />
                 </MotionLazyContainer>
               </ThemeColorPresets>
             </ThemeProvider>

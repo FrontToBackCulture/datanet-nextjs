@@ -206,43 +206,30 @@ export default function PromotionItemsPage() {
     }
   }, [conf])
 
-  //  if (errors != 200) {
-  //     return <ErrorScreen />;
-  //   }
-  if (user) {
-    return (
+  return (
+    <Layout>
       <Page title={title}>
         <RootStyle>
           <Container>
-            <AgGrid
-              type={'list'}
-              fieldConf={listFields}
-              fullConf={conf}
-              entity={code}
-              rowD={rowData}
-              title={title}
-            />
+            {user ? (
+              <AgGrid
+                type="list"
+                fieldConf={listFields}
+                fullConf={conf}
+                entity={code}
+                rowD={rowData}
+                title={title}
+              />
+            ) : (
+              <>
+                Please login to see data
+                <br />
+                <br />
+              </>
+            )}
           </Container>
         </RootStyle>
       </Page>
-    )
-  } else {
-    return (
-      <Page title={title}>
-        <RootStyle>
-          <Container>
-            Please login to see data
-            <br />
-            <br />
-          </Container>
-        </RootStyle>
-      </Page>
-    )
-  }
-}
-
-// ----------------------------------------------------------------------
-
-PromotionItemsPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>
+    </Layout>
+  )
 }

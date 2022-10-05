@@ -304,8 +304,10 @@ export default function PromotionItemPage() {
 
   if (!item) {
     return <LoadingScreen />
-  } else {
-    return (
+  }
+
+  return (
+    <Layout>
       <Page title={entity + ' | ' + item.name}>
         <RootStyle>
           <ItemHero item={item} entity={entity} />
@@ -401,12 +403,6 @@ export default function PromotionItemPage() {
           </Container>
         </RootStyle>
       </Page>
-    )
-  }
-}
-
-// ----------------------------------------------------------------------
-
-PromotionItemPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>
+    </Layout>
+  )
 }
