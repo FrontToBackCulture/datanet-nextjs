@@ -40,7 +40,6 @@ import Script from 'next/script'
 import { useRouter } from 'next/router'
 import * as gtag from '../lib/gtag'
 import { LicenseManager } from 'ag-grid-enterprise'
-import { Box } from '@mui/material'
 import Layout from '../src/layouts'
 
 LicenseManager.setLicenseKey(

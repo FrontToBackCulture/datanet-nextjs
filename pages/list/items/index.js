@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 // @mui
 import { styled } from '@mui/material/styles'
-import { Container } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 // auth
 import { useUser } from '@auth0/nextjs-auth0'
 // other lbrary
@@ -179,20 +179,15 @@ export default function ListPage() {
     }
   }
 
-  //  if (errors != 200) {
-  //     return <ErrorScreen />;
-  //   }
   return (
     <Page title={title}>
       <Container>
         {user ? (
           <AgGrid type={'list'} conf={conf} entity={code} rowD={rowData} title={title} />
         ) : (
-          <>
+          <Typography align="center" variant="h4">
             Please login to see data
-            <br />
-            <br />
-          </>
+          </Typography>
         )}
       </Container>
     </Page>

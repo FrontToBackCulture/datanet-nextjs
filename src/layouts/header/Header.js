@@ -111,7 +111,7 @@ export default function Header({ transparent, header2Layout }) {
   }, [conf])
 
   return (
-    <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
+    <AppBar position="relative" sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
       <ToolbarStyle disableGutters transparent={transparent} scrolling={isScrolling}>
         <Container
           sx={{
