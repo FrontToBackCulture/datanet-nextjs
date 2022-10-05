@@ -14,12 +14,12 @@
 //     </Stack>
 //   </>
 // ))
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { Footer, FooterSimple } from '../layouts/footer'
 
 const Page = ({ children, simpleFooter = false }) => (
   <>
-    <Box flexGrow={1}>{children}</Box>
+    <Stack flexGrow={1}>{children}</Stack>
     {simpleFooter ? <FooterSimple /> : <Footer />}
   </>
 )

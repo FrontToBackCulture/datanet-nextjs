@@ -17,8 +17,6 @@ import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/format
 
 export default function AGGrid({ rowD, type, conf, entity, title }) {
   const gridRef = useRef()
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), [])
-  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), [])
   const [gridApi, setGridApi] = useState()
   const [rowData, setRowData] = useState([])
   const [columnDefs, setColumnDefs] = useState([])
@@ -76,37 +74,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
     }
   }, [])
 
-  const sideBar = useMemo(() => {
-    return {
-      toolPanels: [
-        {
-          id: 'columns',
-          labelDefault: 'Columns',
-          labelKey: 'columns',
-          iconKey: 'columns',
-          toolPanel: 'agColumnsToolPanel',
-          minWidth: 225,
-          width: 225,
-          maxWidth: 225,
-        },
-        {
-          id: 'filters',
-          labelDefault: 'Filters',
-          labelKey: 'filters',
-          iconKey: 'filter',
-          toolPanel: 'agFiltersToolPanel',
-          minWidth: 180,
-          maxWidth: 400,
-          width: 250,
-        },
-      ],
-      position: 'right',
-      defaultToolPanel: '',
-    }
-  }, [])
-
-  const rowGroupPanelShow = 'always'
-
   const autoSizeAll = useCallback((skipHeader) => {
     const allColumnIds = []
     gridRef.current.columnApi.getColumns().forEach((column) => {
@@ -126,14 +93,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
 
     return tallestHeaderTextHeight
   }
-
-  const onBtShowLoading = useCallback(() => {
-    gridRef.current.api.showLoadingOverlay()
-  }, [])
-
-  const onBtShowNoRows = useCallback(() => {
-    gridRef.current.api.showNoRowsOverlay()
-  }, [])
 
   function decimalFormatter(params) {
     if (params && params.value) {
@@ -278,61 +237,44 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
   }, [rowD, type, conf, entity])
 
   return (
-    <div style={containerStyle}>
-      {/* <div style={gridStyle} className="ag-theme-alpine"> */}
+    <Stack height={1} spacing={3}>
       <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
         <Typography variant="h4" gutterBottom>
           {title}
         </Typography>
-        <Box
-          component="form"
-          sx={{
-            '& > :not(style)': { m: 1, width: '25ch' },
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            id="filter-text-box"
-            label="Search"
-            color="secondary"
-            onChange={onFilterTextBoxChanged}
-            variant="outlined"
-            size="small"
-            focused
-          />
-        </Box>
+        <TextField
+          id="filter-text-box"
+          label="Search"
+          color="secondary"
+          onChange={onFilterTextBoxChanged}
+          variant="outlined"
+          size="small"
+          focused
+          sx={{ width: '25ch' }}
+        />
       </Stack>
-      <div id="myGrid" style={gridStyle} className="ag-theme-material">
+      <div id="myGrid" style={{ flexGrow: 1 }} className="ag-theme-material">
         <AgGridReact
           ref={gridRef}
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
           statusBar={{ statusBar }}
-          // sideBar={sideBar}
           sideBar={false}
           onGridReady={onGridReady}
           onFirstDataRendered={onFirstDataRendered}
-          animateRows={true}
-          domLayout={'autoHeight'}
-          pagination={true}
-          paginationPageSize={25}
-          // rowGroupPanelShow={rowGroupPanelShow}
+          animateRows
           rowGroupPanelShow={false}
           rowHeight={25}
-          cacheQuickFilter={true}
+          cacheQuickFilter
           overlayLoadingTemplate={
             '<span class="ag-overlay-loading-center">This is a custom \'no rows\' overlay</span>'
           }
           overlayNoRowsTemplate={
             '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow">Please wait while your data is loading</span>'
           }
-          // frameworkComponents={{
-          //   LinkComponent,
-          // }}
         />
       </div>
-    </div>
+    </Stack>
   )
 }

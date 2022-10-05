@@ -181,9 +181,9 @@ export default function ListPage() {
 
   return (
     <Page title={title}>
-      <Container>
+      <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
         {user ? (
-          <AgGrid type={'list'} conf={conf} entity={code} rowD={rowData} title={title} />
+          <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
         ) : (
           <Typography align="center" variant="h4">
             Please login to see data

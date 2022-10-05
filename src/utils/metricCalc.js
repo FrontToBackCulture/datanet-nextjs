@@ -1,7 +1,7 @@
 // other lbrary
 import moment from 'moment'
 import { array, merge, aggregate, calculate } from 'cuttle'
-import { selectConfig, selectObject, selectLocalDataSource, selectDomain } from './selectScript'
+import { selectObject, selectLocalDataSource, selectDomain } from './selectScript'
 
 export function performCalc(data, conf) {
   let result, filteredTrend

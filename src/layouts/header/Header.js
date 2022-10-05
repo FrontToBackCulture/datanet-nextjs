@@ -48,8 +48,12 @@ export default function Header({ transparent, header2Layout }) {
   const [conf, setConf] = useState()
   const [navConfig, setNavConfig] = useState([])
 
-  const selectedDomain = localStorage.getItem('selectedDomain')
-  const URL = window.location.href
+  // TODO: get this dynamically
+  // const selectedDomain = localStorage.getItem('selectedDomain')
+  const selectedDomain = 'saladstop'
+  // TODO: get this dynamically
+  // const URL = window.location.href
+  const URL = 'http://localhost:3002/'
 
   const theme = useTheme()
 
@@ -61,7 +65,7 @@ export default function Header({ transparent, header2Layout }) {
 
   const handleDomainChange = (event) => {
     setUserDomain(event.target.value)
-    localStorage.setItem('selectedDomain', event.target.value)
+    // localStorage.setItem('selectedDomain', event.target.value)
   }
 
   useEffect(() => {
