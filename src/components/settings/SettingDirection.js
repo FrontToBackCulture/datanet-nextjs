@@ -1,13 +1,13 @@
 // icons
-import alignHorizontalLeft from '@iconify/icons-carbon/align-horizontal-left';
-import alignHorizontalRight from '@iconify/icons-carbon/align-horizontal-right';
+import alignHorizontalLeft from '@iconify/icons-carbon/align-horizontal-left'
+import alignHorizontalRight from '@iconify/icons-carbon/align-horizontal-right'
 // @mui
-import { styled } from '@mui/material/styles';
-import { ToggleButton, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { ToggleButton, Typography } from '@mui/material'
 // hooks
-import { useSettings } from '../../hooks';
+import { useSettings } from '../../hooks'
 //
-import Iconify from '../Iconify';
+import Iconify from '../Iconify'
 
 // ----------------------------------------------------------------------
 
@@ -25,19 +25,19 @@ const RootStyle = styled(ToggleButton)(({ theme }) => ({
   '&.Mui-selected': {
     backgroundColor: 'transparent',
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function SettingDirection() {
-  const { themeDirection, onToggleDirection } = useSettings();
+  const { themeDirection, onToggleDirection } = useSettings()
 
-  const isRTL = themeDirection === 'rtl';
+  const isRTL = themeDirection === 'rtl'
 
   return (
     <RootStyle value="check" selected={isRTL} onChange={onToggleDirection}>
       <Typography variant="subtitle2">Direction</Typography>
       <Iconify icon={isRTL ? alignHorizontalRight : alignHorizontalLeft} />
     </RootStyle>
-  );
+  )
 }

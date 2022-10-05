@@ -1,11 +1,11 @@
 // react
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 import {
   Box,
   List,
@@ -16,18 +16,18 @@ import {
   Collapse,
   ListItemText,
   ListItemButton,
-} from '@mui/material';
+} from '@mui/material'
 // auth
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0'
 // config
-import { DRAWER_WIDTH } from '../../config';
+import { DRAWER_WIDTH } from '../../config'
 // components
-import { Logo, Scrollbar, Iconify, NavSection } from '../../components';
-import { IconButtonAnimate } from '../../components/animate';
+import { Logo, Scrollbar, Iconify, NavSection } from '../../components'
+import { IconButtonAnimate } from '../../components/animate'
 // icons
-import menuIcon from '@iconify/icons-carbon/menu';
-import chevronRight from '@iconify/icons-carbon/chevron-right';
-import chevronDown from '@iconify/icons-carbon/chevron-down';
+import menuIcon from '@iconify/icons-carbon/menu'
+import chevronRight from '@iconify/icons-carbon/chevron-right'
+import chevronDown from '@iconify/icons-carbon/chevron-down'
 
 // ----------------------------------------------------------------------
 
@@ -45,34 +45,34 @@ const RootLinkStyle = styled(ListItemButton, {
     fontWeight: theme.typography.fontWeightMedium,
     backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
   }),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 NavMobile.propTypes = {
   navConfig: PropTypes.array.isRequired,
   sx: PropTypes.object,
-};
+}
 
 export default function NavMobile({ navConfig, sx, userDomain }) {
-  const { user, error, isLoading } = useUser();
-  const { pathname } = useRouter();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  console.log('Melvin Mobile', userDomain);
+  const { user, error, isLoading } = useUser()
+  const { pathname } = useRouter()
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  console.log('Melvin Mobile', userDomain)
   useEffect(() => {
     if (drawerOpen) {
-      handleDrawerClose();
+      handleDrawerClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
+    setDrawerOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+    setDrawerOpen(false)
+  }
 
   return (
     <>
@@ -132,7 +132,7 @@ export default function NavMobile({ navConfig, sx, userDomain }) {
         </Scrollbar>
       </Drawer>
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -143,22 +143,22 @@ NavItemMobile.propTypes = {
     path: PropTypes.string,
     title: PropTypes.string,
   }),
-};
+}
 
 function NavItemMobile({ item, userDomain }) {
-  const { pathname, asPath } = useRouter();
+  const { pathname, asPath } = useRouter()
 
-  const { title, path, code, children } = item;
-  const rootPath = pathname.split('/')[1];
+  const { title, path, code, children } = item
+  const rootPath = pathname.split('/')[1]
   // const isActiveRoot = pathname === path;
-  const isActiveRoot = asPath.includes(code);
-  const isActiveRootWithChild = pathname.includes(`/${rootPath}/`);
+  const isActiveRoot = asPath.includes(code)
+  const isActiveRootWithChild = pathname.includes(`/${rootPath}/`)
 
-  const [open, setOpen] = useState(isActiveRootWithChild);
+  const [open, setOpen] = useState(isActiveRootWithChild)
 
   const handleOpen = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   if (children) {
     return (
@@ -221,7 +221,7 @@ function NavItemMobile({ item, userDomain }) {
           </Box>
         </Collapse>
       </>
-    );
+    )
   }
 
   if (title === 'Documentation') {
@@ -231,7 +231,7 @@ function NavItemMobile({ item, userDomain }) {
           <ListItemText disableTypography primary={title} />
         </RootLinkStyle>
       </Link>
-    );
+    )
   }
 
   return (
@@ -244,5 +244,5 @@ function NavItemMobile({ item, userDomain }) {
         <ListItemText disableTypography primary={title} />
       </RootLinkStyle>
     </NextLink>
-  );
+  )
 }

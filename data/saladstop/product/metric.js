@@ -2255,12 +2255,12 @@ const data = [
     'sum Total': 277.2,
     'sum Discount': 0,
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

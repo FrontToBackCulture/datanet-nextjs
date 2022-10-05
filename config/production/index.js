@@ -3,4 +3,4 @@ module.exports = {
   thinkval: require('./thinkval'),
   kctsoya: require('./kctsoya'),
   demo: require('./demo'),
-};
+}

@@ -1,44 +1,44 @@
 //react
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 // next
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/material'
 // auth
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0'
 // other library
-import moment from 'moment';
-import { array, merge, aggregate, groupBy } from 'cuttle';
+import moment from 'moment'
+import { array, merge, aggregate, groupBy } from 'cuttle'
 // hooks
-import { useResponsive } from '../../../src/hooks';
+import { useResponsive } from '../../../src/hooks'
 // config
-import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
+import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config'
 // api && lib
-import { readVAL } from '../../api/grpc';
-import { dataNetMerge, dataNetPerformCalc, dataNetConvert2MultiSeries } from '../../api/datanet';
-import * as gtag from '../../../lib/gtag';
+import { readVAL } from '../../api/grpc'
+import { dataNetMerge, dataNetPerformCalc, dataNetConvert2MultiSeries } from '../../api/datanet'
+import * as gtag from '../../../lib/gtag'
 // layouts
-import Layout from '../../../src/layouts';
+import Layout from '../../../src/layouts'
 // components
-import { Page, ErrorScreen, LoadingScreen } from '../../../src/components';
-import DataTable from '../../../src/components/DataTable/DataTable';
-import DataTableGroup from '../../../src/components/DataTable/DataTableGroup';
-import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
-import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart';
+import { Page, ErrorScreen, LoadingScreen } from '../../../src/components'
+import DataTable from '../../../src/components/DataTable/DataTable'
+import DataTableGroup from '../../../src/components/DataTable/DataTableGroup'
+import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart'
+import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart'
 // sections
-import { ItemHero } from '../../../src/sections/list';
+import { ItemHero } from '../../../src/sections/list'
 // utils
 import {
   selectConfig,
   selectObject,
   selectLocalDataSource,
   selectDomain,
-} from '../../../src/utils/selectScript';
-import { performCalc } from '../../../src/utils/metricCalc';
+} from '../../../src/utils/selectScript'
+import { performCalc } from '../../../src/utils/metricCalc'
 
-import { useDomainContext } from '../../../src/contexts/DomainProvider';
+import { useDomainContext } from '../../../src/contexts/DomainProvider'
 
 // ----------------------------------------------------------------------
 
@@ -47,10 +47,10 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     paddingTop: HEADER_DESKTOP_HEIGHT,
   },
-}));
+}))
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -62,83 +62,83 @@ function TabPanel(props) {
     >
       {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
     </div>
-  );
+  )
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-};
+}
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     // 'aria-controls': `simple-tabpanel-${index}`,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
 
 export default function PromotionItemPage() {
-  const { user, error, isLoading } = useUser();
-  const [userDomain, setUserDomain] = useState();
-  const [value, setValue] = useState(0);
-  const [item, setItem] = useState();
-  const [dataRows, setDataRows] = useState([]);
-  const [conf, setConf] = useState({});
-  const [entity, setEntity] = useState();
-  const [chartData, setChartData] = useState([]);
-  const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
-  const [uniqueChannels, setUniqueChannels] = useState([]);
-  const [tab1, setTab1] = useState(false);
-  const [tab2, setTab2] = useState(false);
-  const [tab3, setTab3] = useState(false);
-  const [overviewName, setOverviewName] = useState();
-  const [tab1Name, setTab1Name] = useState();
-  const [tab2Name, setTab2Name] = useState();
-  const [tab3Name, setTab3Name] = useState();
+  const { user, error, isLoading } = useUser()
+  const [userDomain, setUserDomain] = useState()
+  const [value, setValue] = useState(0)
+  const [item, setItem] = useState()
+  const [dataRows, setDataRows] = useState([])
+  const [conf, setConf] = useState({})
+  const [entity, setEntity] = useState()
+  const [chartData, setChartData] = useState([])
+  const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([])
+  const [uniqueChannels, setUniqueChannels] = useState([])
+  const [tab1, setTab1] = useState(false)
+  const [tab2, setTab2] = useState(false)
+  const [tab3, setTab3] = useState(false)
+  const [overviewName, setOverviewName] = useState()
+  const [tab1Name, setTab1Name] = useState()
+  const [tab2Name, setTab2Name] = useState()
+  const [tab3Name, setTab3Name] = useState()
 
-  const selectedDomain = useDomainContext();
+  const selectedDomain = useDomainContext()
 
-  const isDesktop = useResponsive('up', 'md');
-  const router = useRouter();
+  const isDesktop = useResponsive('up', 'md')
+  const router = useRouter()
   if (typeof window !== 'undefined') {
-    const URL = window.location.href;
+    const URL = window.location.href
   }
 
   useEffect(() => {
     if (user) {
-      const regex = /@(\w+)/g;
-      let result = user.email.match(regex)[0];
-      result = result.substring(1, result.length);
+      const regex = /@(\w+)/g
+      let result = user.email.match(regex)[0]
+      result = result.substring(1, result.length)
       if (selectedDomain) {
-        setUserDomain(selectDomain(selectedDomain));
+        setUserDomain(selectDomain(selectedDomain))
       } else {
-        setUserDomain(selectDomain(result));
+        setUserDomain(selectDomain(result))
       }
     }
-  }, [user]);
+  }, [user])
 
   //tab value changes
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   //get the config from the config file based on environment variable
   const getConfig = (code) => {
-    let config2used = selectConfig(URL, userDomain, code);
-    setConf(config2used);
+    let config2used = selectConfig(URL, userDomain, code)
+    setConf(config2used)
 
-    return config2used;
-  };
+    return config2used
+  }
 
   // get data from VAL
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
-      let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType, dom);
-      return localJsonData;
+      let localJsonData
+      localJsonData = selectLocalDataSource(contentType, dataType, dom)
+      return localJsonData
     }
     if (URL.includes('datanet')) {
       let valJobs = await readVAL({
@@ -147,53 +147,53 @@ export default function PromotionItemPage() {
         contentType: contentType,
         dataType: dataType,
         cache: cache,
-      });
-      return valJobs.data;
+      })
+      return valJobs.data
     }
-  };
+  }
 
   useEffect(async () => {
     if (router.isReady) {
-      let { id, entity } = router.query;
+      let { id, entity } = router.query
       if (entity && userDomain) {
         if (user && URL.includes('datanet.thinkval.io')) {
-          gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
+          gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 })
         }
-        setEntity(entity);
-        let conf = await getConfig(entity);
-        const { dataSources, variablesMetrics, listFields, detailFields } = conf;
-        const { staticSource, metricSource, trendSource } = dataSources;
-        const { overview, tab1, tab2 } = detailFields;
-        const staticKey = dataSources['staticSource'].key;
-        const metricKey = dataSources['metricSource'].key;
-        const trendKey = dataSources['trendSource'].key;
+        setEntity(entity)
+        let conf = await getConfig(entity)
+        const { dataSources, variablesMetrics, listFields, detailFields } = conf
+        const { staticSource, metricSource, trendSource } = dataSources
+        const { overview, tab1, tab2 } = detailFields
+        const staticKey = dataSources['staticSource'].key
+        const metricKey = dataSources['metricSource'].key
+        const trendKey = dataSources['trendSource'].key
 
         if (detailFields.overview) {
-          setOverviewName(detailFields.overview.name);
+          setOverviewName(detailFields.overview.name)
         }
 
         if (detailFields.tab1) {
-          setTab1(true);
-          setTab1Name(detailFields.tab1.name);
+          setTab1(true)
+          setTab1Name(detailFields.tab1.name)
         }
 
         if (detailFields.tab2) {
-          setTab2(true);
-          setTab2Name(detailFields.tab2.name);
+          setTab2(true)
+          setTab2Name(detailFields.tab2.name)
         }
 
         if (detailFields.tab3) {
-          setTab3(true);
-          setTab3Name(detailFields.tab3.name);
+          setTab3(true)
+          setTab3Name(detailFields.tab3.name)
         }
 
         // iterate thru all the datasources define, cache and extract to UI
-        let allData = {};
+        let allData = {}
         for (const dataSet of Object.keys(dataSources)) {
-          console.log('Check', dataSet);
-          let { domain, queryID, contentType, name } = dataSources[dataSet];
-          let data = await getDataFromVAL(queryID, domain, contentType, entity, true);
-          allData[name] = data;
+          console.log('Check', dataSet)
+          let { domain, queryID, contentType, name } = dataSources[dataSet]
+          let data = await getDataFromVAL(queryID, domain, contentType, entity, true)
+          allData[name] = data
         }
 
         let mergeParams = {
@@ -203,81 +203,81 @@ export default function PromotionItemPage() {
           arr2Key: metricKey,
           domain: userDomain,
           dataType: entity,
-        };
+        }
 
         //merge static and metric
-        let mergeStaticMetricData = await dataNetMerge(mergeParams);
-        mergeStaticMetricData = mergeStaticMetricData.data;
-        allData['mergeStaticMetric'] = mergeStaticMetricData;
-        console.log('ID All Data:', allData);
+        let mergeStaticMetricData = await dataNetMerge(mergeParams)
+        mergeStaticMetricData = mergeStaticMetricData.data
+        allData['mergeStaticMetric'] = mergeStaticMetricData
+        console.log('ID All Data:', allData)
 
-        let performCalcRequiredData = {};
-        performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData;
-        performCalcRequiredData[trendSource.name] = allData[trendSource.name];
+        let performCalcRequiredData = {}
+        performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData
+        performCalcRequiredData[trendSource.name] = allData[trendSource.name]
 
         let performCalcParams = {
           data: performCalcRequiredData,
           conf: conf,
           domain: userDomain,
           dataType: entity,
-        };
+        }
 
-        let performCalcData = await dataNetPerformCalc(performCalcParams);
-        performCalcData = performCalcData.data;
-        console.log('Perform Calculation:', performCalcData);
+        let performCalcData = await dataNetPerformCalc(performCalcParams)
+        performCalcData = performCalcData.data
+        console.log('Perform Calculation:', performCalcData)
 
         //filter the selected item from the newly merged data with trend
-        let filtered = performCalcData.find((merge) => merge[staticKey] === id);
-        console.log('Melvin Filtered:', filtered);
+        let filtered = performCalcData.find((merge) => merge[staticKey] === id)
+        console.log('Melvin Filtered:', filtered)
 
         // for item hero -----------------------------------------
         //fetch the fields to show from static and metric
-        const fields2ShowList = Object.keys(listFields);
-        let itemObj = {};
+        const fields2ShowList = Object.keys(listFields)
+        let itemObj = {}
         fields2ShowList.forEach((field2Show) => {
-          let variableMetric = conf['variablesMetrics'][listFields[field2Show].variablesMetrics];
-          itemObj[field2Show] = filtered[variableMetric.sourceColumn];
-        });
-        setItem(itemObj);
+          let variableMetric = conf['variablesMetrics'][listFields[field2Show].variablesMetrics]
+          itemObj[field2Show] = filtered[variableMetric.sourceColumn]
+        })
+        setItem(itemObj)
         // for item hero -----------------------------------------
 
         //fetch the fields to show at the table level for overview aka landing page of each item   --------------------
-        const fields2ShowDetail = Object.keys(overview['table']);
-        let itemArray2 = [];
+        const fields2ShowDetail = Object.keys(overview['table'])
+        let itemArray2 = []
         fields2ShowDetail.forEach((field2Show) => {
           let variableMetric =
-            conf['variablesMetrics'][overview['table'][field2Show].variablesMetrics];
+            conf['variablesMetrics'][overview['table'][field2Show].variablesMetrics]
           itemArray2.push({
             name: variableMetric.headerName,
             value: filtered[variableMetric.sourceColumn],
-          });
-        });
-        setDataRows(itemArray2);
+          })
+        })
+        setDataRows(itemArray2)
         //fetch the fields to show at the table level for overview aka landing page of each item   --------------------
 
         //fetch the data for the chart for overview aka landing page    --------------------
-        let filteredChart = [];
+        let filteredChart = []
         if (allData[dataSources[overview['chart']['dataSource']].name].length > 0) {
           filteredChart = selectObject(
             allData[dataSources[overview['chart']['dataSource']].name],
             trendKey,
             metricKey,
             id
-          );
-          setChartData(filteredChart);
+          )
+          setChartData(filteredChart)
         }
         //fetch the data for the chart  for overview aka landing page  --------------------
 
         //group by channel performance   --------------------
         if (detailFields.tab1) {
-          const { tab1 } = detailFields;
-          const { chart } = tab1;
+          const { tab1 } = detailFields
+          const { chart } = tab1
           const { queryID, domain, key, groupKey, groupPeriodKey, valueKey, contentType } =
-            dataSources[chart.dataSource];
-          let cpd = allData[dataSources[chart.dataSource].name];
+            dataSources[chart.dataSource]
+          let cpd = allData[dataSources[chart.dataSource].name]
 
           // filter data specific to this id
-          let cpdFiltered = cpd.filter((row) => row[key] == id);
+          let cpdFiltered = cpd.filter((row) => row[key] == id)
 
           let convert2MultiSeriesParams = {
             data: cpdFiltered,
@@ -286,24 +286,24 @@ export default function PromotionItemPage() {
             dataType: entity,
             contentType: contentType,
             itemId: id,
-          };
+          }
 
           // convert data into multiseries
-          let multiSeriesData = await dataNetConvert2MultiSeries(convert2MultiSeriesParams);
-          let arrayUniqueByKey = multiSeriesData.data.uniqueKey;
-          multiSeriesData = multiSeriesData.data.multiSeriesData;
-          setUniqueChannels(arrayUniqueByKey);
-          setMultiSeriesChannelData(multiSeriesData);
-          console.log('ID MultiSeries:', multiSeriesData);
+          let multiSeriesData = await dataNetConvert2MultiSeries(convert2MultiSeriesParams)
+          let arrayUniqueByKey = multiSeriesData.data.uniqueKey
+          multiSeriesData = multiSeriesData.data.multiSeriesData
+          setUniqueChannels(arrayUniqueByKey)
+          setMultiSeriesChannelData(multiSeriesData)
+          console.log('ID MultiSeries:', multiSeriesData)
         }
 
         //group by channel performance   --------------------
       }
     }
-  }, [router.isReady, userDomain]);
+  }, [router.isReady, userDomain])
 
   if (!item) {
-    return <LoadingScreen />;
+    return <LoadingScreen />
   } else {
     return (
       <Page title={entity + ' | ' + item.name}>
@@ -401,12 +401,12 @@ export default function PromotionItemPage() {
           </Container>
         </RootStyle>
       </Page>
-    );
+    )
   }
 }
 
 // ----------------------------------------------------------------------
 
 PromotionItemPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

@@ -1,42 +1,42 @@
 //react
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 // next
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Grid, Stack, Container, Typography, Tabs, Tab, Box } from '@mui/material'
 // auth
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0'
 // other library
-import moment from 'moment';
-import { array, merge, aggregate, groupBy } from 'cuttle';
+import moment from 'moment'
+import { array, merge, aggregate, groupBy } from 'cuttle'
 // hooks
-import { useResponsive } from '../../../src/hooks';
+import { useResponsive } from '../../../src/hooks'
 // config
-import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config';
+import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../src/config'
 // api && lib
-import { readVAL } from '../../api/grpc';
-import * as gtag from '../../../lib/gtag';
+import { readVAL } from '../../api/grpc'
+import * as gtag from '../../../lib/gtag'
 // layouts
-import Layout from '../../../src/layouts';
+import Layout from '../../../src/layouts'
 // components
-import { Page, ErrorScreen, LoadingScreen } from '../../../src/components';
-import DataTable from '../../../src/components/DataTable/DataTable';
-import DataTableGroup from '../../../src/components/DataTable/DataTableGroup';
-import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart';
-import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart';
+import { Page, ErrorScreen, LoadingScreen } from '../../../src/components'
+import DataTable from '../../../src/components/DataTable/DataTable'
+import DataTableGroup from '../../../src/components/DataTable/DataTableGroup'
+import SimpleAreaChart from '../../../src/components/Recharts/SimpleAreaChart'
+import MultiLineSeriesChart from '../../../src/components/Recharts/MultiLineSeriesChart'
 // sections
-import { ItemHero } from '../../../src/sections/list';
+import { ItemHero } from '../../../src/sections/list'
 // utils
 import {
   selectConfig,
   selectObject,
   selectLocalDataSource,
   selectDomain,
-} from '../../../src/utils/selectScript';
+} from '../../../src/utils/selectScript'
 
-import { useDomainContext } from '../../../src/contexts/DomainProvider';
+import { useDomainContext } from '../../../src/contexts/DomainProvider'
 
 // ----------------------------------------------------------------------
 
@@ -45,10 +45,10 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     paddingTop: HEADER_DESKTOP_HEIGHT,
   },
-}));
+}))
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -60,86 +60,86 @@ function TabPanel(props) {
     >
       {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
     </div>
-  );
+  )
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-};
+}
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
     // 'aria-controls': `simple-tabpanel-${index}`,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
 
 export default function PromotionItemPage() {
-  const { user, error, isLoading } = useUser();
-  const [userDomain, setUserDomain] = useState();
-  const [value, setValue] = useState(0);
-  const [job, setJob] = useState();
-  const [dataRows, setDataRows] = useState([]);
-  const [fullConfig, setFullConfig] = useState({});
-  const [itemId, setItemId] = useState();
-  const [entity, setEntity] = useState();
-  const [chartData, setChartData] = useState([]);
-  const [staticQueryID, setStaticQueryID] = useState();
-  const [staticDomain, setStaticDomain] = useState();
-  const [metricQueryID, setMetricQueryID] = useState();
-  const [metricDomain, setMetricDomain] = useState();
-  const [staticData, setStaticData] = useState();
-  const [metricData, setMetriccData] = useState();
-  const [allChartData, setAllChartData] = useState([]);
-  const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([]);
-  const [uniqueChannels, setUniqueChannels] = useState([]);
-  const [channelPerformanceTab, setChannelPerformanceTab] = useState(false);
+  const { user, error, isLoading } = useUser()
+  const [userDomain, setUserDomain] = useState()
+  const [value, setValue] = useState(0)
+  const [job, setJob] = useState()
+  const [dataRows, setDataRows] = useState([])
+  const [fullConfig, setFullConfig] = useState({})
+  const [itemId, setItemId] = useState()
+  const [entity, setEntity] = useState()
+  const [chartData, setChartData] = useState([])
+  const [staticQueryID, setStaticQueryID] = useState()
+  const [staticDomain, setStaticDomain] = useState()
+  const [metricQueryID, setMetricQueryID] = useState()
+  const [metricDomain, setMetricDomain] = useState()
+  const [staticData, setStaticData] = useState()
+  const [metricData, setMetriccData] = useState()
+  const [allChartData, setAllChartData] = useState([])
+  const [multiSeriesChannelData, setMultiSeriesChannelData] = useState([])
+  const [uniqueChannels, setUniqueChannels] = useState([])
+  const [channelPerformanceTab, setChannelPerformanceTab] = useState(false)
 
-  const selectedDomain = useDomainContext();
+  const selectedDomain = useDomainContext()
 
-  const isDesktop = useResponsive('up', 'md');
-  const router = useRouter();
+  const isDesktop = useResponsive('up', 'md')
+  const router = useRouter()
   if (typeof window !== 'undefined') {
-    const URL = window.location.href;
+    const URL = window.location.href
   }
 
   useEffect(() => {
     if (user) {
-      const regex = /@(\w+)/g;
-      let result = user.email.match(regex)[0];
-      result = result.substring(1, result.length);
+      const regex = /@(\w+)/g
+      let result = user.email.match(regex)[0]
+      result = result.substring(1, result.length)
       if (selectedDomain) {
-        setUserDomain(selectDomain(selectedDomain));
+        setUserDomain(selectDomain(selectedDomain))
       } else {
-        setUserDomain(selectDomain(result));
+        setUserDomain(selectDomain(result))
       }
     }
-  }, [user]);
+  }, [user])
 
   //tab value changes
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = (code) => {
-    let config2used = selectConfig(URL, userDomain, code);
-    setFullConfig(config2used);
+    let config2used = selectConfig(URL, userDomain, code)
+    setFullConfig(config2used)
 
-    return config2used;
-  };
+    return config2used
+  }
 
   // get data from VAL
   const getDataFromVAL = async (qId, dom, contentType, dataType, cache) => {
     if (URL.includes('localhost')) {
-      let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType, dom);
-      return localJsonData;
+      let localJsonData
+      localJsonData = selectLocalDataSource(contentType, dataType, dom)
+      return localJsonData
     }
     if (URL.includes('datanet')) {
       let valJobs = await readVAL({
@@ -148,20 +148,20 @@ export default function PromotionItemPage() {
         contentType: contentType,
         dataType: dataType,
         cache: cache,
-      });
-      return valJobs.data;
+      })
+      return valJobs.data
     }
-  };
+  }
 
   // get chart aka trend data from VAL
   const getChartData = async (conf) => {
-    let contentType = 'trend';
-    let dataType = entity;
-    let data;
+    let contentType = 'trend'
+    let dataType = entity
+    let data
     if (URL.includes('localhost')) {
-      let localJsonData;
-      localJsonData = selectLocalDataSource(contentType, dataType, conf.chartSource.domain);
-      data = localJsonData;
+      let localJsonData
+      localJsonData = selectLocalDataSource(contentType, dataType, conf.chartSource.domain)
+      data = localJsonData
     }
     if (URL.includes('datanet')) {
       let valChartData = await readVAL({
@@ -170,20 +170,20 @@ export default function PromotionItemPage() {
         contentType: 'trend',
         dataType: entity,
         cache: true,
-      });
-      data = valChartData.data;
+      })
+      data = valChartData.data
     }
 
-    console.log('All Chart Datat: ', data);
-    setAllChartData(data);
+    console.log('All Chart Datat: ', data)
+    setAllChartData(data)
     // console.log('Chart: ', data);
-    let filteredChart = [];
+    let filteredChart = []
     if (data.length > 0) {
-      filteredChart = selectObject(data, conf.chartSource.key, conf.metricSource.key, itemId);
+      filteredChart = selectObject(data, conf.chartSource.key, conf.metricSource.key, itemId)
     }
 
-    return filteredChart;
-  };
+    return filteredChart
+  }
 
   // if (jobError) {
   //   return <ErrorScreen />;
@@ -192,42 +192,42 @@ export default function PromotionItemPage() {
   useEffect(async () => {
     if (router.isReady) {
       // console.log(router.query);
-      let { id, entity } = router.query;
+      let { id, entity } = router.query
       // console.log(entity);
       if (entity && userDomain) {
         // let configJson = JSON.parse(conf);
-        setEntity(entity);
-        let conf = await getConfig(entity);
-        setFullConfig(conf);
-        setItemId(id);
-        setStaticQueryID(conf.staticSource.queryID);
-        setStaticDomain(conf.staticSource.domain);
-        setMetricQueryID(conf.metricSource.queryID);
-        setMetricDomain(conf.metricSource.domain);
+        setEntity(entity)
+        let conf = await getConfig(entity)
+        setFullConfig(conf)
+        setItemId(id)
+        setStaticQueryID(conf.staticSource.queryID)
+        setStaticDomain(conf.staticSource.domain)
+        setMetricQueryID(conf.metricSource.queryID)
+        setMetricDomain(conf.metricSource.domain)
         if (user && URL.includes('datanet.thinkval.io')) {
-          gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 });
+          gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 })
         }
       }
     }
-  }, [router.isReady, userDomain]);
+  }, [router.isReady, userDomain])
 
   //once static query and domain available extract static and trend aka chart data
   useEffect(async () => {
     if (staticQueryID && staticDomain) {
-      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', entity, true);
-      setStaticData(sD);
-      let finalChartValue = await getChartData(fullConfig);
-      setChartData(finalChartValue);
+      let sD = await getDataFromVAL(staticQueryID, staticDomain, 'static', entity, true)
+      setStaticData(sD)
+      let finalChartValue = await getChartData(fullConfig)
+      setChartData(finalChartValue)
     }
-  }, [staticQueryID, staticDomain]);
+  }, [staticQueryID, staticDomain])
 
   //once metric query and domain available extract metric data
   useEffect(async () => {
     if (metricQueryID && metricDomain) {
-      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', entity, true);
-      setMetriccData(mD);
+      let mD = await getDataFromVAL(metricQueryID, metricDomain, 'metric', entity, true)
+      setMetriccData(mD)
     }
-  }, [metricQueryID, metricDomain]);
+  }, [metricQueryID, metricDomain])
 
   //once all data available starts massaging the end result data
   useEffect(async () => {
@@ -238,133 +238,133 @@ export default function PromotionItemPage() {
       metricData.length > 0 &&
       allChartData.length > 0
     ) {
-      const staticKey = fullConfig.staticSource.key;
-      const metricKey = fullConfig.metricSource.key;
-      const changeKey = fullConfig.change.valueKey;
-      const trendKey = fullConfig.chartSource.key;
-      const chartGroupKey = fullConfig.chartSource.groupKey;
+      const staticKey = fullConfig.staticSource.key
+      const metricKey = fullConfig.metricSource.key
+      const changeKey = fullConfig.change.valueKey
+      const trendKey = fullConfig.chartSource.key
+      const chartGroupKey = fullConfig.chartSource.groupKey
 
       // start merging of static and metric data
-      let merged = merge.merge(staticData, metricData, staticKey, metricKey);
+      let merged = merge.merge(staticData, metricData, staticKey, metricKey)
 
-      console.log('Static Data', staticData);
-      console.log('Metric Data', metricData);
-      console.log('Trend Data', allChartData);
-      console.log('Chart Specific Data', chartData);
-      console.log('Merged:', merged);
+      console.log('Static Data', staticData)
+      console.log('Metric Data', metricData)
+      console.log('Trend Data', allChartData)
+      console.log('Chart Specific Data', chartData)
+      console.log('Merged:', merged)
 
       //filter each item separately from the trend data to calculate the latestMetrics, priorMetrics and changeMetrics by iterating thru the merged data
       const filteredItemTrendData = await merged.map((item) => {
-        let filteredChart;
+        let filteredChart
         //filter by matching to the static data key
         // check if the attribute storing the key in metric is a value in the array or not as different processing required
-        filteredChart = selectObject(allChartData, metricKey, trendKey, item[staticKey]);
+        filteredChart = selectObject(allChartData, metricKey, trendKey, item[staticKey])
 
         // if data exists in the trend data for the item, start the calculating
         if (filteredChart.length > 0) {
           let latestMetric = 0,
-            priorMetric = 0;
+            priorMetric = 0
           // get the the most recent date in the data set belonging to the selected item
-          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey);
-          latestMetric = latestObject[changeKey];
+          let latestObject = array.mostRecentObject(filteredChart, chartGroupKey)
+          latestMetric = latestObject[changeKey]
 
           // if more than 1 rows of data exists in the trend data for the item, start the calculating
           if (filteredChart.length > 1) {
             // get the the 2nd recent date object in the trend data for the selected item
             // get the the 2nd recent date object in the trend data for the selected item
-            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey);
-            priorMetric = secondLatestDate[changeKey];
+            const secondLatestDate = array.most2ndRecentObject(filteredChart, chartGroupKey)
+            priorMetric = secondLatestDate[changeKey]
           } else {
-            priorMetric = 0;
+            priorMetric = 0
           }
 
           // calculate change metrics
-          let changeMetric = latestMetric - priorMetric;
-          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100;
+          let changeMetric = latestMetric - priorMetric
+          let changeMetricPercent = ((latestMetric - priorMetric) / priorMetric) * 100
 
-          item['latestMetric'] = latestMetric;
-          item['priorMetric'] = priorMetric;
-          item['changeMetric'] = changeMetric;
-          item['changeMetricPercent'] = changeMetricPercent;
+          item['latestMetric'] = latestMetric
+          item['priorMetric'] = priorMetric
+          item['changeMetric'] = changeMetric
+          item['changeMetricPercent'] = changeMetricPercent
         }
 
         // return enrich items that contain the latestMetrics, priorMetrics and changeMetrics
-        return item;
-      });
+        return item
+      })
 
-      merged = filteredItemTrendData;
+      merged = filteredItemTrendData
 
-      const { detailFields, listFields } = fullConfig;
+      const { detailFields, listFields } = fullConfig
       //filter the selected item from the newly merged data with trend
-      let filtered = merged.find((merge) => merge[staticKey] === itemId);
+      let filtered = merged.find((merge) => merge[staticKey] === itemId)
       //fetch the fields to show from static and metric
-      const fields2ShowList = Object.keys(listFields);
-      let jobObj = {};
+      const fields2ShowList = Object.keys(listFields)
+      let jobObj = {}
       fields2ShowList.forEach((field2Show) => {
-        jobObj[field2Show] = filtered[listFields[field2Show].sourceColumn];
-      });
+        jobObj[field2Show] = filtered[listFields[field2Show].sourceColumn]
+      })
       //fetch the fields to show at the table level
-      const fields2ShowDetail = Object.keys(detailFields);
-      let jobArray = [];
+      const fields2ShowDetail = Object.keys(detailFields)
+      let jobArray = []
       fields2ShowDetail.forEach((field2Show) => {
         jobArray.push({
           name: detailFields[field2Show].sourceColumn,
           value: filtered[detailFields[field2Show].sourceColumn],
-        });
-      });
-      setJob(jobObj);
-      setDataRows(jobArray);
+        })
+      })
+      setJob(jobObj)
+      setDataRows(jobArray)
 
       //!--------- group by channel performance
       if (fullConfig.channelPerformanceSource) {
-        setChannelPerformanceTab(true);
-        const channelGroupKey = fullConfig.channelPerformanceSource.groupKey;
-        const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey;
-        const channelValueKey = fullConfig.channelPerformanceSource.valueKey;
-        const { queryID, domain, key } = fullConfig.channelPerformanceSource;
+        setChannelPerformanceTab(true)
+        const channelGroupKey = fullConfig.channelPerformanceSource.groupKey
+        const channelGroupPeriodKey = fullConfig.channelPerformanceSource.groupPeriodKey
+        const channelValueKey = fullConfig.channelPerformanceSource.valueKey
+        const { queryID, domain, key } = fullConfig.channelPerformanceSource
 
-        let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true);
-        console.log('Channel Data', cpd);
+        let cpd = await getDataFromVAL(queryID, domain, 'channel', entity, true)
+        console.log('Channel Data', cpd)
 
-        let cpdFiltered = cpd.filter((row) => row[key] == itemId);
-        console.log('Channel Data Filtered', cpdFiltered);
+        let cpdFiltered = cpd.filter((row) => row[key] == itemId)
+        console.log('Channel Data Filtered', cpdFiltered)
 
         let groupByChannel = await groupBy.groupBySum(cpdFiltered, {
           groupKeys: [channelGroupPeriodKey, channelGroupKey],
           sumKeys: [channelValueKey],
           excludeBlank: false,
-        });
+        })
 
-        let groupByChannelNew = [];
+        let groupByChannelNew = []
         groupByChannel.forEach(function (item, index) {
-          let properDate = new Date(item[channelGroupPeriodKey]);
-          item.DateNumber = moment(properDate).valueOf();
-          groupByChannelNew.push(item);
-        });
+          let properDate = new Date(item[channelGroupPeriodKey])
+          item.DateNumber = moment(properDate).valueOf()
+          groupByChannelNew.push(item)
+        })
 
         const arrayUniqueByKey = groupByChannelNew
           .map((item) => item[channelGroupKey])
-          .filter((value, index, self) => self.indexOf(value) === index);
-        setUniqueChannels(arrayUniqueByKey);
-        console.log('Unique Channels', arrayUniqueByKey);
+          .filter((value, index, self) => self.indexOf(value) === index)
+        setUniqueChannels(arrayUniqueByKey)
+        console.log('Unique Channels', arrayUniqueByKey)
 
-        let multiSeriesData = [];
+        let multiSeriesData = []
 
         arrayUniqueByKey.forEach(function (item, index) {
-          let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item);
-          multiSeriesData.push({ name: item, data: seriesObject });
-        });
+          let seriesObject = groupByChannelNew.filter((row) => row[channelGroupKey] == item)
+          multiSeriesData.push({ name: item, data: seriesObject })
+        })
 
-        console.log('ID MultiSeries:', multiSeriesData);
-        setMultiSeriesChannelData(multiSeriesData);
+        console.log('ID MultiSeries:', multiSeriesData)
+        setMultiSeriesChannelData(multiSeriesData)
       }
 
       //!--------- group by channel performance
     }
-  }, [staticData, metricData, allChartData, chartData]);
+  }, [staticData, metricData, allChartData, chartData])
 
   if (!job) {
-    return <LoadingScreen />;
+    return <LoadingScreen />
   } else {
     return (
       <Page title={entity + ' | ' + job.name}>
@@ -469,12 +469,12 @@ export default function PromotionItemPage() {
           </Container>
         </RootStyle>
       </Page>
-    );
+    )
   }
 }
 
 // ----------------------------------------------------------------------
 
 PromotionItemPage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

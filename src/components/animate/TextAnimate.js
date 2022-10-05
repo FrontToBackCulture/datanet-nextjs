@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
+import PropTypes from 'prop-types'
+import { m } from 'framer-motion'
 // @mui
-import { Box } from '@mui/material';
+import { Box } from '@mui/material'
 //
-import { varFade } from './variants';
+import { varFade } from './variants'
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ TextAnimate.propTypes = {
   text: PropTypes.string.isRequired,
   variants: PropTypes.object,
   sx: PropTypes.object,
-};
+}
 
 export default function TextAnimate({ text, variants, sx, ...other }) {
   return (
@@ -31,5 +31,5 @@ export default function TextAnimate({ text, variants, sx, ...other }) {
         </m.span>
       ))}
     </Box>
-  );
+  )
 }

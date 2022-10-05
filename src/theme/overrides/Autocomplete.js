@@ -1,5 +1,5 @@
 //
-import { AutocompleteIcon } from './CustomIcons';
+import { AutocompleteIcon } from './CustomIcons'
 
 // ----------------------------------------------------------------------
 
@@ -23,5 +23,5 @@ export default function Autocomplete(theme) {
         },
       },
     },
-  };
+  }
 }

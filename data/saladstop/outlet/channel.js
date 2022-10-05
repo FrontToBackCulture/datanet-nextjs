@@ -43496,12 +43496,12 @@ const data = [
     count_general_record_id: 4,
     'average Net Sales': 13.4675,
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

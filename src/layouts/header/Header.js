@@ -1,10 +1,10 @@
 // react
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles'
 import {
   Box,
   Stack,
@@ -16,99 +16,99 @@ import {
   Select,
   InputLabel,
   MenuItem,
-} from '@mui/material';
+} from '@mui/material'
 // auth
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from '@auth0/nextjs-auth0'
 // routes
-import Routes from '../../routes';
+import Routes from '../../routes'
 // hooks
-import { useOffSetTop, useResponsive } from '../../hooks';
+import { useOffSetTop, useResponsive } from '../../hooks'
 // config
-import { HEADER_DESKTOP_HEIGHT } from '../../config';
+import { HEADER_DESKTOP_HEIGHT } from '../../config'
 // components
-import { Logo, Label, Iconify } from '../../components';
-import { IconButtonAnimate } from '../../components/animate';
+import { Logo, Label, Iconify } from '../../components'
+import { IconButtonAnimate } from '../../components/animate'
 // nav, header, footer
-import { NavMobile, NavDesktop } from '../nav';
-import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
-import { selectConfig, selectDomain } from '../../../src/utils/selectScript';
+import { NavMobile, NavDesktop } from '../nav'
+import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle'
+import { selectConfig, selectDomain } from '../../../src/utils/selectScript'
 // icons
-import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network';
+import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network'
 
 // ----------------------------------------------------------------------
 
 Header.propTypes = {
   transparent: PropTypes.bool,
-};
+}
 
 export default function Header({ transparent, header2Layout }) {
-  const { user, error, isLoading } = useUser();
-  const [userDomain, setUserDomain] = useState();
-  const [userEmailDomain, setUserEmailDomain] = useState();
-  const [conf, setConf] = useState();
-  const [navConfig, setNavConfig] = useState([]);
+  const { user, error, isLoading } = useUser()
+  const [userDomain, setUserDomain] = useState()
+  const [userEmailDomain, setUserEmailDomain] = useState()
+  const [conf, setConf] = useState()
+  const [navConfig, setNavConfig] = useState([])
 
-  const selectedDomain = localStorage.getItem('selectedDomain');
-  const URL = window.location.href;
+  const selectedDomain = localStorage.getItem('selectedDomain')
+  const URL = window.location.href
 
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const isDesktop = useResponsive('up', 'md');
+  const isDesktop = useResponsive('up', 'md')
 
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
-  const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT);
+  const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT)
 
   const handleDomainChange = (event) => {
-    setUserDomain(event.target.value);
-    localStorage.setItem('selectedDomain', event.target.value);
-  };
+    setUserDomain(event.target.value)
+    localStorage.setItem('selectedDomain', event.target.value)
+  }
 
   useEffect(() => {
     if (user) {
-      let domain;
-      const regex = /@(\w+)/g;
-      let result = user.email.match(regex)[0];
-      result = result.substring(1, result.length);
-      setUserEmailDomain(result);
+      let domain
+      const regex = /@(\w+)/g
+      let result = user.email.match(regex)[0]
+      result = result.substring(1, result.length)
+      setUserEmailDomain(result)
       if (!selectedDomain) {
         if (result != 'thinkval') {
-          domain = selectDomain(result);
+          domain = selectDomain(result)
         } else {
           if (!userDomain) {
-            domain = 'thinkval';
-            setUserEmailDomain('thinkval');
+            domain = 'thinkval'
+            setUserEmailDomain('thinkval')
           } else {
-            domain = userDomain;
+            domain = userDomain
           }
         }
       } else {
-        domain = selectedDomain;
+        domain = selectedDomain
       }
-      setUserDomain(domain);
-      header2Layout(domain);
-      getConfig(domain);
+      setUserDomain(domain)
+      header2Layout(domain)
+      getConfig(domain)
     }
-  }, [user, userDomain]);
+  }, [user, userDomain])
 
   const getConfig = (domain) => {
-    let config2used = selectConfig(URL, domain, 'navConfig');
-    setConf(config2used);
-  };
+    let config2used = selectConfig(URL, domain, 'navConfig')
+    setConf(config2used)
+  }
 
   useEffect(() => {
     if (conf) {
-      let configNavConfigArray = [];
+      let configNavConfigArray = []
       conf.map((config) => {
         configNavConfigArray.push({
           title: config.title,
           path: Routes.list.jobs,
           code: config.code,
-        });
-      });
-      setNavConfig(configNavConfigArray);
+        })
+      })
+      setNavConfig(configNavConfigArray)
     }
-  }, [conf]);
+  }, [conf])
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -290,5 +290,5 @@ export default function Header({ transparent, header2Layout }) {
 
       {isScrolling && <ToolbarShadowStyle />}
     </AppBar>
-  );
+  )
 }

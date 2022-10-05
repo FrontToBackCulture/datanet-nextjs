@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const host = process.env.NEXT_PUBLIC_MINIAPP_HOST
 const api = process.env.NEXT_PUBLIC_MINIAPP_API
@@ -9,8 +9,8 @@ export async function dataNetMerge(params) {
     url: `${host}/${api}/merge`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }
 
 export async function dataNetPerformCalc(params) {
@@ -19,8 +19,8 @@ export async function dataNetPerformCalc(params) {
     url: `${host}/${api}/performCalc`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }
 
 export async function dataNetConvert2MultiSeries(params) {
@@ -29,6 +29,6 @@ export async function dataNetConvert2MultiSeries(params) {
     url: `${host}/${api}/convert2MultiSeries`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }

@@ -1,5 +1,5 @@
 // routes
-import Routes from '../../routes';
+import Routes from '../../routes'
 // config
 // import confFn from '../../../config/development/conf';
 // import confFnStage from '../../../config/staging/conf';

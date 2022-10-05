@@ -31,5 +31,5 @@ export default function Lists(theme) {
         },
       },
     },
-  };
+  }
 }

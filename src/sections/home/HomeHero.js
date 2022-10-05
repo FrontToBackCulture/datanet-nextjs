@@ -1,12 +1,12 @@
 // react
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Stack, Container, Typography, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Stack, Container, Typography, Grid } from '@mui/material'
 // hooks
-import { useBoundingClientRect } from '../../hooks';
+import { useBoundingClientRect } from '../../hooks'
 // components
-import Image from 'next/image';
+import Image from 'next/image'
 
 // ----------------------------------------------------------------------
 
@@ -16,25 +16,25 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     height: '30vh',
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function HomeHero({ userDomain }) {
-  const containerRef = useRef(null);
-  const container = useBoundingClientRect(containerRef);
-  const [domain, setDomain] = useState();
+  const containerRef = useRef(null)
+  const container = useBoundingClientRect(containerRef)
+  const [domain, setDomain] = useState()
 
-  const offsetLeft = container?.left;
+  const offsetLeft = container?.left
 
   useEffect(() => {
     if (userDomain) {
       const toTitleCase = (str) =>
-        str.replace(/(^\w|\s\w)(\S*)/g, (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase());
+        str.replace(/(^\w|\s\w)(\S*)/g, (_, m1, m2) => m1.toUpperCase() + m2.toLowerCase())
       // setDomain(toTitleCase(userDomain));
-      setDomain(userDomain);
+      setDomain(userDomain)
     }
-  }, [userDomain]);
+  }, [userDomain])
 
   return (
     <RootStyle>
@@ -73,5 +73,5 @@ export default function HomeHero({ userDomain }) {
         </Grid>
       </Container>
     </RootStyle>
-  );
+  )
 }

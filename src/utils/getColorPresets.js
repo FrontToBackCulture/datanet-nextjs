@@ -1,5 +1,5 @@
 // theme
-import palette, { contrastText } from '../theme/palette';
+import palette, { contrastText } from '../theme/palette'
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ const presetsKey = {
   purpleTeal: 'purpleTeal',
   cyanYellow: 'cyanYellow',
   pinkCyan: 'pinkCyan',
-};
+}
 
 export const colorPresets = [
   // DEFAULT
@@ -124,39 +124,39 @@ export const colorPresets = [
       contrastText: contrastText.white,
     },
   },
-];
+]
 
 // ----------------------------------------------------------------------
 
-const getPreset = (presetsKey) => colorPresets.filter((item) => item.name === presetsKey)[0];
+const getPreset = (presetsKey) => colorPresets.filter((item) => item.name === presetsKey)[0]
 
 export default function getColorPresets(themeColorPresets) {
-  let color;
+  let color
 
   switch (themeColorPresets) {
     // pinkCyan
     case presetsKey.pinkCyan:
-      color = getPreset(presetsKey.pinkCyan);
-      break;
+      color = getPreset(presetsKey.pinkCyan)
+      break
     // cyanYellow
     case presetsKey.cyanYellow:
-      color = getPreset(presetsKey.cyanYellow);
-      break;
+      color = getPreset(presetsKey.cyanYellow)
+      break
     // blueOrange
     case presetsKey.blueOrange:
-      color = getPreset(presetsKey.blueOrange);
-      break;
+      color = getPreset(presetsKey.blueOrange)
+      break
     // greenOrange
     case presetsKey.greenOrange:
-      color = getPreset(presetsKey.greenOrange);
-      break;
+      color = getPreset(presetsKey.greenOrange)
+      break
     // purpleTeal
     case presetsKey.purpleTeal:
-      color = getPreset(presetsKey.purpleTeal);
-      break;
+      color = getPreset(presetsKey.purpleTeal)
+      break
 
     default:
-      color = getPreset(presetsKey.default);
+      color = getPreset(presetsKey.default)
   }
-  return color;
+  return color
 }

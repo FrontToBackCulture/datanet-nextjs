@@ -1,10 +1,10 @@
 // react
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Typography, Stack, Box, Link, Button, Container } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Typography, Stack, Box, Link, Button, Container } from '@mui/material'
 // utils
-import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../../utils/formatNumber'
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(0),
   paddingBottom: theme.spacing(0),
   // ...cssStyles(theme).bgImage(),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +25,11 @@ CareerJobHero.propTypes = {
     slug: PropTypes.string,
     views: PropTypes.number,
   }),
-};
+}
 
 export default function CareerJobHero({ item, entity }) {
   // const { shortCode, name, metric1, metric1PercentChange } = job;
-  const { name, latestMetric, percentChangeMetric } = item;
+  const { name, latestMetric, percentChangeMetric } = item
   // console.log(job);
   // let metric1PercentChange = 0.5;
 
@@ -62,5 +62,5 @@ export default function CareerJobHero({ item, entity }) {
         {/* </Stack> */}
       </Container>
     </RootStyle>
-  );
+  )
 }

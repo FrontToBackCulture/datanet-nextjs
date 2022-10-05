@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 export default function Slider(theme) {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   return {
     MuiSlider: {
@@ -25,5 +25,5 @@ export default function Slider(theme) {
         },
       },
     },
-  };
+  }
 }

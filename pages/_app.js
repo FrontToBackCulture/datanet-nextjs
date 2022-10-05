@@ -1,74 +1,74 @@
 // scroll bar
-import 'simplebar/src/simplebar.css';
+import 'simplebar/src/simplebar.css'
 
 // lightbox
-import 'react-image-lightbox/style.css';
+import 'react-image-lightbox/style.css'
 
 // slick-carousel
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
-import './styles.css';
+import './styles.css'
 
 // lazy image
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import 'react-lazy-load-image-component/src/effects/opacity.css';
-import 'react-lazy-load-image-component/src/effects/black-and-white.css';
+import 'react-lazy-load-image-component/src/effects/blur.css'
+import 'react-lazy-load-image-component/src/effects/opacity.css'
+import 'react-lazy-load-image-component/src/effects/black-and-white.css'
 
 // ----------------------------------------------------------------------
 
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // next
-import Head from 'next/head';
+import Head from 'next/head'
 // @mui
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
 // contexts
-import { SettingsProvider } from '../src/contexts/SettingsContext';
+import { SettingsProvider } from '../src/contexts/SettingsContext'
 // theme
-import ThemeProvider from '../src/theme';
+import ThemeProvider from '../src/theme'
 // components
 // import Settings from '../src/components/settings';
-import RtlLayout from '../src/components/RtlLayout';
-import ProgressBar from '../src/components/ProgressBar';
-import ThemeColorPresets from '../src/components/ThemeColorPresets';
-import MotionLazyContainer from '../src/components/animate/MotionLazyContainer';
+import RtlLayout from '../src/components/RtlLayout'
+import ProgressBar from '../src/components/ProgressBar'
+import ThemeColorPresets from '../src/components/ThemeColorPresets'
+import MotionLazyContainer from '../src/components/animate/MotionLazyContainer'
 
-import { UserProvider } from '@auth0/nextjs-auth0';
+import { UserProvider } from '@auth0/nextjs-auth0'
 
-import { useEffect } from 'react';
-import Script from 'next/script';
-import { useRouter } from 'next/router';
-import * as gtag from '../lib/gtag';
-import { LicenseManager } from 'ag-grid-enterprise';
+import { useEffect } from 'react'
+import Script from 'next/script'
+import { useRouter } from 'next/router'
+import * as gtag from '../lib/gtag'
+import { LicenseManager } from 'ag-grid-enterprise'
 
 LicenseManager.setLicenseKey(
   'CompanyName=Front To Back Culture,LicensedApplication=VAL,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-019429,ExpiryDate=16_November_2022_[v2]_MTY2ODU1NjgwMDAwMA==7bf705096e0805bcfac9a7a0023aa92e'
-);
+)
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
   Component: PropTypes.func,
   pageProps: PropTypes.object,
-};
+}
 
 export default function MyApp(props) {
-  const { Component, pageProps } = props;
+  const { Component, pageProps } = props
 
   // console.log('GTAG:', gtag.GA_TRACKING_ID);
 
-  const router = useRouter();
+  const router = useRouter()
   useEffect(() => {
     const handleRouteChange = (url) => {
-      gtag.pageview(url);
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
+      gtag.pageview(url)
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
-  const getLayout = Component.getLayout ?? ((page) => page);
+  const getLayout = Component.getLayout ?? ((page) => page)
 
   return (
     <>
@@ -115,5 +115,5 @@ export default function MyApp(props) {
         </SettingsProvider>
       </LocalizationProvider>
     </>
-  );
+  )
 }

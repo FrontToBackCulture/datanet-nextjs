@@ -1,46 +1,46 @@
 // react
-import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react';
+import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { Box, TextField, Stack, Typography } from '@mui/material';
+import { Box, TextField, Stack, Typography } from '@mui/material'
 // routes
-import Routes from '../../../src/routes';
+import Routes from '../../../src/routes'
 // other library
-import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-enterprise';
-import 'ag-grid-enterprise/dist/styles/ag-grid.css';
-import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css';
-import 'ag-grid-enterprise/dist/styles/ag-theme-material.css';
+import { AgGridReact } from 'ag-grid-react'
+import 'ag-grid-enterprise'
+import 'ag-grid-enterprise/dist/styles/ag-grid.css'
+import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css'
+import 'ag-grid-enterprise/dist/styles/ag-theme-material.css'
 // utils
-import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber'
 
 export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title }) {
-  const gridRef = useRef();
-  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
-  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
-  const [gridApi, setGridApi] = useState();
-  const [rowData, setRowData] = useState([]);
-  const [columnDefs, setColumnDefs] = useState([]);
-  const [entityConf, setEntityConf] = useState(fullConf);
+  const gridRef = useRef()
+  const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), [])
+  const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), [])
+  const [gridApi, setGridApi] = useState()
+  const [rowData, setRowData] = useState([])
+  const [columnDefs, setColumnDefs] = useState([])
+  const [entityConf, setEntityConf] = useState(fullConf)
 
   const onGridReady = (params) => {
-    setGridApi(params);
-    autoSizeAll(false);
-  };
+    setGridApi(params)
+    autoSizeAll(false)
+  }
 
   const cellClassRules = {
     'cell-pass': (params) => params.value >= 0,
     'cell-fail': (params) => params.value < 0,
-  };
+  }
 
   const onFirstDataRendered = useCallback((params) => {
-    autoSizeAll(false);
-    var padding = 20;
-    var height = headerHeightGetter() + padding;
-    gridRef.current.api.setHeaderHeight(height);
-    gridRef.current.api.resetRowHeights();
-  }, []);
+    autoSizeAll(false)
+    var padding = 20
+    var height = headerHeightGetter() + padding
+    gridRef.current.api.setHeaderHeight(height)
+    gridRef.current.api.resetRowHeights()
+  }, [])
 
   const defaultColDef = useMemo(() => {
     return {
@@ -55,16 +55,16 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
       resizable: true,
       wrapHeaderText: true,
       autoHeight: true,
-    };
-  }, []);
+    }
+  }, [])
 
   function LinkComponent(props) {
     // console.log('Link: ', entity, entityConf);
-    let link;
+    let link
     if (props.value) {
-      link = props.value.replace('/', '%2F');
+      link = props.value.replace('/', '%2F')
     } else {
-      link = '';
+      link = ''
     }
     return (
       <NextLink
@@ -79,7 +79,7 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
       >
         <a>{props.value}</a>
       </NextLink>
-    );
+    )
   }
 
   const statusBar = useMemo(() => {
@@ -97,8 +97,8 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
         { statusPanel: 'agSelectedRowCountComponent' },
         { statusPanel: 'agAggregationComponent' },
       ],
-    };
-  }, []);
+    }
+  }, [])
 
   const sideBar = useMemo(() => {
     return {
@@ -126,106 +126,106 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
       ],
       position: 'right',
       defaultToolPanel: '',
-    };
-  }, []);
+    }
+  }, [])
 
-  const rowGroupPanelShow = 'always';
+  const rowGroupPanelShow = 'always'
 
   function decimalFormatter(params) {
     if (params && params.value) {
-      return fShortenNumber(params.value);
+      return fShortenNumber(params.value)
     } else {
-      return 0;
+      return 0
     }
   }
 
   function currencyFormatter(params) {
     if (params && params.value) {
-      return fCurrency(params.value);
+      return fCurrency(params.value)
     } else {
-      return 0;
+      return 0
     }
   }
 
   function numberFormatter(params) {
     if (params && params.value) {
-      return fNumber(params.value);
+      return fNumber(params.value)
     } else {
-      return 0;
+      return 0
     }
   }
 
   function percentFormatter(params) {
     if (params && params.value) {
-      return fPercent(params.value);
+      return fPercent(params.value)
     } else {
-      return 0;
+      return 0
     }
   }
 
   const autoSizeAll = useCallback((skipHeader) => {
-    const allColumnIds = [];
+    const allColumnIds = []
     gridRef.current.columnApi.getColumns().forEach((column) => {
-      allColumnIds.push(column.getId());
-    });
-    gridRef.current.columnApi.autoSizeColumns(allColumnIds, skipHeader);
-  }, []);
+      allColumnIds.push(column.getId())
+    })
+    gridRef.current.columnApi.autoSizeColumns(allColumnIds, skipHeader)
+  }, [])
 
   useEffect(() => {
-    let chartValueKey, chartGroupKey;
+    let chartValueKey, chartGroupKey
     if (fullConf) {
-      setEntityConf(fullConf);
-      chartValueKey = fullConf.chartSource.valueKey;
-      chartGroupKey = fullConf.chartSource.groupKey;
+      setEntityConf(fullConf)
+      chartValueKey = fullConf.chartSource.valueKey
+      chartGroupKey = fullConf.chartSource.groupKey
     }
     if (rowD && fullConf && entity) {
       // console.log('AG GRID USE: ', fullConf, entity);
       // if (rowD && rowD.length > 0 && rowD[0][Object.keys(rowD[0])[0]]) {
       if (rowD && rowD.length > 0) {
         // console.log('1st object 1st attribute:', rowD[0][Object.keys(rowD[0])[0]]);
-        let colDefs = [];
+        let colDefs = []
         if (fieldConf) {
-          const fields2Show = Object.keys(fieldConf);
+          const fields2Show = Object.keys(fieldConf)
           fields2Show.forEach((field2Show) => {
-            let colDefsObj = {};
-            colDefsObj.field = fieldConf[field2Show].sourceColumn;
+            let colDefsObj = {}
+            colDefsObj.field = fieldConf[field2Show].sourceColumn
             if (fieldConf[field2Show].link) {
-              colDefsObj.cellRenderer = LinkComponent;
-              colDefsObj.pinned = 'left';
+              colDefsObj.cellRenderer = LinkComponent
+              colDefsObj.pinned = 'left'
             }
             if (fieldConf[field2Show].sort) {
-              colDefsObj.sort = fieldConf[field2Show].sort;
+              colDefsObj.sort = fieldConf[field2Show].sort
             }
             if (fieldConf[field2Show].headerName) {
-              colDefsObj.headerName = fieldConf[field2Show].headerName;
+              colDefsObj.headerName = fieldConf[field2Show].headerName
             }
             if (fieldConf[field2Show].maxWidth) {
-              colDefsObj.maxWidth = fieldConf[field2Show].maxWidth;
+              colDefsObj.maxWidth = fieldConf[field2Show].maxWidth
             }
             if (fieldConf[field2Show].condition) {
               colDefsObj.cellClassRules = {
                 'rag-green': 'x > 0',
                 'rag-red': 'x < 0',
-              };
+              }
             }
             switch (fieldConf[field2Show].type) {
               case 'decimal':
-                colDefsObj.valueFormatter = decimalFormatter;
-                break;
+                colDefsObj.valueFormatter = decimalFormatter
+                break
               case 'currency':
-                colDefsObj.valueFormatter = currencyFormatter;
-                break;
+                colDefsObj.valueFormatter = currencyFormatter
+                break
               case 'number':
-                colDefsObj.valueFormatter = numberFormatter;
-                break;
+                colDefsObj.valueFormatter = numberFormatter
+                break
               case 'percent':
-                colDefsObj.valueFormatter = percentFormatter;
-                break;
+                colDefsObj.valueFormatter = percentFormatter
+                break
               default:
-                break;
+                break
             }
-            colDefs.push(colDefsObj);
-          });
+            colDefs.push(colDefsObj)
+          })
           colDefs.push({
             field: 'change',
             cellRenderer: 'agSparklineCellRenderer',
@@ -252,44 +252,44 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
                 },
               },
             },
-          });
+          })
           // console.log(colDefs);
-          setColumnDefs(colDefs);
+          setColumnDefs(colDefs)
         } else {
-          const keys = Object.keys(rowD[0]);
+          const keys = Object.keys(rowD[0])
           keys.forEach((key) => {
             if (key == 'ID') {
-              colDefs.push({ field: key, cellRenderer: 'LinkComponent' });
+              colDefs.push({ field: key, cellRenderer: 'LinkComponent' })
             } else {
-              colDefs.push({ field: key });
+              colDefs.push({ field: key })
             }
-          });
-          setColumnDefs(colDefs);
+          })
+          setColumnDefs(colDefs)
         }
       }
-      setRowData(rowD);
+      setRowData(rowD)
     }
-  }, [rowD, type, fieldConf, fullConf, entity]);
+  }, [rowD, type, fieldConf, fullConf, entity])
 
   const onFilterTextBoxChanged = useCallback(() => {
-    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value);
-  }, []);
+    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value)
+  }, [])
 
   function headerHeightGetter() {
-    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')];
-    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight);
-    var tallestHeaderTextHeight = Math.max(...clientHeights);
+    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')]
+    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight)
+    var tallestHeaderTextHeight = Math.max(...clientHeights)
 
-    return tallestHeaderTextHeight;
+    return tallestHeaderTextHeight
   }
 
   const onBtShowLoading = useCallback(() => {
-    gridRef.current.api.showLoadingOverlay();
-  }, []);
+    gridRef.current.api.showLoadingOverlay()
+  }, [])
 
   const onBtShowNoRows = useCallback(() => {
-    gridRef.current.api.showNoRowsOverlay();
-  }, []);
+    gridRef.current.api.showNoRowsOverlay()
+  }, [])
 
   return (
     <div style={containerStyle}>
@@ -348,5 +348,5 @@ export default function AGGrid({ rowD, type, fieldConf, fullConf, entity, title 
         />
       </div>
     </div>
-  );
+  )
 }

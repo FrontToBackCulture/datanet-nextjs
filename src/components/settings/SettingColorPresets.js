@@ -1,19 +1,19 @@
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Grid, Paper, Radio, RadioGroup, CardActionArea, FormControlLabel } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles'
+import { Grid, Paper, Radio, RadioGroup, CardActionArea, FormControlLabel } from '@mui/material'
 // hooks
-import { useSettings } from '../../hooks';
+import { useSettings } from '../../hooks'
 
 // ----------------------------------------------------------------------
 
-const BOX_BORDER_RADIUS = 1.5;
+const BOX_BORDER_RADIUS = 1.5
 
 const BoxWrapStyle = styled('div')(() => ({
   height: 104,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}));
+}))
 
 const BoxPrimaryStyle = styled('div')(() => ({
   width: 64,
@@ -21,7 +21,7 @@ const BoxPrimaryStyle = styled('div')(() => ({
   overflow: 'hidden',
   borderRadius: '50%',
   position: 'relative',
-}));
+}))
 
 const BoxSecondaryStyle = styled('div')(({ theme }) => ({
   top: 0,
@@ -38,12 +38,12 @@ const BoxSecondaryStyle = styled('div')(({ theme }) => ({
       easing: theme.transitions.easing.sharp,
     }),
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function SettingColorPresets() {
-  const { themeColorPresets, onChangeColorPresets, colorOption } = useSettings();
+  const { themeColorPresets, onChangeColorPresets, colorOption } = useSettings()
 
   return (
     <RadioGroup
@@ -55,10 +55,10 @@ export default function SettingColorPresets() {
     >
       <Grid container spacing={2.5}>
         {colorOption.map((color) => {
-          const colorName = color.name;
-          const primaryColor = color.primary;
-          const secondaryColor = color.secondary;
-          const isSelected = themeColorPresets === colorName;
+          const colorName = color.name
+          const primaryColor = color.primary
+          const secondaryColor = color.secondary
+          const isSelected = themeColorPresets === colorName
 
           return (
             <Grid key={colorName} item xs={6}>
@@ -103,9 +103,9 @@ export default function SettingColorPresets() {
                 </CardActionArea>
               </Paper>
             </Grid>
-          );
+          )
         })}
       </Grid>
     </RadioGroup>
-  );
+  )
 }

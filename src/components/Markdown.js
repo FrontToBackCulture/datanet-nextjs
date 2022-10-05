@@ -1,23 +1,23 @@
-import PropTypes from 'prop-types';
-import okaidia from 'prism-react-renderer/themes/okaidia';
-import { MDXRemote } from 'next-mdx-remote';
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import PropTypes from 'prop-types'
+import okaidia from 'prism-react-renderer/themes/okaidia'
+import { MDXRemote } from 'next-mdx-remote'
+import Highlight, { defaultProps } from 'prism-react-renderer'
 // icons
-import quotesIcon from '@iconify/icons-carbon/quotes';
+import quotesIcon from '@iconify/icons-carbon/quotes'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Link, Stack, Divider, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Link, Stack, Divider, Typography } from '@mui/material'
 // components
-import { Image, Iconify } from '.';
+import { Image, Iconify } from '.'
 
 // ----------------------------------------------------------------------
 
 const MARGIN = {
   marginTop: 24,
   marginBottom: 16,
-};
+}
 
 export const RootStyle = styled('div', {
   shouldForwardProp: (prop) => prop !== 'firstLetter',
@@ -65,21 +65,21 @@ export const RootStyle = styled('div', {
       },
     },
   }),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 Markdown.propTypes = {
   content: PropTypes.object.isRequired,
   firstLetter: PropTypes.bool,
-};
+}
 
 export default function Markdown({ content, firstLetter = false }) {
   return (
     <RootStyle firstLetter={firstLetter}>
       <MDXRemote {...content} components={components} />
     </RootStyle>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -91,14 +91,14 @@ export const components = {
   blockquote: BlockquoteMDX,
   img: ImageMDX,
   code: CodeMDX,
-};
+}
 
 // ----------------------------------------------------------------------
 
 LinkMDX.propTypes = {
   children: PropTypes.node,
   href: PropTypes.string,
-};
+}
 
 function LinkMDX(props) {
   return !props.href.includes('http') ? (
@@ -109,24 +109,24 @@ function LinkMDX(props) {
     <Link {...props} href={props.href} target="_blank" rel="noopener">
       {props.children}
     </Link>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 ImageMDX.propTypes = {
   alt: PropTypes.string,
-};
+}
 
 function ImageMDX(props) {
-  return <Image alt={props.alt} ratio="16/9" sx={{ borderRadius: 2, my: 5 }} {...props} />;
+  return <Image alt={props.alt} ratio="16/9" sx={{ borderRadius: 2, my: 5 }} {...props} />
 }
 
 // ----------------------------------------------------------------------
 
 BlockquoteMDX.propTypes = {
   children: PropTypes.node,
-};
+}
 
 function BlockquoteMDX(props) {
   return (
@@ -144,7 +144,7 @@ function BlockquoteMDX(props) {
       />
       <Typography variant="h5">{props.children}</Typography>
     </Stack>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -152,11 +152,11 @@ function BlockquoteMDX(props) {
 CodeMDX.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-};
+}
 
 function CodeMDX(props) {
-  const { children, className } = props;
-  const language = className?.replace(/language-/, '');
+  const { children, className } = props
+  const language = className?.replace(/language-/, '')
   return (
     <Highlight {...defaultProps} code={children} theme={okaidia} language={language}>
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
@@ -171,5 +171,5 @@ function CodeMDX(props) {
         </pre>
       )}
     </Highlight>
-  );
+  )
 }

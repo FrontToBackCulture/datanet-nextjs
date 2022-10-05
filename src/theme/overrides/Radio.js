@@ -1,5 +1,5 @@
 //
-import { RadioIcon, RadioCheckedIcon } from './CustomIcons';
+import { RadioIcon, RadioCheckedIcon } from './CustomIcons'
 
 // ----------------------------------------------------------------------
 
@@ -23,5 +23,5 @@ export default function Radio(theme) {
         },
       },
     },
-  };
+  }
 }

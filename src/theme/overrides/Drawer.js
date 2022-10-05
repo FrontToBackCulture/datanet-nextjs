@@ -1,9 +1,9 @@
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
 export default function Drawer(theme) {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   return {
     MuiDrawer: {
@@ -26,5 +26,5 @@ export default function Drawer(theme) {
         },
       },
     },
-  };
+  }
 }

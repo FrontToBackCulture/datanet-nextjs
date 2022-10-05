@@ -1,9 +1,9 @@
-import { pxToRem, responsiveFontSizes } from '../utils/getFontValue';
+import { pxToRem, responsiveFontSizes } from '../utils/getFontValue'
 
 // ----------------------------------------------------------------------
 
-const FONT_PRIMARY = 'Poppins, sans-serif';
-const FONT_SECONDARY = 'Barlow, sans-serif';
+const FONT_PRIMARY = 'Poppins, sans-serif'
+const FONT_SECONDARY = 'Barlow, sans-serif'
 
 const typography = {
   fontFamily: FONT_PRIMARY,
@@ -93,6 +93,6 @@ const typography = {
     fontSize: pxToRem(14),
     textTransform: 'capitalize',
   },
-};
+}
 
-export default typography;
+export default typography

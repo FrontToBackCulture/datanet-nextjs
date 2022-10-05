@@ -1,29 +1,29 @@
 // react
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import Masonry from '@mui/lab/Masonry';
-import { Box, Grid, Link, Stack, Divider, Collapse, Container, Typography } from '@mui/material';
+import Masonry from '@mui/lab/Masonry'
+import { Box, Grid, Link, Stack, Divider, Collapse, Container, Typography } from '@mui/material'
 // hooks
-import { useResponsive } from '../../hooks';
+import { useResponsive } from '../../hooks'
 // components
-import { Logo, Iconify } from '../../components';
+import { Logo, Iconify } from '../../components'
 // icons
-import chevronDown from '@iconify/icons-carbon/chevron-down';
-import chevronRight from '@iconify/icons-carbon/chevron-right';
+import chevronDown from '@iconify/icons-carbon/chevron-down'
+import chevronRight from '@iconify/icons-carbon/chevron-right'
 // ----------------------------------------------------------------------
 
 export default function Footer() {
-  const isDesktop = useResponsive('up', 'md');
+  const isDesktop = useResponsive('up', 'md')
 
   // const lists = PageLinks.filter((list) => list.subheader !== 'Coming Soon');
-  const lists = [];
+  const lists = []
 
   const renderLists = isDesktop
     ? lists
-    : lists.sort((listA, listB) => Number(listA.order) - Number(listB.order));
+    : lists.sort((listA, listB) => Number(listA.order) - Number(listB.order))
 
   return (
     <>
@@ -83,7 +83,7 @@ export default function Footer() {
         </Stack>
       </Container>
     </>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -91,7 +91,7 @@ export default function Footer() {
 NextLinkItem.propTypes = {
   children: PropTypes.node.isRequired,
   sx: PropTypes.object,
-};
+}
 
 function NextLinkItem({ children, sx, ...other }) {
   return (
@@ -110,7 +110,7 @@ function NextLinkItem({ children, sx, ...other }) {
         {children}
       </Link>
     </NextLink>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -120,10 +120,10 @@ ListDesktop.propTypes = {
     items: PropTypes.array,
     subheader: PropTypes.string,
   }),
-};
+}
 
 function ListDesktop({ list }) {
-  const { subheader, items } = list;
+  const { subheader, items } = list
 
   return (
     <Stack alignItems="flex-start" sx={{ pb: { md: 1 } }}>
@@ -134,7 +134,7 @@ function ListDesktop({ list }) {
         </NextLinkItem>
       ))}
     </Stack>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -144,15 +144,15 @@ ListMobile.propTypes = {
     items: PropTypes.array,
     subheader: PropTypes.string,
   }),
-};
+}
 
 function ListMobile({ list }) {
-  const { subheader, items } = list;
-  const [expand, setExpand] = useState(false);
+  const { subheader, items } = list
+  const [expand, setExpand] = useState(false)
 
   const onExpand = () => {
-    setExpand(!expand);
-  };
+    setExpand(!expand)
+  }
 
   return (
     <Stack spacing={1.5} alignItems="flex-start">
@@ -188,5 +188,5 @@ function ListMobile({ list }) {
         </Box>
       </Collapse>
     </Stack>
-  );
+  )
 }

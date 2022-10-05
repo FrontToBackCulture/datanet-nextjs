@@ -143,12 +143,12 @@ const config = {
       },
     },
   },
-};
+}
 
 function getConfig(code) {
-  return config[code];
+  return config[code]
 }
 
 module.exports = {
   getConfig,
-};
+}

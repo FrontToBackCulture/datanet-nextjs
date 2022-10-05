@@ -1,41 +1,41 @@
-import fs from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
 // config
-import { CASE_STUDIES_DIRECTORY } from '../../../config';
+import { CASE_STUDIES_DIRECTORY } from '../../../config'
 
 // ----------------------------------------------------------------------
 
-const slugs = fs.readdirSync(join(CASE_STUDIES_DIRECTORY));
+const slugs = fs.readdirSync(join(CASE_STUDIES_DIRECTORY))
 
 // ----------------------------------------------------------------------
 
 export function getAllCaseStudies() {
   const caseStudies = slugs.map((slug) => {
-    const fileContents = fs.readFileSync(join(CASE_STUDIES_DIRECTORY, slug), 'utf-8');
+    const fileContents = fs.readFileSync(join(CASE_STUDIES_DIRECTORY, slug), 'utf-8')
 
-    const { data: frontmatter } = matter(fileContents);
+    const { data: frontmatter } = matter(fileContents)
 
     return {
       slug: slug.replace('.md', ''),
       frontmatter,
-    };
-  });
-  return caseStudies;
+    }
+  })
+  return caseStudies
 }
 
 // ----------------------------------------------------------------------
 
 export function getCaseStudyData(slug) {
-  const fileContents = fs.readFileSync(join(CASE_STUDIES_DIRECTORY, slug + '.md'), 'utf-8');
+  const fileContents = fs.readFileSync(join(CASE_STUDIES_DIRECTORY, slug + '.md'), 'utf-8')
 
-  const { data: frontmatter, content } = matter(fileContents);
+  const { data: frontmatter, content } = matter(fileContents)
 
   return {
     frontmatter,
     slug,
     content,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -45,6 +45,6 @@ export function getCaseStudiesSlugs() {
     params: {
       slug: filename.replace('.md', ''),
     },
-  }));
-  return paths;
+  }))
+  return paths
 }

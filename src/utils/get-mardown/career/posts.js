@@ -1,41 +1,41 @@
-import fs from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
 // config
-import { CAREER_POSTS_DIRECTORY } from '../../../config';
+import { CAREER_POSTS_DIRECTORY } from '../../../config'
 
 // ----------------------------------------------------------------------
 
-const slugs = fs.readdirSync(join(CAREER_POSTS_DIRECTORY));
+const slugs = fs.readdirSync(join(CAREER_POSTS_DIRECTORY))
 
 // ----------------------------------------------------------------------
 
 export function getAllPosts() {
   const posts = slugs.map((slug) => {
-    const fileContents = fs.readFileSync(join(CAREER_POSTS_DIRECTORY, slug), 'utf-8');
+    const fileContents = fs.readFileSync(join(CAREER_POSTS_DIRECTORY, slug), 'utf-8')
 
-    const { data: frontmatter } = matter(fileContents);
+    const { data: frontmatter } = matter(fileContents)
 
     return {
       slug: slug.replace('.md', ''),
       frontmatter,
-    };
-  });
-  return posts;
+    }
+  })
+  return posts
 }
 
 // ----------------------------------------------------------------------
 
 export function getPostData(slug) {
-  const fileContents = fs.readFileSync(join(CAREER_POSTS_DIRECTORY, slug + '.md'), 'utf-8');
+  const fileContents = fs.readFileSync(join(CAREER_POSTS_DIRECTORY, slug + '.md'), 'utf-8')
 
-  const { data: frontmatter, content } = matter(fileContents);
+  const { data: frontmatter, content } = matter(fileContents)
 
   return {
     frontmatter,
     slug,
     content,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -45,6 +45,6 @@ export function getAllPostSlugs() {
     params: {
       slug: slug.replace('.md', ''),
     },
-  }));
-  return paths;
+  }))
+  return paths
 }

@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import { memo } from 'react';
+import PropTypes from 'prop-types'
+import { memo } from 'react'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles'
+import { Box } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -12,15 +12,15 @@ Logo.propTypes = {
   isSimple: PropTypes.bool,
   onDark: PropTypes.bool,
   sx: PropTypes.object,
-};
+}
 
 function Logo({ onDark = false, isSimple = false, sx }) {
-  const theme = useTheme();
-  const isLight = theme.palette.mode === 'light';
+  const theme = useTheme()
+  const isLight = theme.palette.mode === 'light'
 
-  const PRIMARY_MAIN = theme.palette.primary.main;
-  const LIGHT_COLOR = theme.palette.common.white;
-  const DARK_COLOR = theme.palette.grey[800];
+  const PRIMARY_MAIN = theme.palette.primary.main
+  const LIGHT_COLOR = theme.palette.common.white
+  const DARK_COLOR = theme.palette.grey[800]
 
   return (
     <NextLink href="/" passHref>
@@ -398,7 +398,7 @@ z"
         )}
       </Box>
     </NextLink>
-  );
+  )
 }
 
-export default memo(Logo);
+export default memo(Logo)

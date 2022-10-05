@@ -1,6 +1,6 @@
-import useSWR from 'swr';
+import useSWR from 'swr'
 // utils
-import axios from '../utils/axios';
+import axios from '../utils/axios'
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ export default function useRequest(request, { fallbackData, ...config } = {}) {
       headers: {},
       data: fallbackData,
     },
-  });
+  })
 
   // console.log('I am in useRequest: ', request);
 
@@ -30,5 +30,5 @@ export default function useRequest(request, { fallbackData, ...config } = {}) {
     error,
     isValidating,
     mutate,
-  };
+  }
 }

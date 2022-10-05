@@ -51,6 +51,6 @@ const Routes = {
   buyNow: 'https://material-ui.com/store/items/zone-landing-page',
   figmaPreview:
     'https://www.figma.com/file/iAnp6x4J6YNvbVzdBnGM8P/%5BPreview%5D-Zone-Web?node-id=0%3A1',
-};
+}
 
-export default Routes;
+export default Routes

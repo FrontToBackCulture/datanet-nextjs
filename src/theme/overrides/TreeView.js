@@ -1,5 +1,5 @@
 //
-import { TreeViewCollapseIcon, TreeViewExpandIcon, TreeViewEndIcon } from './CustomIcons';
+import { TreeViewCollapseIcon, TreeViewExpandIcon, TreeViewEndIcon } from './CustomIcons'
 
 // ----------------------------------------------------------------------
 
@@ -18,5 +18,5 @@ export default function TreeView(theme) {
         iconContainer: { width: 'auto' },
       },
     },
-  };
+  }
 }

@@ -1,1 +1,1 @@
-export { default as ItemHero } from './ItemHero';
+export { default as ItemHero } from './ItemHero'

@@ -54,5 +54,5 @@ export default function Dialog(theme) {
         },
       },
     },
-  };
+  }
 }

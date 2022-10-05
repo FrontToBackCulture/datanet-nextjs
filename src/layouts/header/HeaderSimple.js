@@ -1,28 +1,28 @@
 // react
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { Link, Stack, AppBar, Divider, Container } from '@mui/material';
+import { Link, Stack, AppBar, Divider, Container } from '@mui/material'
 // routes
-import Routes from '../../routes';
+import Routes from '../../routes'
 // hooks
-import useOffSetTop from '../../hooks/useOffSetTop';
+import useOffSetTop from '../../hooks/useOffSetTop'
 // config
-import { HEADER_DESKTOP_HEIGHT } from '../../config';
+import { HEADER_DESKTOP_HEIGHT } from '../../config'
 // components
-import { Logo } from '../../components';
+import { Logo } from '../../components'
 // nav,header, footer
-import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
+import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle'
 
 // ----------------------------------------------------------------------
 
 HeaderSimple.propTypes = {
   transparent: PropTypes.bool,
-};
+}
 
 export default function HeaderSimple({ transparent }) {
-  const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT);
+  const isScrolling = useOffSetTop(HEADER_DESKTOP_HEIGHT)
 
   return (
     <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
@@ -61,5 +61,5 @@ export default function HeaderSimple({ transparent }) {
 
       {isScrolling && <ToolbarShadowStyle />}
     </AppBar>
-  );
+  )
 }

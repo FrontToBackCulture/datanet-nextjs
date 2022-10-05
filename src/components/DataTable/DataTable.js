@@ -1,61 +1,61 @@
 // react
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 // @mui
-import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material'
 // utils
-import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber';
+import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber'
 
 export default function DenseTable({ job, conf, tabType }) {
-  const [item, setItem] = useState([]);
+  const [item, setItem] = useState([])
   //   console.log(conf);
   //   console.log(job);
   useEffect(() => {
     if (job.length > 0 && conf) {
       // console.log(job);
-      let itemMetrics = [];
-      const { dataSources, variablesMetrics, listFields, detailFields } = conf;
-      const { staticSource, metricSource, trendSource } = dataSources;
+      let itemMetrics = []
+      const { dataSources, variablesMetrics, listFields, detailFields } = conf
+      const { staticSource, metricSource, trendSource } = dataSources
       //   console.log(detailFields);
       itemMetrics = job.map((field) => {
         let fieldSetting = Object.keys(detailFields[tabType]['table']).filter(function (row) {
           let variableMetric =
-            conf['variablesMetrics'][detailFields[tabType]['table'][row].variablesMetrics];
+            conf['variablesMetrics'][detailFields[tabType]['table'][row].variablesMetrics]
           if (variableMetric.headerName === field.name) {
-            field.headerName = variableMetric.headerName;
+            field.headerName = variableMetric.headerName
             if (detailFields[tabType]['table'][row].condition) {
-              field.condition = 'cellClassRules';
+              field.condition = 'cellClassRules'
             }
-            return row;
+            return row
           }
-        });
+        })
 
         if (field.value) {
           switch (
             variablesMetrics[detailFields[tabType]['table'][fieldSetting[0]].variablesMetrics].type
           ) {
             case 'decimal':
-              field.value = fShortenNumber(field.value);
-              break;
+              field.value = fShortenNumber(field.value)
+              break
             case 'currency':
-              field.value = fCurrency(field.value);
-              break;
+              field.value = fCurrency(field.value)
+              break
             case 'number':
-              field.value = fNumber(field.value);
-              break;
+              field.value = fNumber(field.value)
+              break
             case 'percent':
-              field.value = fPercent(field.value);
-              break;
+              field.value = fPercent(field.value)
+              break
             default:
-              break;
+              break
           }
         }
         // console.log(field);
-        return field;
-      });
+        return field
+      })
       // console.log('To Display:', itemMetrics);
-      setItem(itemMetrics);
+      setItem(itemMetrics)
     }
-  }, [job, conf]);
+  }, [job, conf])
 
   return (
     <TableContainer component={Paper}>
@@ -89,5 +89,5 @@ export default function DenseTable({ job, conf, tabType }) {
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  )
 }

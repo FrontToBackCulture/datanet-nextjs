@@ -1,19 +1,19 @@
 // react
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 // next
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Link, Stack } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Link, Stack } from '@mui/material'
 // components
-import { Iconify } from '../../components';
+import { Iconify } from '../../components'
 // nav,header,footer
-import NavDesktopMenu from './NavDesktopMenu';
+import NavDesktopMenu from './NavDesktopMenu'
 // icons
-import chevronDown from '@iconify/icons-carbon/chevron-down';
-import chevronUp from '@iconify/icons-carbon/chevron-up';
+import chevronDown from '@iconify/icons-carbon/chevron-down'
+import chevronUp from '@iconify/icons-carbon/chevron-up'
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ const RootLinkStyle = styled(Link, {
       position: 'absolute',
       backgroundColor: theme.palette.primary.main,
     },
-  };
+  }
   return {
     ...theme.typography.subtitle2,
     fontWeight: theme.typography.fontWeightMedium,
@@ -59,8 +59,8 @@ const RootLinkStyle = styled(Link, {
     ...(open && {
       color: theme.palette.primary.main,
     }),
-  };
-});
+  }
+})
 
 // ----------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ NavDesktop.propTypes = {
   isScrolling: PropTypes.bool,
   isTransparent: PropTypes.bool,
   navConfig: PropTypes.array.isRequired,
-};
+}
 
 export default function NavDesktop({ isScrolling, isTransparent, navConfig }) {
   return (
@@ -95,7 +95,7 @@ export default function NavDesktop({ isScrolling, isTransparent, navConfig }) {
         />
       ))}
     </Stack>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -109,32 +109,32 @@ NavItemDesktop.propTypes = {
     title: PropTypes.string,
     code: PropTypes.string,
   }),
-};
+}
 
 function NavItemDesktop({ item, isScrolling, isTransparent, userDomain }) {
-  const { title, path, code, children } = item;
+  const { title, path, code, children } = item
 
-  const { pathname, asPath } = useRouter();
+  const { pathname, asPath } = useRouter()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   // const isActiveRoot = path === pathname || (path !== '/' && asPath.includes(path));
-  const isActiveRoot = path !== '/' && asPath.includes(code);
+  const isActiveRoot = path !== '/' && asPath.includes(code)
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   if (children) {
     return (
@@ -163,7 +163,7 @@ function NavItemDesktop({ item, isScrolling, isTransparent, userDomain }) {
           isScrolling={isScrolling}
         />
       </>
-    );
+    )
   }
 
   if (title === 'Documentation') {
@@ -177,7 +177,7 @@ function NavItemDesktop({ item, isScrolling, isTransparent, userDomain }) {
       >
         {title}
       </RootLinkStyle>
-    );
+    )
   }
   // console.log(path);
   return (
@@ -190,5 +190,5 @@ function NavItemDesktop({ item, isScrolling, isTransparent, userDomain }) {
         <div>{title}</div>
       </RootLinkStyle>
     </NextLink>
-  );
+  )
 }

@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { Skeleton, Stack, Card } from '@mui/material';
+import { Skeleton, Stack, Card } from '@mui/material'
 // hooks
-import { useResponsive } from '../../hooks';
+import { useResponsive } from '../../hooks'
 
 // ----------------------------------------------------------------------
 
 CourseItemSkeleton.propTypes = {
   vertical: PropTypes.bool,
-};
+}
 
 export default function CourseItemSkeleton({ vertical, ...other }) {
-  const isDesktop = useResponsive('up', 'sm');
+  const isDesktop = useResponsive('up', 'sm')
 
-  const verticalStyle = vertical || !isDesktop;
+  const verticalStyle = vertical || !isDesktop
 
   return (
     <Card {...other}>
@@ -68,5 +68,5 @@ export default function CourseItemSkeleton({ vertical, ...other }) {
         </Stack>
       </Stack>
     </Card>
-  );
+  )
 }

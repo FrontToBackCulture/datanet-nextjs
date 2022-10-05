@@ -1,6 +1,6 @@
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 // utils
-import createGradient from '../utils/createGradient';
+import createGradient from '../utils/createGradient'
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ import createGradient from '../utils/createGradient';
 export const contrastText = {
   white: '#FFFFFF',
   black: '#212B36',
-};
+}
 
 const PRIMARY = {
   lighter: '#FEE9D1',
@@ -18,7 +18,7 @@ const PRIMARY = {
   dark: '#B3200E',
   darker: '#770508',
   contrastText: contrastText.white,
-};
+}
 const SECONDARY = {
   lighter: '#D2FCF4',
   light: '#77F0ED',
@@ -26,7 +26,7 @@ const SECONDARY = {
   dark: '#116E95',
   darker: '#063963',
   contrastText: contrastText.white,
-};
+}
 const INFO = {
   lighter: '#CBFEFC',
   light: '#63E8F9',
@@ -34,7 +34,7 @@ const INFO = {
   dark: '#0067AA',
   darker: '#003471',
   contrastText: contrastText.white,
-};
+}
 const SUCCESS = {
   lighter: '#CDFCD1',
   light: '#69F290',
@@ -42,7 +42,7 @@ const SUCCESS = {
   dark: '#069A6B',
   darker: '#02665B',
   contrastText: contrastText.black,
-};
+}
 const WARNING = {
   lighter: '#FFF8D1',
   light: '#FFE475',
@@ -50,7 +50,7 @@ const WARNING = {
   dark: '#B7860D',
   darker: '#7A5204',
   contrastText: contrastText.black,
-};
+}
 const ERROR = {
   lighter: '#FFE7D9',
   light: '#FFA48D',
@@ -58,7 +58,7 @@ const ERROR = {
   dark: '#B72136',
   darker: '#7A0C2E',
   contrastText: contrastText.white,
-};
+}
 
 const GREY = {
   0: '#FFFFFF',
@@ -79,7 +79,7 @@ const GREY = {
   500_48: alpha('#919EAB', 0.48),
   500_56: alpha('#919EAB', 0.56),
   500_80: alpha('#919EAB', 0.8),
-};
+}
 
 const GRADIENTS = {
   primary: createGradient(PRIMARY.light, PRIMARY.main),
@@ -88,7 +88,7 @@ const GRADIENTS = {
   success: createGradient(SUCCESS.light, SUCCESS.main),
   warning: createGradient(WARNING.light, WARNING.main),
   error: createGradient(ERROR.light, ERROR.main),
-};
+}
 
 const COMMON = {
   common: { black: '#000', white: '#fff' },
@@ -110,7 +110,7 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
-};
+}
 
 const palette = {
   light: {
@@ -127,6 +127,6 @@ const palette = {
     background: { paper: GREY[800], default: GREY[900], neutral: GREY[500_12] },
     action: { active: GREY[500], ...COMMON.action },
   },
-};
+}
 
-export default palette;
+export default palette

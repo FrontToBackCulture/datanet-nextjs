@@ -1,9 +1,9 @@
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
 export default function Button(theme) {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   return {
     MuiButton: {
@@ -36,5 +36,5 @@ export default function Button(theme) {
         },
       },
     },
-  };
+  }
 }

@@ -4,7 +4,7 @@ export default function ButtonGroup(theme) {
   const styleContained = (color) => ({
     props: { variant: 'contained', color },
     style: { boxShadow: theme.customShadows[color] },
-  });
+  })
 
   return {
     MuiButtonGroup: {
@@ -43,5 +43,5 @@ export default function ButtonGroup(theme) {
         },
       },
     },
-  };
+  }
 }

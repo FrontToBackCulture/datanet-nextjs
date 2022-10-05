@@ -5741,12 +5741,12 @@ const data = [
     'average Stk Qty': 2,
     'average SGD Net Price': 0,
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

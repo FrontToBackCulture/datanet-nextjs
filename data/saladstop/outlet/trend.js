@@ -8891,11 +8891,11 @@ const data = [
     'Final Outlet Open?': 'Yes',
     id: 'custom_tbl_74_234_174821',
   },
-];
+]
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

@@ -1,10 +1,10 @@
 //
-import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from './CustomIcons';
+import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from './CustomIcons'
 
 // ----------------------------------------------------------------------
 
 export default function Alert(theme) {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   const standardStyle = (color) => ({
     color: theme.palette[color][isLight ? 'darker' : 'lighter'],
@@ -12,11 +12,11 @@ export default function Alert(theme) {
     '& .MuiAlert-icon': {
       color: theme.palette[color][isLight ? 'dark' : 'light'],
     },
-  });
+  })
 
   const filledStyle = (color) => ({
     color: theme.palette[color].contrastText,
-  });
+  })
 
   const outlinedStyle = (color) => ({
     color: theme.palette[color][isLight ? 'darker' : 'lighter'],
@@ -25,7 +25,7 @@ export default function Alert(theme) {
     '& .MuiAlert-icon': {
       color: theme.palette[color][isLight ? 'dark' : 'light'],
     },
-  });
+  })
 
   return {
     MuiAlert: {
@@ -69,5 +69,5 @@ export default function Alert(theme) {
         outlinedError: outlinedStyle('error'),
       },
     },
-  };
+  }
 }
