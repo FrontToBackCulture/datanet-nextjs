@@ -102,9 +102,7 @@ export default function MyApp(props) {
                 <MotionLazyContainer>
                   {/* <Settings /> */}
                   <ProgressBar />
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
+                  <Component {...pageProps} />
                 </MotionLazyContainer>
               </ThemeColorPresets>
             </ThemeProvider>

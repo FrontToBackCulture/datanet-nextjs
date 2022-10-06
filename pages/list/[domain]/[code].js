@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Container, Typography } from '@mui/material'
+import { Container, Stack, Typography } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
 import { readVAL } from '../../api/grpc'
 import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet'
@@ -9,6 +9,7 @@ import { Page } from '../../../src/components'
 import AgGrid from '../../../src/components/AgGrid/AgGrid'
 import { selectConfig, selectLocalDataSource } from '../../../src/utils/selectScript'
 import { DomainContext } from '../../../src/contexts/DomainProvider'
+import Header from '../../../src/layouts/header/Header'
 
 const USER_DOMAIN_ROUTE = 'userDomain'
 
@@ -128,17 +129,20 @@ export default function ListPage() {
 
   return (
     <DomainContext.Provider value={selectedDomain}>
-      <Page title={title}>
-        <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
-          {user ? (
-            <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
-          ) : (
-            <Typography align="center" variant="h4">
-              Please login to see data
-            </Typography>
-          )}
-        </Container>
-      </Page>
+      <Stack height={1}>
+        <Header />
+        <Page title={title}>
+          <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
+            {user ? (
+              <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
+            ) : (
+              <Typography align="center" variant="h4">
+                Please login to see data
+              </Typography>
+            )}
+          </Container>
+        </Page>
+      </Stack>
     </DomainContext.Provider>
   )
 }

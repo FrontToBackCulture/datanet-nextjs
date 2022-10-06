@@ -1,5 +1,5 @@
 // react
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 // next
 import NextLink from 'next/link'
@@ -16,6 +16,7 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Badge,
 } from '@mui/material'
 // auth
 import { useUser } from '@auth0/nextjs-auth0'
@@ -34,6 +35,7 @@ import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle'
 import { selectConfig, selectDomain } from '../../../src/utils/selectScript'
 // icons
 import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network'
+import { DomainContext } from '../../contexts/DomainProvider'
 
 // ----------------------------------------------------------------------
 
@@ -41,16 +43,15 @@ Header.propTypes = {
   transparent: PropTypes.bool,
 }
 
-export default function Header({ transparent, header2Layout }) {
-  const { user, error, isLoading } = useUser()
+export default function Header() {
+  const { user } = useUser()
   const [userDomain, setUserDomain] = useState()
   const [userEmailDomain, setUserEmailDomain] = useState()
   const [conf, setConf] = useState()
   const [navConfig, setNavConfig] = useState([])
 
-  // TODO: get this dynamically
-  // const selectedDomain = localStorage.getItem('selectedDomain')
-  const selectedDomain = 'saladstop'
+  const selectedDomain = useContext(DomainContext)
+
   // TODO: get this dynamically
   // const URL = window.location.href
   const URL = 'http://localhost:3002/'
@@ -90,7 +91,6 @@ export default function Header({ transparent, header2Layout }) {
         domain = selectedDomain
       }
       setUserDomain(domain)
-      header2Layout(domain)
       getConfig(domain)
     }
   }, [user, userDomain])
@@ -116,7 +116,7 @@ export default function Header({ transparent, header2Layout }) {
 
   return (
     <AppBar position="relative" sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
-      <ToolbarStyle disableGutters transparent={transparent} scrolling={isScrolling}>
+      <ToolbarStyle disableGutters scrolling={isScrolling}>
         <Container
           sx={{
             display: 'flex',
@@ -125,7 +125,7 @@ export default function Header({ transparent, header2Layout }) {
           }}
         >
           <Box sx={{ lineHeight: 0, position: 'relative' }}>
-            <Logo onDark={transparent && !isScrolling} />
+            <Logo onDark={!isScrolling} />
 
             <Label
               color="info"
@@ -144,12 +144,7 @@ export default function Header({ transparent, header2Layout }) {
           </Box>
 
           {isDesktop && user && (
-            <NavDesktop
-              isScrolling={isScrolling}
-              isTransparent={transparent}
-              navConfig={navConfig}
-              userDomain={userDomain}
-            />
+            <NavDesktop isScrolling={isScrolling} navConfig={navConfig} userDomain={userDomain} />
           )}
 
           <Box sx={{ flexGrow: 1 }} />
@@ -161,9 +156,6 @@ export default function Header({ transparent, header2Layout }) {
                   color="inherit"
                   variant="outlined"
                   sx={{
-                    ...(transparent && {
-                      color: 'common.white',
-                    }),
                     ...(isScrolling && isLight && { color: 'text.primary' }),
                   }}
                 >
@@ -182,9 +174,6 @@ export default function Header({ transparent, header2Layout }) {
                     color="inherit"
                     variant="outlined"
                     sx={{
-                      ...(transparent && {
-                        color: 'common.white',
-                      }),
                       ...(isScrolling && isLight && { color: 'text.primary' }),
                     }}
                   >
@@ -233,9 +222,6 @@ export default function Header({ transparent, header2Layout }) {
                     color="inherit"
                     variant="outlined"
                     sx={{
-                      ...(transparent && {
-                        color: 'common.white',
-                      }),
                       ...(isScrolling && isLight && { color: 'text.primary' }),
                     }}
                   >
@@ -245,39 +231,6 @@ export default function Header({ transparent, header2Layout }) {
               </>
             )}
           </Stack>
-
-          {/* <Stack spacing={2} direction="row" alignItems="center">
-            <Searchbar
-              sx={{
-                ...(isScrolling && { color: 'text.primary' }),
-              }}
-            />
-
-            <Divider orientation="vertical" sx={{ height: 24 }} />
-
-            {isDesktop && (
-              <Stack direction="row" spacing={1}>
-                <NextLink href={Routes.registerIllustration} prefetch={false} passHref>
-                  <Button
-                    color="inherit"
-                    variant="outlined"
-                    sx={{
-                      ...(transparent && {
-                        color: 'common.white',
-                      }),
-                      ...(isScrolling && isLight && { color: 'text.primary' }),
-                    }}
-                  >
-                    Join Us
-                  </Button>
-                </NextLink>
-
-                <Button variant="contained" href={Routes.buyNow} target="_blank" rel="noopener">
-                  Buy Now
-                </Button>
-              </Stack>
-            )}
-          </Stack> */}
 
           {!isDesktop && user && (
             <NavMobile
