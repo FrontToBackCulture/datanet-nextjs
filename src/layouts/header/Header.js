@@ -96,7 +96,7 @@ export default function Header({ transparent, header2Layout }) {
   }, [user, userDomain])
 
   const getConfig = (domain) => {
-    let config2used = selectConfig(domain, 'navConfig')
+    let config2used = selectConfig(domain).getConfig('navConfig')
     setConf(config2used)
   }
 

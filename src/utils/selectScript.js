@@ -1,31 +1,7 @@
-// config
-import confFn from '../../config/development'
-import confFnProd from '../../config/production'
-import confFnProdTest from '../../config/productionTest'
-// data
-// import outletData from '../../data/outlet';
-// import productData from '../../data/product';
 import localData from '../../data'
+import { getConfig } from '../../config/getConfig'
 
-export function selectConfig(URL, userDomain, code) {
-  let result
-  console.log('url: ', URL, 'domain: ', userDomain, 'type: ', code)
-
-  if (URL.includes('localhost') && userDomain) {
-    let config = confFn[userDomain].conf.getConfig(code)
-    result = config
-  }
-  if (URL.includes('datanet.thinkval.io') && userDomain) {
-    let config = confFnProd[userDomain].conf.getConfig(code)
-    result = config
-  }
-  if (URL.includes('datanettest.thinkval.io') && userDomain) {
-    let config = confFnProdTest[userDomain].conf.getConfig(code)
-    result = config
-  }
-
-  return result
-}
+export const selectConfig = (domain) => getConfig()[domain]?.conf
 
 export function selectObject(arr, checkKey, selectKey, item) {
   let result

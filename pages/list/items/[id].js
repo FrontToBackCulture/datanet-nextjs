@@ -127,7 +127,7 @@ export default function PromotionItemPage() {
 
   //get the config from the config file based on environment variable
   const getConfig = (code) => {
-    let config2used = selectConfig(userDomain, code)
+    let config2used = selectConfig(userDomain).getConfig(code)
     setConf(config2used)
 
     return config2used
