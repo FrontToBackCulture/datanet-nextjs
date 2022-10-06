@@ -23,6 +23,7 @@ const Routes = {
     job: (id) => `/list/items/${id}`,
     posts: '/list/blog',
     post: (slug) => `/list/blog/${slug}`,
+    domainCode: (domain, code) => `/list/${domain}/${code}`,
   },
   admin: '/admin/',
   // Common

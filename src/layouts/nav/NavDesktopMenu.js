@@ -80,7 +80,7 @@ NavDesktopMenu.propTypes = {
   onClose: PropTypes.func,
 }
 
-export default function NavDesktopMenu({ lists, isOpen, onClose, isScrolling }) {
+export default function NavDesktopMenu({ lists, isOpen, onClose }) {
   const router = useRouter()
   const theme = useTheme()
 
@@ -129,7 +129,7 @@ export default function NavDesktopMenu({ lists, isOpen, onClose, isScrolling }) 
           m: 0,
           position: 'absolute',
           borderRadius: '0 !important',
-          top: isScrolling ? HEADER_DESKTOP_HEIGHT - 20 : HEADER_DESKTOP_HEIGHT,
+          top: HEADER_DESKTOP_HEIGHT,
           // Fix scroll on window
           '&::-webkit-scrollbar': { display: 'none' },
           msOverflowStyle: 'none',
