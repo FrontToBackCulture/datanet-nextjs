@@ -3,8 +3,7 @@ import { Page } from '../src/components'
 import { Home } from '../src/sections/Home'
 import { Stack } from '@mui/material'
 import Header from '../src/layouts/header/Header'
-import { DomainContext, useUserDomain } from '../src/contexts/DomainProvider'
-import { useEffect } from 'react'
+import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../src/contexts/DomainProvider'
 import { useRouter } from 'next/router'
 
 export default function HomePage() {
@@ -12,12 +11,12 @@ export default function HomePage() {
 
   const router = useRouter()
 
-  useEffect(() => {
-    if (userDomain) router.push(`/${userDomain}`)
-  }, [userDomain])
+  const { domain } = router.query
+
+  const selectedDomain = userDomain === ROOT_DOMAIN ? domain : userDomain
 
   return (
-    <DomainContext.Provider value={null}>
+    <DomainContext.Provider value={selectedDomain}>
       <Stack height={1}>
         <Header />
         <Page title="The starting point for your next project" simpleFooter>

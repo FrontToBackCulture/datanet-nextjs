@@ -120,8 +120,7 @@ export default function Header() {
                 </Button>
               </NextLink>
             )}
-          </Stack>
-          <Stack spacing={2} direction="row" alignItems="center">
+
             {user && userEmailDomain != 'thinkval' && (
               <>
                 {userDomain} &nbsp;&nbsp;

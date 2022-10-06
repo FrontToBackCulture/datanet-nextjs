@@ -8,10 +8,8 @@ import * as gtag from '../../../lib/gtag'
 import { Page } from '../../../src/components'
 import AgGrid from '../../../src/components/AgGrid/AgGrid'
 import { selectConfig, selectLocalDataSource } from '../../../src/utils/selectScript'
-import { DomainContext } from '../../../src/contexts/DomainProvider'
+import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../../../src/contexts/DomainProvider'
 import Header from '../../../src/layouts/header/Header'
-
-const USER_DOMAIN_ROUTE = 'userDomain'
 
 export default function ListPage() {
   const { user } = useUser()
@@ -21,9 +19,9 @@ export default function ListPage() {
   const router = useRouter()
   const { domain, code } = router.query
 
-  const userDomain = user?.email.match(/@(\w+)/g)[0].slice(1)
+  const userDomain = useUserDomain()
 
-  const selectedDomain = domain === USER_DOMAIN_ROUTE ? userDomain : domain
+  const selectedDomain = userDomain === ROOT_DOMAIN ? domain : userDomain
 
   const domainConf = selectConfig(selectedDomain)
 
@@ -107,6 +105,10 @@ export default function ListPage() {
     })()
   }, [rawData])
 
+  useEffect(() => {
+    if (!user) router.push('/')
+  }, [user])
+
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
     if (process.env.NEXT_PUBLIC_CONFIGURATION === 'development') {
@@ -133,13 +135,7 @@ export default function ListPage() {
         <Header />
         <Page title={title}>
           <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
-            {user ? (
-              <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
-            ) : (
-              <Typography align="center" variant="h4">
-                Please login to see data
-              </Typography>
-            )}
+            <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
           </Container>
         </Page>
       </Stack>
