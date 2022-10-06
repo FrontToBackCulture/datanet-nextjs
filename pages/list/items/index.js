@@ -88,7 +88,7 @@ export default function ListPage() {
 
   //get config from the config file based on environment variable
   const getConfig = () => {
-    let config2used = selectConfig(URL, userDomain, code)
+    let config2used = selectConfig(userDomain, code)
     setConf(config2used)
   }
 

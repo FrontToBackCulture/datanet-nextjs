@@ -115,7 +115,7 @@ export default function PromotionItemsPage() {
   //get the config from the config file based on environment variable
   //TODO: currently not working and need to fix properly, need to change the last if in each environment
   const getConfig = () => {
-    let config2used = selectConfig(URL, userDomain, code)
+    let config2used = selectConfig(userDomain, code)
     setConf(config2used)
   }
 
