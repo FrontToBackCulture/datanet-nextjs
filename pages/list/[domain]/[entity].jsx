@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Container, Stack, Typography } from '@mui/material'
+import { Container, Stack } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
 import { readVAL } from '../../api/grpc'
 import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet'
@@ -29,10 +29,10 @@ export default function ListPage() {
 
   const title = domainConf?.getConfig('navConfig')?.find((route) => route.code === entity)?.title
 
-  //whenever query or userDomain change
-  //- get the relevant config
-  //- reset row data to blank
-  //- push event to GA4
+  // whenever query or userDomain change
+  // - get the relevant config
+  // - reset row data to blank
+  // - push event to GA4
   useEffect(() => {
     setRowData([])
     if (process.env.NEXT_PUBLIC_CONFIGURATION === 'production') {
@@ -40,16 +40,16 @@ export default function ListPage() {
     }
   }, [router.query, userDomain])
 
-  //once config have been extracted, process based on config instructions
+  // once config have been extracted, process based on config instructions
   useEffect(() => {
     ;(async () => {
       if (conf) {
         const { dataSources } = conf
 
-        let allData = {}
+        const allData = {}
         for (const dataSet of Object.keys(dataSources)) {
-          let { domain, queryID, contentType, name } = dataSources[dataSet]
-          let data = await getDataFromVAL(queryID, domain, contentType, entity, true)
+          const { domain, queryID, contentType, name } = dataSources[dataSet]
+          const data = await getDataFromVAL(queryID, domain, contentType, entity, true)
           allData[name] = data
         }
         setRawData(allData)
@@ -62,11 +62,11 @@ export default function ListPage() {
       if (conf && entity && rawData && rawData[`${entity}Static`] && rawData[`${entity}Metrics`]) {
         const { dataSources, variablesMetrics, listFields, detailFields } = conf
         const { staticSource, metricSource, trendSource } = dataSources
-        const staticKey = dataSources['staticSource'].key
-        const metricKey = dataSources['metricSource'].key
-        const trendKey = dataSources['trendSource'].key
+        const staticKey = dataSources.staticSource.key
+        const metricKey = dataSources.metricSource.key
+        const trendKey = dataSources.trendSource.key
 
-        let mergeParams = {
+        const mergeParams = {
           arr1: rawData[`${entity}Static`],
           arr2: rawData[`${entity}Metrics`],
           arr1Key: staticKey,
@@ -75,18 +75,18 @@ export default function ListPage() {
           dataType: entity,
         }
 
-        //merge static and metric
+        // merge static and metric
         let mergeStaticMetricData = await dataNetMerge(mergeParams)
         mergeStaticMetricData = mergeStaticMetricData.data
-        rawData['mergeStaticMetric'] = mergeStaticMetricData
+        rawData.mergeStaticMetric = mergeStaticMetricData
 
-        let performCalcRequiredData = {}
-        performCalcRequiredData['mergeStaticMetric'] = mergeStaticMetricData
+        const performCalcRequiredData = {}
+        performCalcRequiredData.mergeStaticMetric = mergeStaticMetricData
         performCalcRequiredData[trendSource.name] = rawData[trendSource.name]
 
-        let performCalcParams = {
+        const performCalcParams = {
           data: performCalcRequiredData,
-          conf: conf,
+          conf,
           domain: userDomain,
           dataType: entity,
         }
@@ -95,12 +95,9 @@ export default function ListPage() {
         if ((rawData, mergeStaticMetricData)) {
           performCalcData = await dataNetPerformCalc(performCalcParams)
           performCalcData = performCalcData.data
-          console.log('Perform Calculation:', performCalcData)
 
           setRowData(performCalcData)
         }
-
-        console.log(rawData)
       }
     })()
   }, [rawData])
@@ -118,12 +115,12 @@ export default function ListPage() {
       process.env.NEXT_PUBLIC_CONFIGURATION === 'production' ||
       process.env.NEXT_PUBLIC_CONFIGURATION === 'productionTest'
     ) {
-      let valJobs = await readVAL({
+      const valJobs = await readVAL({
         queryID: id,
         domain: dom,
-        contentType: contentType,
-        dataType: dataType,
-        cache: cache,
+        contentType,
+        dataType,
+        cache,
       })
       return valJobs.data
     }
