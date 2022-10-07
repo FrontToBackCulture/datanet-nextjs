@@ -1,5 +1,5 @@
 // react
-import React, { useCallback, useState, useEffect, useRef, useMemo } from 'react'
+import React, { useCallback, useState, useEffect, useRef, useMemo, useContext } from 'react'
 // next
 import NextLink from 'next/link'
 // @mui
@@ -14,6 +14,7 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css'
 import 'ag-grid-enterprise/dist/styles/ag-theme-material.css'
 // utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber'
+import { DomainContext } from 'src/contexts/DomainProvider'
 
 export default function AGGrid({ rowD, type, conf, entity, title }) {
   const gridRef = useRef()
@@ -21,6 +22,8 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
   const [rowData, setRowData] = useState([])
   const [columnDefs, setColumnDefs] = useState([])
   const [entityConf, setEntityConf] = useState(conf)
+
+  const selectedDomain = useContext(DomainContext)
 
   const onGridReady = (params) => {
     setGridApi(params)
@@ -139,8 +142,7 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
     return (
       <NextLink
         href={{
-          pathname: Routes[type].job(link),
-          query: { entity: entity },
+          pathname: `/list/${selectedDomain}/${entity}/${link}`,
         }}
         passHref
       >
