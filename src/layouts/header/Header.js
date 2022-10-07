@@ -43,37 +43,32 @@ export default function Header() {
   const isDesktop = useResponsive('up', 'md')
 
   return (
-    <AppBar position="relative" sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
+    <AppBar position="relative" sx={{ boxShadow: 0, bgcolor: 'transparent', p: 2 }}>
       <ToolbarStyle disableGutters>
-        <Container
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-          }}
-        >
-          <Box sx={{ lineHeight: 0, position: 'relative' }}>
-            <Logo onDark />
+        <Stack direction="row" justifyContent="space-between" flexGrow={1}>
+          <Stack direction="row" spacing={2}>
+            {!isDesktop && user && <NavMobile navConfig={navConfig} userDomain={selectedDomain} />}
 
-            <Label
-              color="info"
-              sx={{
-                ml: 0.5,
-                px: 0.5,
-                top: -14,
-                left: 64,
-                height: 20,
-                fontSize: 11,
-                position: 'absolute',
-              }}
-            >
-              DataNet Beta
-            </Label>
-          </Box>
+            <Box sx={{ lineHeight: 0, position: 'relative', py: 2 }}>
+              <Logo onDark />
+
+              <Label
+                color="info"
+                sx={{
+                  px: 0.5,
+                  top: 5,
+                  left: 64,
+                  height: 20,
+                  fontSize: 11,
+                  position: 'absolute',
+                }}
+              >
+                DataNet Beta
+              </Label>
+            </Box>
+          </Stack>
 
           {isDesktop && user && <NavDesktop navConfig={navConfig} />}
-
-          <Box sx={{ flexGrow: 1 }} />
 
           <Stack spacing={2} direction="row" alignItems="center">
             {userDomain === ROOT_DOMAIN && (
@@ -100,11 +95,7 @@ export default function Header() {
               </NextLink>
             )}
           </Stack>
-
-          {!isDesktop && user && (
-            <NavMobile navConfig={navConfig} sx={{ ml: 1 }} userDomain={selectedDomain} />
-          )}
-        </Container>
+        </Stack>
       </ToolbarStyle>
     </AppBar>
   )
@@ -118,10 +109,10 @@ const DomainSelector = () => {
 
   return (
     <>
-      <Box sx={{ minWidth: 120 }}>
+      <Box>
         {userDomain === ROOT_DOMAIN ? (
           <FormControl fullWidth size="small">
-            <InputLabel id="demo-simple-select-label">Domain</InputLabel>
+            <InputLabel>Domain</InputLabel>
             <Select
               label="Domain"
               value={selectedDomain}
@@ -137,7 +128,7 @@ const DomainSelector = () => {
           <Typography>{userDomain}</Typography>
         )}
       </Box>
-      <Divider orientation="vertical" sx={{ height: 24 }} />
+      <Divider orientation="vertical" sx={{ height: 1 }} />
     </>
   )
 }
