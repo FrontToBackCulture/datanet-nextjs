@@ -1,66 +1,56 @@
-// react
 import React, { useCallback, useState, useEffect, useRef, useMemo, useContext } from 'react'
-// next
 import NextLink from 'next/link'
-// @mui
-import { Box, TextField, Stack, Typography } from '@mui/material'
-// routes
-import Routes from '../../../src/routes'
-// other library
+import { TextField, Stack, Typography } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react'
+import { DomainContext } from 'src/contexts/DomainProvider'
 import 'ag-grid-enterprise'
 import 'ag-grid-enterprise/dist/styles/ag-grid.css'
 import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css'
 import 'ag-grid-enterprise/dist/styles/ag-theme-material.css'
-// utils
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber'
-import { DomainContext } from 'src/contexts/DomainProvider'
+
+function LinkComponent(props) {
+  const { linkKey, data, value, entity } = props
+  const keyValue = data[linkKey]
+  const selectedDomain = useContext(DomainContext)
+
+  let link
+  if (keyValue) {
+    link = keyValue.replace('/', '%2F')
+  } else {
+    link = ''
+  }
+
+  const href = `/list/${selectedDomain}/${entity}/${link}`
+
+  return (
+    <NextLink href={{ pathname: href }} passHref>
+      <a href={href}>{value}</a>
+    </NextLink>
+  )
+}
 
 export default function AGGrid({ rowD, type, conf, entity, title }) {
   const gridRef = useRef()
-  const [gridApi, setGridApi] = useState()
   const [rowData, setRowData] = useState([])
   const [columnDefs, setColumnDefs] = useState([])
-  const [entityConf, setEntityConf] = useState(conf)
 
-  const selectedDomain = useContext(DomainContext)
-
-  const onGridReady = (params) => {
-    setGridApi(params)
-    autoSizeAll(false)
-  }
-
-  const cellClassRules = {
-    'cell-pass': (params) => params.value >= 0,
-    'cell-fail': (params) => params.value < 0,
-  }
-
-  const onFirstDataRendered = useCallback((params) => {
-    autoSizeAll(false)
-    var padding = 20
-    var height = headerHeightGetter() + padding
-    gridRef.current.api.setHeaderHeight(height)
-    gridRef.current.api.resetRowHeights()
-  }, [])
-
-  const defaultColDef = useMemo(() => {
-    return {
-      // allow every column to be aggregated
+  const defaultColDef = useMemo(
+    () => ({
       enableValue: true,
-      // allow every column to be grouped
       enableRowGroup: true,
-      // allow every column to be pivoted
       enablePivot: true,
       sortable: true,
       filter: true,
       resizable: true,
       wrapHeaderText: true,
       autoHeight: true,
-    }
-  }, [])
+    }),
+    []
+  )
 
-  const statusBar = useMemo(() => {
-    return {
+  const statusBar = useMemo(
+    () => ({
       statusPanels: [
         {
           statusPanel: 'agTotalAndFilteredRowCountComponent',
@@ -74,96 +64,54 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
         { statusPanel: 'agSelectedRowCountComponent' },
         { statusPanel: 'agAggregationComponent' },
       ],
-    }
-  }, [])
-
-  const autoSizeAll = useCallback((skipHeader) => {
-    const allColumnIds = []
-    gridRef.current.columnApi.getColumns().forEach((column) => {
-      allColumnIds.push(column.getId())
-    })
-    gridRef.current.columnApi.autoSizeColumns(allColumnIds, skipHeader)
-  }, [])
+    }),
+    []
+  )
 
   const onFilterTextBoxChanged = useCallback(() => {
     gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value)
   }, [])
 
-  function headerHeightGetter() {
-    var columnHeaderTexts = [...document.querySelectorAll('.ag-header-cell-text')]
-    var clientHeights = columnHeaderTexts.map((headerText) => headerText.clientHeight)
-    var tallestHeaderTextHeight = Math.max(...clientHeights)
-
-    return tallestHeaderTextHeight
-  }
-
   function decimalFormatter(params) {
     if (params && params.value) {
       return fShortenNumber(params.value)
-    } else {
-      return 0
     }
+    return 0
   }
 
   function currencyFormatter(params) {
     if (params && params.value) {
       return fCurrency(params.value)
-    } else {
-      return 0
     }
+    return 0
   }
 
   function numberFormatter(params) {
     if (params && params.value) {
       return fNumber(params.value)
-    } else {
-      return 0
     }
+    return 0
   }
 
   function percentFormatter(params) {
     if (params && params.value) {
       return fPercent(params.value)
-    } else {
-      return 0
     }
-  }
-
-  function LinkComponent(props) {
-    let { linkKey, data, value } = props
-    let keyValue = data[linkKey]
-    let link
-    // replace special character to enable href to work
-    if (keyValue) {
-      link = keyValue.replace('/', '%2F')
-    } else {
-      link = ''
-    }
-    return (
-      <NextLink
-        href={{
-          pathname: `/list/${selectedDomain}/${entity}/${link}`,
-        }}
-        passHref
-      >
-        <a>{value}</a>
-      </NextLink>
-    )
+    return 0
   }
 
   useEffect(() => {
     if (rowD && conf && entity) {
-      setEntityConf(conf)
       const { dataSources, variablesMetrics, listFields, detailFields } = conf
       const { staticSource, metricSource, trendSource } = dataSources
 
       if (rowD && rowD.length > 0) {
-        let colDefs = []
+        const colDefs = []
         if (listFields) {
           const fields2Show = Object.keys(listFields)
           fields2Show.forEach((field2Show) => {
-            let colDefsObj = {}
-            let variableMetric = conf['variablesMetrics'][listFields[field2Show].variablesMetrics]
+            const colDefsObj = {}
+            const variableMetric = conf.variablesMetrics[listFields[field2Show].variablesMetrics]
             colDefsObj.field = variableMetric.sourceColumn
             colDefsObj.headerName = variableMetric.headerName
             switch (variableMetric.type) {
@@ -186,6 +134,7 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
               colDefsObj.cellRenderer = LinkComponent
               colDefsObj.cellRendererParams = {
                 linkKey: conf.dataSources.staticSource.key,
+                entity,
               }
               colDefsObj.pinned = 'left'
             }
@@ -210,7 +159,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
             cellRendererParams: {
               sparklineOptions: {
                 type: 'area',
-                // set xKey and yKey to the keys which can be used to retrieve X and Y values from the supplied data
                 xKey: 'Week',
                 yKey: trendSource.valueKey,
                 marker: {
@@ -223,7 +171,7 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
         } else {
           const keys = Object.keys(rowD[0])
           keys.forEach((key) => {
-            if (key == 'ID') {
+            if (key === 'ID') {
               colDefs.push({ field: key, cellRenderer: 'LinkComponent' })
             } else {
               colDefs.push({ field: key })
@@ -232,8 +180,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
           setColumnDefs(colDefs)
         }
       }
-      console.log('Columns:', columnDefs)
-      console.log('Rows:', rowD)
       setRowData(rowD)
     }
   }, [rowD, type, conf, entity])
@@ -263,8 +209,6 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
           defaultColDef={defaultColDef}
           statusBar={{ statusBar }}
           sideBar={false}
-          onGridReady={onGridReady}
-          onFirstDataRendered={onFirstDataRendered}
           animateRows
           rowGroupPanelShow={false}
           rowHeight={25}
