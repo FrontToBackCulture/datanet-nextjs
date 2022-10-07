@@ -17,7 +17,7 @@ export default function ListPage() {
   const [rawData, setRawData] = useState({})
 
   const router = useRouter()
-  const { domain, code } = router.query
+  const { domain, entity } = router.query
 
   const userDomain = useUserDomain()
 
@@ -25,9 +25,9 @@ export default function ListPage() {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const conf = domainConf?.getConfig(code)
+  const conf = domainConf?.getConfig(entity)
 
-  const title = domainConf?.getConfig('navConfig')?.find((route) => route.code === code)?.title
+  const title = domainConf?.getConfig('navConfig')?.find((route) => route.code === entity)?.title
 
   //whenever query or userDomain change
   //- get the relevant config
@@ -36,7 +36,7 @@ export default function ListPage() {
   useEffect(() => {
     setRowData([])
     if (process.env.NEXT_PUBLIC_CONFIGURATION === 'production') {
-      gtag.event({ action: 'screenview', category: code, label: user.email, value: 1 })
+      gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 })
     }
   }, [router.query, userDomain])
 
@@ -49,7 +49,7 @@ export default function ListPage() {
         let allData = {}
         for (const dataSet of Object.keys(dataSources)) {
           let { domain, queryID, contentType, name } = dataSources[dataSet]
-          let data = await getDataFromVAL(queryID, domain, contentType, code, true)
+          let data = await getDataFromVAL(queryID, domain, contentType, entity, true)
           allData[name] = data
         }
         setRawData(allData)
@@ -59,7 +59,7 @@ export default function ListPage() {
 
   useEffect(() => {
     ;(async () => {
-      if (conf && code && rawData && rawData[`${code}Static`] && rawData[`${code}Metrics`]) {
+      if (conf && entity && rawData && rawData[`${entity}Static`] && rawData[`${entity}Metrics`]) {
         const { dataSources, variablesMetrics, listFields, detailFields } = conf
         const { staticSource, metricSource, trendSource } = dataSources
         const staticKey = dataSources['staticSource'].key
@@ -67,12 +67,12 @@ export default function ListPage() {
         const trendKey = dataSources['trendSource'].key
 
         let mergeParams = {
-          arr1: rawData[`${code}Static`],
-          arr2: rawData[`${code}Metrics`],
+          arr1: rawData[`${entity}Static`],
+          arr2: rawData[`${entity}Metrics`],
           arr1Key: staticKey,
           arr2Key: metricKey,
           domain: userDomain,
-          dataType: code,
+          dataType: entity,
         }
 
         //merge static and metric
@@ -88,7 +88,7 @@ export default function ListPage() {
           data: performCalcRequiredData,
           conf: conf,
           domain: userDomain,
-          dataType: code,
+          dataType: entity,
         }
 
         let performCalcData
@@ -135,7 +135,7 @@ export default function ListPage() {
         <Header />
         <Page title={title}>
           <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
-            <AgGrid type="list" conf={conf} entity={code} rowD={rowData} title={title} />
+            <AgGrid type="list" conf={conf} entity={entity} rowD={rowData} title={title} />
           </Container>
         </Page>
       </Stack>
