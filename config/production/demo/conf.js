@@ -17,7 +17,7 @@ const config = {
       metricSource: {
         queryID: '120',
         domain: 'demo',
-        key: 'Store',
+        key: 'ID',
         contentType: 'metric',
         name: 'outletMetrics',
       },
