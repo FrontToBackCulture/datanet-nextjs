@@ -215,6 +215,7 @@ export default function Header({ transparent, header2Layout }) {
                       label="Domain"
                       onChange={handleDomainChange}
                     >
+                      <MenuItem value="demo">Demo</MenuItem>
                       <MenuItem value="thinkval">ThinkVAL</MenuItem>
                       <MenuItem value="saladstop">Salad Stop!</MenuItem>
                       <MenuItem value="kctsoya">KCT Soya</MenuItem>
