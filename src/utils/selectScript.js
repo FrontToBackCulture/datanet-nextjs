@@ -79,6 +79,9 @@ export function selectDomain(domain) {
     case 'kctsoya':
       result = 'kctsoya';
       break;
+    case 'demo':
+      result = 'demo';
+      break;
     default:
       break;
   }

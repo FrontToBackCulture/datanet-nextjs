@@ -30,6 +30,9 @@ export default function HomePage() {
         case 'kctsoya':
           setUserDomain('kctsoya');
           break;
+        case 'demo':
+          setUserDomain('demo');
+          break;
         default:
           break;
       }
