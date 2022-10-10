@@ -32,6 +32,7 @@ const RootLinkStyle = styled(Link, {
     transition: theme.transitions.create('opacity', {
       duration: theme.transitions.duration.shortest,
     }),
+    textDecoration: 'none',
     '&:hover': {
       opacity: 0.72,
       textDecoration: 'none',

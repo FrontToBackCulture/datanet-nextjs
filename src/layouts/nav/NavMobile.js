@@ -20,14 +20,14 @@ import {
 // auth
 import { useUser } from '@auth0/nextjs-auth0'
 // config
+import menuIcon from '@iconify/icons-carbon/menu'
+import chevronRight from '@iconify/icons-carbon/chevron-right'
+import chevronDown from '@iconify/icons-carbon/chevron-down'
 import { DRAWER_WIDTH } from '../../config'
 // components
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components'
 import { IconButtonAnimate } from '../../components/animate'
 // icons
-import menuIcon from '@iconify/icons-carbon/menu'
-import chevronRight from '@iconify/icons-carbon/chevron-right'
-import chevronDown from '@iconify/icons-carbon/chevron-down'
 
 // ----------------------------------------------------------------------
 
@@ -63,7 +63,6 @@ export default function NavMobile({ navConfig, sx, userDomain }) {
     if (drawerOpen) {
       handleDrawerClose()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
 
   const handleDrawerOpen = () => {
@@ -237,7 +236,7 @@ function NavItemMobile({ item, userDomain }) {
   return (
     <NextLink
       key={title}
-      href={{ pathname: path, query: { title: title, code: code, selectedDomain: userDomain } }}
+      href={{ pathname: path, query: { title, code, selectedDomain: userDomain } }}
       passHref
     >
       <RootLinkStyle active={isActiveRoot}>

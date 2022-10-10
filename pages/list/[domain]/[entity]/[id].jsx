@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import { styled } from '@mui/material/styles'
 import { Grid, Stack, Container, Tabs, Tab, Box } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
 import { useResponsive } from '../../../../src/hooks'
-import { HEADER_MOBILE_HEIGHT, HEADER_DESKTOP_HEIGHT } from '../../../../src/config'
 import { readVAL } from '../../../api/grpc'
 import { dataNetMerge, dataNetPerformCalc, dataNetConvert2MultiSeries } from '../../../api/datanet'
 import * as gtag from '../../../../lib/gtag'
@@ -69,19 +66,14 @@ export default function PromotionItemPage() {
     if (process.env.NEXT_PUBLIC_CONFIGURATION === 'development') {
       return selectLocalDataSource(contentType, dataType, dom)
     }
-    if (
-      process.env.NEXT_PUBLIC_CONFIGURATION === 'production' ||
-      process.env.NEXT_PUBLIC_CONFIGURATION === 'productionTest'
-    ) {
-      const valJobs = await readVAL({
-        queryID: qId,
-        domain: dom,
-        contentType,
-        dataType,
-        cache,
-      })
-      return valJobs.data
-    }
+    const valJobs = await readVAL({
+      queryID: qId,
+      domain: dom,
+      contentType,
+      dataType,
+      cache,
+    })
+    return valJobs.data
   }
 
   useEffect(async () => {

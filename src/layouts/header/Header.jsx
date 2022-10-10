@@ -10,6 +10,7 @@ import {
   Select,
   InputLabel,
   MenuItem,
+  Typography,
 } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
 import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network'
@@ -22,7 +23,6 @@ import { NavMobile, NavDesktop } from '../nav'
 import { ToolbarStyle } from './HeaderToolbarStyle'
 import { selectConfig } from '../../utils/selectScript'
 import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../../contexts/DomainProvider'
-import Typography from '../../theme/overrides/Typography'
 
 export default function Header() {
   const { user } = useUser()
@@ -70,6 +70,8 @@ export default function Header() {
           {isDesktop && user && <NavDesktop navConfig={navConfig} />}
 
           <Stack spacing={2} direction="row" alignItems="center">
+            {user && <DomainSelector />}
+
             {userDomain === ROOT_DOMAIN && (
               <NextLink href={{ pathname: Routes.admin }} passHref>
                 <IconButtonAnimate color="inherit">
@@ -77,8 +79,6 @@ export default function Header() {
                 </IconButtonAnimate>
               </NextLink>
             )}
-
-            {user && <DomainSelector />}
 
             {user ? (
               <NextLink href="/api/auth/logout" prefetch={false} passHref>

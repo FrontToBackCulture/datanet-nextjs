@@ -1,14 +1,8 @@
 import * as React from 'react'
-// next
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-// emotion
 import { CacheProvider } from '@emotion/react'
 import createCache from '@emotion/cache'
 import createEmotionServer from '@emotion/server/create-instance'
-// theme
-import palette from '../src/theme/palette'
-
-// ----------------------------------------------------------------------
 
 function createEmotionCache() {
   return createCache({ key: 'css' })
@@ -20,7 +14,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-          <meta name="theme-color" content={palette.light.primary.main} />
+          <meta name="theme-color" />
           <meta
             name="description"
             content="The ZONE is built on top of MUI, a powerful library that provides flexible, customizable, and easy-to-use components. "

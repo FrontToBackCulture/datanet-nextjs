@@ -102,28 +102,19 @@ export default function ListPage() {
     })()
   }, [rawData])
 
-  useEffect(() => {
-    if (!user) router.push('/')
-  }, [user])
-
   // get static and metric data from VAL
   const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
     if (process.env.NEXT_PUBLIC_CONFIGURATION === 'development') {
       return selectLocalDataSource(contentType, dataType, dom)
     }
-    if (
-      process.env.NEXT_PUBLIC_CONFIGURATION === 'production' ||
-      process.env.NEXT_PUBLIC_CONFIGURATION === 'productionTest'
-    ) {
-      const valJobs = await readVAL({
-        queryID: id,
-        domain: dom,
-        contentType,
-        dataType,
-        cache,
-      })
-      return valJobs.data
-    }
+    const valJobs = await readVAL({
+      queryID: id,
+      domain: dom,
+      contentType,
+      dataType,
+      cache,
+    })
+    return valJobs.data
   }
 
   return (
