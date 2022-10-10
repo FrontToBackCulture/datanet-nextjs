@@ -57,7 +57,7 @@ export default function PromotionItemPage() {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const conf = domainConf.getConfig(entity)
+  const conf = domainConf?.getConfig(entity)
 
   // tab value changes
   const handleChange = (event, newValue) => {
