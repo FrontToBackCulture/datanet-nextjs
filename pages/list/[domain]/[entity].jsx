@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Container, Stack } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
@@ -8,7 +8,7 @@ import * as gtag from '../../../lib/gtag'
 import { Page } from '../../../src/components'
 import AgGrid from '../../../src/components/AgGrid/AgGrid'
 import { selectConfig, selectLocalDataSource } from '../../../src/utils/selectScript'
-import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../../../src/contexts/DomainProvider'
+import { DomainContext, useUserDomain } from '../../../src/contexts/DomainProvider'
 import Header from '../../../src/layouts/header/Header'
 
 export default function ListPage({ rowData, conf }) {
@@ -82,48 +82,33 @@ export const getServerSideProps = async ({ params }) => {
     rawData[name] = await getDataFromVAL(queryID, domain, contentType, entity, true)
   }
 
-  let rowData
+  const trendSourceName = dataSources.trendSource.name
 
-  if (conf && entity && rawData && rawData[`${entity}Static`] && rawData[`${entity}Metrics`]) {
-    const { dataSources, variablesMetrics, listFields, detailFields } = conf
-    const { staticSource, metricSource, trendSource } = dataSources
-    const staticKey = dataSources.staticSource.key
-    const metricKey = dataSources.metricSource.key
-    const trendKey = dataSources.trendSource.key
+  const staticKey = dataSources.staticSource.key
+  const metricKey = dataSources.metricSource.key
 
-    const mergeParams = {
-      arr1: rawData[`${entity}Static`],
-      arr2: rawData[`${entity}Metrics`],
-      arr1Key: staticKey,
-      arr2Key: metricKey,
-      domain: selectedDomain,
-      dataType: entity,
-    }
-
-    // merge static and metric
-    let mergeStaticMetricData = await dataNetMerge(mergeParams)
-    mergeStaticMetricData = mergeStaticMetricData.data
-    rawData.mergeStaticMetric = mergeStaticMetricData
-
-    const performCalcRequiredData = {}
-    performCalcRequiredData.mergeStaticMetric = mergeStaticMetricData
-    performCalcRequiredData[trendSource.name] = rawData[trendSource.name]
-
-    const performCalcParams = {
-      data: performCalcRequiredData,
-      conf,
-      domain: selectedDomain,
-      dataType: entity,
-    }
-
-    let performCalcData
-    if ((rawData, mergeStaticMetricData)) {
-      performCalcData = await dataNetPerformCalc(performCalcParams)
-      performCalcData = performCalcData.data
-
-      rowData = performCalcData
-    }
+  const mergeParams = {
+    arr1: rawData[`${entity}Static`],
+    arr2: rawData[`${entity}Metrics`],
+    arr1Key: staticKey,
+    arr2Key: metricKey,
+    domain: selectedDomain,
+    dataType: entity,
   }
+
+  const mergeStaticMetric = (await dataNetMerge(mergeParams)).data
+
+  const performCalcParams = {
+    data: {
+      mergeStaticMetric,
+      [trendSourceName]: rawData[trendSourceName],
+    },
+    conf,
+    domain: selectedDomain,
+    dataType: entity,
+  }
+
+  const rowData = (await dataNetPerformCalc(performCalcParams)).data
 
   return {
     props: {
