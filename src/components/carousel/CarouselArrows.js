@@ -1,16 +1,16 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // icons
-import directionStraightRight from '@iconify/icons-carbon/direction-straight-right';
+import directionStraightRight from '@iconify/icons-carbon/direction-straight-right'
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
-import { Box, Stack } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles'
+import { Box, Stack } from '@mui/material'
 //
-import Iconify from '../Iconify';
-import { IconButtonAnimate } from '../animate';
+import Iconify from '../Iconify'
+import { IconButtonAnimate } from '../animate'
 
 // ----------------------------------------------------------------------
 
-const BUTTON_SIZE = 40;
+const BUTTON_SIZE = 40
 
 const ArrowStyle = styled(IconButtonAnimate)(({ theme }) => ({
   width: BUTTON_SIZE,
@@ -23,7 +23,7 @@ const ArrowStyle = styled(IconButtonAnimate)(({ theme }) => ({
   '&:hover': {
     color: theme.palette.text.primary,
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ CarouselArrows.propTypes = {
   customIcon: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   onNext: PropTypes.func,
   onPrevious: PropTypes.func,
-};
+}
 
 export default function CarouselArrows({
   customIcon, // Set icon right
@@ -41,15 +41,15 @@ export default function CarouselArrows({
   children,
   ...other
 }) {
-  const theme = useTheme();
-  const isRTL = theme.direction === 'rtl';
+  const theme = useTheme()
+  const isRTL = theme.direction === 'rtl'
 
   const style = {
     position: 'absolute',
     mt: -2.5,
     top: '50%',
     zIndex: 9,
-  };
+  }
 
   if (children) {
     return (
@@ -64,7 +64,7 @@ export default function CarouselArrows({
           <ArrowStyle onClick={onNext}>{rightIcon(customIcon, isRTL)}</ArrowStyle>
         </Box>
       </Box>
-    );
+    )
   }
 
   return (
@@ -72,7 +72,7 @@ export default function CarouselArrows({
       <ArrowStyle onClick={onPrevious}>{leftIcon(customIcon, isRTL)}</ArrowStyle>
       <ArrowStyle onClick={onNext}>{rightIcon(customIcon, isRTL)}</ArrowStyle>
     </Stack>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ const leftIcon = (customIcon, isRTL) => (
       ...(isRTL && { transform: ' scaleX(1)' }),
     }}
   />
-);
+)
 
 const rightIcon = (customIcon, isRTL) => (
   <Iconify
@@ -98,4 +98,4 @@ const rightIcon = (customIcon, isRTL) => (
       ...(isRTL && { transform: ' scaleX(-1)' }),
     }}
   />
-);
+)

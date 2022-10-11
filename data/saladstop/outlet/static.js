@@ -203,11 +203,11 @@ const data = [
     'Supervisor 2': [],
     id: 'TGL',
   },
-];
+]
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

@@ -1,7 +1,7 @@
 // @mui
-import { Container, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material'
 // components
-import { Logo } from '../../components';
+import { Logo } from '../../components'
 
 // ----------------------------------------------------------------------
 
@@ -13,5 +13,5 @@ export default function FooterSimple() {
         © 2022. All rights reserved
       </Typography>
     </Container>
-  );
+  )
 }

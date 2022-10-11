@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // icons
-import closeIcon from '@iconify/icons-carbon/close';
-import resetIcon from '@iconify/icons-carbon/reset';
+import closeIcon from '@iconify/icons-carbon/close'
+import resetIcon from '@iconify/icons-carbon/reset'
 // @mui
-import { Typography, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material'
 //
-import Iconify from '../Iconify';
-import { IconButtonAnimate } from '../animate';
+import Iconify from '../Iconify'
+import { IconButtonAnimate } from '../animate'
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ HeaderSetting.propTypes = {
   notDefault: PropTypes.bool,
   onReset: PropTypes.func,
   onToggle: PropTypes.func,
-};
+}
 
 export default function HeaderSetting({ notDefault, onReset, onToggle }) {
   return (
@@ -31,5 +31,5 @@ export default function HeaderSetting({ notDefault, onReset, onToggle }) {
         </IconButtonAnimate>
       </div>
     </Stack>
-  );
+  )
 }

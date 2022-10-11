@@ -1,6 +1,6 @@
-import format from 'date-fns/format';
-import getTime from 'date-fns/getTime';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import format from 'date-fns/format'
+import getTime from 'date-fns/getTime'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 // ----------------------------------------------------------------------
 
@@ -13,20 +13,20 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 // dd MMMM yyyy hh:mm:ss = 02 February 2021 03:59:01
 
 export function fDate(date, option) {
-  return format(new Date(date), option || 'dd MMM yyyy');
+  return format(new Date(date), option || 'dd MMM yyyy')
 }
 
 export function fDate2(date, option) {
-  return format(new Date(date), option || 'dd MMM');
+  return format(new Date(date), option || 'dd MMM')
 }
 
 export function fTimestamp(date) {
-  return getTime(new Date(date));
+  return getTime(new Date(date))
 }
 
 export function fToNow(date, { addSuffix = true, includeSeconds = false }) {
   return formatDistanceToNow(new Date(date), {
     addSuffix: addSuffix,
     includeSeconds: includeSeconds,
-  });
+  })
 }

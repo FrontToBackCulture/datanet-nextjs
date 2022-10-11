@@ -152,12 +152,12 @@ const data = [
     'average Order Count': 48.80555555555556,
     'average Average Order Value': 18.347098641706133,
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

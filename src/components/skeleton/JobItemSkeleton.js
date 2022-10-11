@@ -1,5 +1,5 @@
 // @mui
-import { Skeleton, Stack, Card, Divider, Box } from '@mui/material';
+import { Skeleton, Stack, Card, Divider, Box } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -40,5 +40,5 @@ export default function JobItemSkeleton({ ...other }) {
         ))}
       </Box>
     </Card>
-  );
+  )
 }

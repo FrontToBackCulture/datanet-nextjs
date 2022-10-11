@@ -1,60 +1,27 @@
-// react
-import { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-// next
-import dynamic from 'next/dynamic';
-// nav,header,footer
-const Header = dynamic(() => import('./header/Header'), { ssr: false });
-const HeaderSimple = dynamic(() => import('./header/HeaderSimple'), { ssr: false });
-const Footer = dynamic(() => import('./footer/Footer'), { ssr: false });
-const FooterSimple = dynamic(() => import('./footer/FooterSimple'), { ssr: false });
+import { createContext, useContext, useState } from 'react'
 
-import { DomainProvider } from '../contexts/DomainProvider';
-// ----------------------------------------------------------------------
+import Header from './header/Header'
 
-Layout.propTypes = {
-  children: PropTypes.node,
-  disabledFooter: PropTypes.bool,
-  disabledHeader: PropTypes.bool,
-  simpleFooter: PropTypes.bool,
-  simpleHeader: PropTypes.bool,
-  transparentHeader: PropTypes.bool,
-};
+import { DomainProvider } from '../contexts/DomainProvider'
+import { Stack } from '@mui/material'
 
-const DomainContext = createContext();
+const DomainContext = createContext()
 
-export default function Layout({
-  children,
-  transparentHeader,
-  disabledHeader,
-  disabledFooter,
-  simpleHeader,
-  simpleFooter,
-}) {
-  const [selectedDomain, setSelectedDomain] = useState();
+export default function Layout({ children }) {
+  const [selectedDomain, setSelectedDomain] = useState()
   const header2Layout = (domain) => {
-    setSelectedDomain(domain);
-  };
+    setSelectedDomain(domain)
+  }
 
   return (
-    <>
-      {disabledHeader ? null : (
-        <>
-          {simpleHeader ? (
-            <HeaderSimple transparent={transparentHeader} />
-          ) : (
-            <Header transparent={transparentHeader} header2Layout={header2Layout} />
-          )}
-        </>
-      )}
-      <DomainProvider value={selectedDomain}>{children}</DomainProvider>
+    <Stack height={1}>
+      <Header header2Layout={header2Layout} />
 
-      {disabledFooter ? null : <>{simpleFooter ? <FooterSimple /> : <Footer />}</>}
-    </>
-  );
+      <DomainProvider value={selectedDomain}>{children}</DomainProvider>
+    </Stack>
+  )
 }
 
-// Export useContext Hook.
 export function useDomainContext() {
-  return useContext(DomainContext);
+  return useContext(DomainContext)
 }

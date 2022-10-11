@@ -3,4 +3,4 @@ module.exports = {
   metric: require('./metric'),
   trend: require('./trend'),
   channel: require('./channel'),
-};
+}

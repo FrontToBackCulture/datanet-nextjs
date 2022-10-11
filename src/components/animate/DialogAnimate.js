@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import { m, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types'
+import { m, AnimatePresence } from 'framer-motion'
 // @mui
-import { Dialog, Box, Paper } from '@mui/material';
+import { Dialog, Box, Paper } from '@mui/material'
 //
-import { varFade } from './variants';
+import { varFade } from './variants'
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ DialogAnimate.propTypes = {
   open: PropTypes.bool,
   sx: PropTypes.object,
   variants: PropTypes.object,
-};
+}
 
 export default function DialogAnimate({ open = false, variants, onClose, children, sx, ...other }) {
   return (
@@ -54,5 +54,5 @@ export default function DialogAnimate({ open = false, variants, onClose, childre
         </Dialog>
       )}
     </AnimatePresence>
-  );
+  )
 }

@@ -196,12 +196,12 @@ const config = {
     { title: 'Products', code: 'product' },
     { title: 'Promotions', code: 'promotion' },
   ],
-};
+}
 
 function getConfig(code) {
-  return config[code];
+  return config[code]
 }
 
 module.exports = {
   getConfig,
-};
+}

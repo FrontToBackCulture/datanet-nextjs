@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { styled } from '@mui/material/styles';
-import { LinearProgress, Box } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { LinearProgress, Box } from '@mui/material'
 //
-import cssStyles from '../utils/cssStyles';
+import cssStyles from '../utils/cssStyles'
 
 // ----------------------------------------------------------------------
 
@@ -20,13 +20,13 @@ const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 LoadingScreen.propTypes = {
   sx: PropTypes.object,
-};
+}
 
 export default function LoadingScreen({ sx }) {
   return (
@@ -37,5 +37,5 @@ export default function LoadingScreen({ sx }) {
 
       <Box sx={{ width: '100%', height: '100vh' }} />
     </>
-  );
+  )
 }

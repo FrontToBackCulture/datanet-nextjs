@@ -1,13 +1,7 @@
-import axios from 'axios';
+import axios from 'axios'
 
-let host = '';
-let api = '';
-
-// console.log('MINIAPP_HOST: ', process.env.MINIAPP_HOST);
-// console.log('MINIAPP_API: ', process.env.MINIAPP_API);
-host = process.env.MINIAPP_HOST || 'https://datanet.thinkval.io';
-// host = process.env.MINIAPP_HOST || 'http://0.0.0.0:8085';
-api = process.env.MINIAPP_API || 'miniapp_api/v0.1';
+const host = process.env.NEXT_PUBLIC_MINIAPP_HOST
+const api = process.env.NEXT_PUBLIC_MINIAPP_API
 
 export async function dataNetMerge(params) {
   const config = {
@@ -15,8 +9,8 @@ export async function dataNetMerge(params) {
     url: `${host}/${api}/merge`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }
 
 export async function dataNetPerformCalc(params) {
@@ -25,8 +19,8 @@ export async function dataNetPerformCalc(params) {
     url: `${host}/${api}/performCalc`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }
 
 export async function dataNetConvert2MultiSeries(params) {
@@ -35,6 +29,6 @@ export async function dataNetConvert2MultiSeries(params) {
     url: `${host}/${api}/convert2MultiSeries`,
     headers: {},
     data: params,
-  };
-  return axios(config).then((res) => res);
+  }
+  return axios(config).then((res) => res)
 }

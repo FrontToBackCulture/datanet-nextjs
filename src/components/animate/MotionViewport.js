@@ -1,25 +1,25 @@
-import PropTypes from 'prop-types';
-import { m } from 'framer-motion';
-import {} from 'react';
+import PropTypes from 'prop-types'
+import { m } from 'framer-motion'
+import {} from 'react'
 // @mui
-import { Box } from '@mui/material';
+import { Box } from '@mui/material'
 // hooks
-import useResponsive from '../../hooks/useResponsive';
+import useResponsive from '../../hooks/useResponsive'
 //
-import { varContainer } from '.';
+import { varContainer } from '.'
 
 // ----------------------------------------------------------------------
 
 MotionViewport.propTypes = {
   children: PropTypes.node.isRequired,
   disableAnimatedMobile: PropTypes.bool,
-};
+}
 
 export default function MotionViewport({ children, disableAnimatedMobile = true, ...other }) {
-  const isDesktop = useResponsive('up', 'sm');
+  const isDesktop = useResponsive('up', 'sm')
 
   if (!isDesktop && disableAnimatedMobile) {
-    return <Box {...other}>{children}</Box>;
+    return <Box {...other}>{children}</Box>
   }
 
   return (
@@ -33,5 +33,5 @@ export default function MotionViewport({ children, disableAnimatedMobile = true,
     >
       {children}
     </Box>
-  );
+  )
 }

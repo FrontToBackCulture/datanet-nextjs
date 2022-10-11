@@ -1,28 +1,28 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles'
 
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('span')(({ theme, ownerState }) => {
-  const isLight = theme.palette.mode === 'light';
-  const { color, variant } = ownerState;
+  const isLight = theme.palette.mode === 'light'
+  const { color, variant } = ownerState
 
   const styleFilled = (color) => ({
     color: theme.palette[color].contrastText,
     backgroundColor: theme.palette[color].main,
-  });
+  })
 
   const styleOutlined = (color) => ({
     color: theme.palette[color].main,
     backgroundColor: 'transparent',
     border: `1px solid ${theme.palette[color].main}`,
-  });
+  })
 
   const styleGhost = (color) => ({
     color: theme.palette[color][isLight ? 'dark' : 'light'],
     backgroundColor: alpha(theme.palette[color].main, 0.16),
-  });
+  })
 
   return {
     height: 22,
@@ -58,8 +58,8 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
             backgroundColor: theme.palette.grey[500_16],
           }),
         }),
-  };
-});
+  }
+})
 
 // ----------------------------------------------------------------------
 
@@ -75,12 +75,12 @@ Label.propTypes = {
     'error',
   ]),
   variant: PropTypes.oneOf(['filled', 'outlined', 'ghost']),
-};
+}
 
 export default function Label({ color = 'default', variant = 'ghost', children, ...other }) {
   return (
     <RootStyle ownerState={{ color, variant }} {...other}>
       {children}
     </RootStyle>
-  );
+  )
 }

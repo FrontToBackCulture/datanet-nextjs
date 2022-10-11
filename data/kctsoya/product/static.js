@@ -11368,12 +11368,12 @@ const data = [
     'Stock Level Warning': '⚪ Min Stock Level Not Specified',
     id: 'ZZRN02616-08-2022',
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

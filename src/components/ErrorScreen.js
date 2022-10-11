@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // icon
-import rotate360 from '@iconify/icons-carbon/rotate-360';
+import rotate360 from '@iconify/icons-carbon/rotate-360'
 // next
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Typography, Stack, Button } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Typography, Stack, Button } from '@mui/material'
 //
-import Image from './Image';
-import Iconify from './Iconify';
+import Image from './Image'
+import Iconify from './Iconify'
 
 // ----------------------------------------------------------------------
 
@@ -19,21 +19,21 @@ const RootStyle = styled('div')(() => ({
   textAlign: 'center',
   alignItems: 'center',
   justifyContent: 'center',
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 ErrorScreen.propTypes = {
   description: PropTypes.string,
   title: PropTypes.string,
-};
+}
 
 export default function ErrorScreen({ title, description, ...other }) {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleReload = () => {
-    router.reload();
-  };
+    router.reload()
+  }
 
   return (
     <RootStyle {...other}>
@@ -61,5 +61,5 @@ export default function ErrorScreen({ title, description, ...other }) {
         </Button>
       </Stack>
     </RootStyle>
-  );
+  )
 }

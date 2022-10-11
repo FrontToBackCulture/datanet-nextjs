@@ -1,13 +1,13 @@
 // icons
-import asleepIcon from '@iconify/icons-carbon/asleep';
-import asleepFilled from '@iconify/icons-carbon/asleep-filled';
+import asleepIcon from '@iconify/icons-carbon/asleep'
+import asleepFilled from '@iconify/icons-carbon/asleep-filled'
 // @mui
-import { styled } from '@mui/material/styles';
-import { ToggleButton, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { ToggleButton, Typography } from '@mui/material'
 // hooks
-import { useSettings } from '../../hooks';
+import { useSettings } from '../../hooks'
 //
-import Iconify from '../Iconify';
+import Iconify from '../Iconify'
 
 // ----------------------------------------------------------------------
 
@@ -25,19 +25,19 @@ const RootStyle = styled(ToggleButton)(({ theme }) => ({
   '&.Mui-selected': {
     backgroundColor: 'transparent',
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function SettingMode() {
-  const { themeMode, onToggleMode } = useSettings();
+  const { themeMode, onToggleMode } = useSettings()
 
-  const isLight = themeMode === 'light';
+  const isLight = themeMode === 'light'
 
   return (
     <RootStyle value="check" selected={!isLight} onChange={onToggleMode}>
       <Typography variant="subtitle2">Mode</Typography>
       <Iconify icon={isLight ? asleepIcon : asleepFilled} />
     </RootStyle>
-  );
+  )
 }

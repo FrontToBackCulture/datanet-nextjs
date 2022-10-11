@@ -1,9 +1,9 @@
 // react
-import React, { PureComponent, useState, useEffect } from 'react';
+import React, { PureComponent, useState, useEffect } from 'react'
 // @mui
-import { Button, Stack, Box, Typography } from '@mui/material';
+import { Button, Stack, Box, Typography } from '@mui/material'
 // other library
-import moment from 'moment';
+import moment from 'moment'
 import {
   AreaChart,
   Area,
@@ -13,71 +13,71 @@ import {
   Tooltip,
   ResponsiveContainer,
   Brush,
-} from 'recharts';
+} from 'recharts'
 // utils
-import { fDate2 } from '../../utils/formatTime';
-import { fNumber } from '../../utils/formatNumber';
+import { fDate2 } from '../../utils/formatTime'
+import { fNumber } from '../../utils/formatNumber'
 
 export default function Example({ conf, chartData, tab }) {
-  const [dat, setDat] = useState([]);
-  const [displayDat, setDisplayDat] = useState([]);
-  const [period, setPeriod] = useState(90);
-  const [xAxis, setXAxis] = useState();
-  const [yAxis, setYAxis] = useState();
-  const [chartTitle, setChartTitle] = useState();
+  const [dat, setDat] = useState([])
+  const [displayDat, setDisplayDat] = useState([])
+  const [period, setPeriod] = useState(90)
+  const [xAxis, setXAxis] = useState()
+  const [yAxis, setYAxis] = useState()
+  const [chartTitle, setChartTitle] = useState()
 
   useEffect(() => {
-    const { dataSources, variablesMetrics, listFields, detailFields } = conf;
-    const { staticSource, metricSource, trendSource } = dataSources;
-    console.log('TabType', tab);
-    console.log('ChartData', chartData);
+    const { dataSources, variablesMetrics, listFields, detailFields } = conf
+    const { staticSource, metricSource, trendSource } = dataSources
+    console.log('TabType', tab)
+    console.log('ChartData', chartData)
     if (chartData.length > 0 && tab && conf) {
-      setDat(chartData);
-      setDisplayDat(chartData);
+      setDat(chartData)
+      setDisplayDat(chartData)
 
-      let data, month, value;
+      let data, month, value
       if (detailFields[tab]['chart']) {
-        let dataSourceDef = dataSources[detailFields[tab]['chart'].dataSource];
-        const { groupKey, valueKey, title } = dataSourceDef;
-        console.log('What is this popuplating?', groupKey, valueKey, title);
-        setChartTitle(title);
+        let dataSourceDef = dataSources[detailFields[tab]['chart'].dataSource]
+        const { groupKey, valueKey, title } = dataSourceDef
+        console.log('What is this popuplating?', groupKey, valueKey, title)
+        setChartTitle(title)
         // console.log('React Chart:', chartData);
         if (chartData && chartData.length > 0 && conf) {
-          setXAxis(groupKey);
-          setYAxis(valueKey);
+          setXAxis(groupKey)
+          setYAxis(valueKey)
           // console.log('React Chart Months:', month);
           // console.log('React Chart Value:', value);
         }
       }
     }
-  }, [conf, chartData, tab]);
+  }, [conf, chartData, tab])
 
   useEffect(() => {
     // console.log('SimpleArea:', displayDat);
-  }, [displayDat]);
+  }, [displayDat])
 
   function formatXAxis(tickItem) {
     if (chartData.length > 0) {
       // If using moment.js
       // console.log(tickItem);
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
-      return fDate2(new Date(moment(tickItem).format('YYYY-MM-DD')));
+      return fDate2(new Date(moment(tickItem).format('YYYY-MM-DD')))
     }
   }
 
   const DataFormater = (number) => {
     if (chartData.length > 0) {
       if (number > 1000000000) {
-        return (number / 1000000000).toString() + 'B';
+        return (number / 1000000000).toString() + 'B'
       } else if (number > 1000000) {
-        return (number / 1000000).toString() + 'M';
+        return (number / 1000000).toString() + 'M'
       } else if (number > 1000) {
-        return (number / 1000).toString() + 'K';
+        return (number / 1000).toString() + 'K'
       } else {
-        return number.toString();
+        return number.toString()
       }
     }
-  };
+  }
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -100,17 +100,17 @@ export default function Example({ conf, chartData, tab }) {
             </Typography>
           </Box>
         </div>
-      );
+      )
     }
 
-    return null;
-  };
+    return null
+  }
 
   const handleClick = (period) => {
-    let slicedData = dat.slice(Math.max(dat.length - period, 1));
-    setPeriod(period);
-    setDisplayDat(slicedData);
-  };
+    let slicedData = dat.slice(Math.max(dat.length - period, 1))
+    setPeriod(period)
+    setDisplayDat(slicedData)
+  }
 
   return (
     <>
@@ -167,5 +167,5 @@ export default function Example({ conf, chartData, tab }) {
         </ResponsiveContainer>
       )}
     </>
-  );
+  )
 }

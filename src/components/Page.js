@@ -1,28 +1,27 @@
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { forwardRef } from 'react';
-// @mui
-import { Box } from '@mui/material';
+// import { Stack } from '@mui/material'
+// import Head from 'next/head'
+// import { forwardRef } from 'react'
 
-// ----------------------------------------------------------------------
+// const Page = forwardRef(({ children, meta, title, ...other }, ref) => (
+//   <>
+//     <Head>
+//       <title>{`${title} | VAL DATANET`}</title>
+//       {meta}
+//     </Head>
 
-const Page = forwardRef(({ children, meta, title, ...other }, ref) => (
+//     <Stack ref={ref} {...other} height={1}>
+//       {children}
+//     </Stack>
+//   </>
+// ))
+import { Box, Stack } from '@mui/material'
+import { Footer, FooterSimple } from '../layouts/footer'
+
+const Page = ({ children, simpleFooter = false }) => (
   <>
-    <Head>
-      <title>{`${title} | VAL DATANET`}</title>
-      {meta}
-    </Head>
-
-    <Box ref={ref} {...other}>
-      {children}
-    </Box>
+    <Stack flexGrow={1}>{children}</Stack>
+    {simpleFooter ? <FooterSimple /> : <Footer />}
   </>
-));
+)
 
-Page.propTypes = {
-  children: PropTypes.node.isRequired,
-  meta: PropTypes.node,
-  title: PropTypes.string.isRequired,
-};
-
-export default Page;
+export default Page

@@ -10817,12 +10817,12 @@ const data = [
     Brand: 'Heybo',
     id: 'custom_tbl_18_4_418193',
   },
-];
+]
 
 function getData() {
-  return data;
+  return data
 }
 
 module.exports = {
   getData,
-};
+}

@@ -1,20 +1,20 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 // icons
-import closeIcon from '@iconify/icons-carbon/close';
-import settingsAdjust from '@iconify/icons-carbon/settings-adjust';
+import closeIcon from '@iconify/icons-carbon/close'
+import settingsAdjust from '@iconify/icons-carbon/settings-adjust'
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Tooltip } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles'
+import { Tooltip } from '@mui/material'
 //
-import Iconify from '../Iconify';
-import { IconButtonAnimate } from '../animate';
+import Iconify from '../Iconify'
+import { IconButtonAnimate } from '../animate'
 
 // ----------------------------------------------------------------------
 
-const zIndex = 1999;
+const zIndex = 1999
 
 const ToggleButtonStyle = styled('div')(({ theme }) => {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   return {
     right: 32,
@@ -28,8 +28,8 @@ const ToggleButtonStyle = styled('div')(({ theme }) => {
       isLight ? theme.palette.grey[500] : theme.palette.common.black,
       0.8
     )}`,
-  };
-});
+  }
+})
 
 const BadgeStyle = styled('div')(({ theme }) => ({
   top: 8,
@@ -39,7 +39,7 @@ const BadgeStyle = styled('div')(({ theme }) => ({
   borderRadius: '50%',
   position: 'absolute',
   backgroundColor: theme.palette.error.main,
-}));
+}))
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ ToggleButtonSetting.propTypes = {
   isOpen: PropTypes.bool,
   notDefault: PropTypes.bool,
   onToggle: PropTypes.func,
-};
+}
 
 export default function ToggleButtonSetting({ isOpen, onToggle, notDefault }) {
   return (
@@ -69,5 +69,5 @@ export default function ToggleButtonSetting({ isOpen, onToggle, notDefault }) {
         </IconButtonAnimate>
       </Tooltip>
     </ToggleButtonStyle>
-  );
+  )
 }

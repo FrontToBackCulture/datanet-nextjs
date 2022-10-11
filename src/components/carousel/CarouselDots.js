@@ -1,6 +1,6 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Box } from '@mui/material'
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ const RootStyle = styled(Box, {
       },
     }),
   },
-}));
+}))
 
 const DotWrapStyle = styled('div')(() => ({
   width: '100%',
@@ -34,7 +34,7 @@ const DotWrapStyle = styled('div')(() => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-}));
+}))
 
 const DotStyle = styled('span')(({ theme }) => ({
   width: 8,
@@ -44,13 +44,13 @@ const DotStyle = styled('span')(({ theme }) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.short,
   }),
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function CarouselDots(props) {
-  const color = props?.color;
-  const rounded = props?.rounded || false;
+  const color = props?.color
+  const rounded = props?.rounded || false
 
   return {
     appendDots: (dots) => (
@@ -70,5 +70,5 @@ export default function CarouselDots(props) {
         />
       </DotWrapStyle>
     ),
-  };
+  }
 }

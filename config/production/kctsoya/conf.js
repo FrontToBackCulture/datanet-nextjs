@@ -89,12 +89,12 @@ const config = {
     // { title: 'Home', path: '/', code: 'home' },
     { title: 'Products', code: 'product' },
   ],
-};
+}
 
 function getConfig(code) {
-  return config[code];
+  return config[code]
 }
 
 module.exports = {
   getConfig,
-};
+}

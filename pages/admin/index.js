@@ -1,21 +1,21 @@
 //react
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 // next
-import NextLink from 'next/link';
+import NextLink from 'next/link'
 // @mui
-import { styled } from '@mui/material/styles';
-import { Button, Typography, Stack } from '@mui/material';
+import { styled } from '@mui/material/styles'
+import { Button, Typography, Stack } from '@mui/material'
 // other lbrary
-import { JsonForms } from '@jsonforms/react';
-import { materialRenderers, materialCells } from '@jsonforms/material-renderers';
+import { JsonForms } from '@jsonforms/react'
+import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 // config
-import { configForm, exampleForm } from '../../config/schema';
+import { configForm, exampleForm } from '../../config/schema'
 // api && lib
-import { clearCache } from '../api/cache';
+import { clearCache } from '../api/cache'
 // layouts
-import Layout from '../../src/layouts';
+import Layout from '../../src/layouts'
 // components
-import { Page, Image } from '../../src/components';
+import { Page, Image } from '../../src/components'
 
 // ----------------------------------------------------------------------
 
@@ -28,48 +28,48 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     height: '100vh',
   },
-}));
+}))
 
 // ----------------------------------------------------------------------
 
 export default function MaintenancePage() {
-  const exampleSchema = exampleForm.schema;
-  const exampleUischema = exampleForm.uischema;
-  const exampleInitialData = exampleForm.data;
-  const [exampleData, setExampleData] = useState(exampleInitialData);
+  const exampleSchema = exampleForm.schema
+  const exampleUischema = exampleForm.uischema
+  const exampleInitialData = exampleForm.data
+  const [exampleData, setExampleData] = useState(exampleInitialData)
 
-  const configGeneralSchema = configForm.general.schema;
-  const configGeneralUischema = configForm.general.uischema;
-  const configGeneralInitialData = configForm.general.data;
-  const [configGeneralData, setConfigGeneralData] = useState(configGeneralInitialData);
+  const configGeneralSchema = configForm.general.schema
+  const configGeneralUischema = configForm.general.uischema
+  const configGeneralInitialData = configForm.general.data
+  const [configGeneralData, setConfigGeneralData] = useState(configGeneralInitialData)
 
-  const configMDSSchema = configForm.outlet.mandatoryDataSources.schema;
-  const configMDSUischema = configForm.outlet.mandatoryDataSources.uischema;
-  const configMDSInitialData = configForm.outlet.mandatoryDataSources.data;
-  const [configMDSData, setConfigMDSData] = useState(configMDSInitialData);
+  const configMDSSchema = configForm.outlet.mandatoryDataSources.schema
+  const configMDSUischema = configForm.outlet.mandatoryDataSources.uischema
+  const configMDSInitialData = configForm.outlet.mandatoryDataSources.data
+  const [configMDSData, setConfigMDSData] = useState(configMDSInitialData)
 
-  const configATDSSchema = configForm.outlet.additionalTabDataSources.schema;
-  const configATDSUischema = configForm.outlet.additionalTabDataSources.uischema;
-  const configATDSInitialData = configForm.outlet.additionalTabDataSources.data;
-  const [configATDSData, setConfigATDSData] = useState(configATDSInitialData);
+  const configATDSSchema = configForm.outlet.additionalTabDataSources.schema
+  const configATDSUischema = configForm.outlet.additionalTabDataSources.uischema
+  const configATDSInitialData = configForm.outlet.additionalTabDataSources.data
+  const [configATDSData, setConfigATDSData] = useState(configATDSInitialData)
 
   const resetCache = async () => {
-    console.log(await clearCache());
-  };
+    console.log(await clearCache())
+  }
 
   // if form data change
   useEffect(() => {
-    console.log(exampleData);
-  }, [exampleData]);
+    console.log(exampleData)
+  }, [exampleData])
   useEffect(() => {
-    console.log(configGeneralData);
-  }, [configGeneralData]);
+    console.log(configGeneralData)
+  }, [configGeneralData])
   useEffect(() => {
-    console.log(configMDSData);
-  }, [configMDSData]);
+    console.log(configMDSData)
+  }, [configMDSData])
   useEffect(() => {
-    console.log(configATDSData);
-  }, [configATDSData]);
+    console.log(configATDSData)
+  }, [configATDSData])
 
   return (
     <Page title="Maintenance">
@@ -127,11 +127,11 @@ export default function MaintenancePage() {
         </div> */}
       </RootStyle>
     </Page>
-  );
+  )
 }
 
 // ----------------------------------------------------------------------
 
 MaintenancePage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
+  return <Layout>{page}</Layout>
+}

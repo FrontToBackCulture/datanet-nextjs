@@ -1,41 +1,41 @@
-import fs from 'fs';
-import { join } from 'path';
-import matter from 'gray-matter';
+import fs from 'fs'
+import { join } from 'path'
+import matter from 'gray-matter'
 // config
-import { COMPONENTS_DIRECTORY } from '../../config';
+import { COMPONENTS_DIRECTORY } from '../../config'
 
 // ----------------------------------------------------------------------
 
-const slugs = fs.readdirSync(join(COMPONENTS_DIRECTORY));
+const slugs = fs.readdirSync(join(COMPONENTS_DIRECTORY))
 
 // ----------------------------------------------------------------------
 
 export function getAllComponents() {
   const components = slugs.map((slug) => {
-    const fileContents = fs.readFileSync(join(COMPONENTS_DIRECTORY, slug), 'utf-8');
+    const fileContents = fs.readFileSync(join(COMPONENTS_DIRECTORY, slug), 'utf-8')
 
-    const { data: frontmatter } = matter(fileContents);
+    const { data: frontmatter } = matter(fileContents)
 
     return {
       slug: slug.replace('.mdx', ''),
       frontmatter,
-    };
-  });
-  return components;
+    }
+  })
+  return components
 }
 
 // ----------------------------------------------------------------------
 
 export function getComponentData(slug) {
-  const fileContents = fs.readFileSync(join(COMPONENTS_DIRECTORY, slug + '.mdx'), 'utf-8');
+  const fileContents = fs.readFileSync(join(COMPONENTS_DIRECTORY, slug + '.mdx'), 'utf-8')
 
-  const { data: frontmatter, content } = matter(fileContents);
+  const { data: frontmatter, content } = matter(fileContents)
 
   return {
     frontmatter,
     slug,
     content,
-  };
+  }
 }
 
 // ----------------------------------------------------------------------
@@ -45,6 +45,6 @@ export function getAllComponentSlugs() {
     params: {
       slug: slug.replace('.mdx', ''),
     },
-  }));
-  return paths;
+  }))
+  return paths
 }
