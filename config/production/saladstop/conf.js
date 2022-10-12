@@ -33,13 +33,14 @@ const config = {
         name: 'outletNetSalesTrend',
         valueKey: 'Net Sales',
         groupKey: 'Date',
-        title: 'Daily Net Sales Last 30D',
+        title: 'Daily Net Sales Last 3M',
       },
       tab1Chart: {
         queryID: '4097',
         domain: 'saladstop',
         key: 'Store',
         contentType: 'channel',
+        name: 'outletChannelTrend',
         valueKey: 'sum Net Sales',
         groupPeriodKey: 'Transaction Date',
         groupKey: 'Order Channel',
@@ -77,13 +78,11 @@ const config = {
         sourceColumn: 'Outlet',
         type: 'string',
         headerName: 'Outlet',
-        description: '',
       },
       outletName: {
         sourceColumn: 'Outlet Name',
         type: 'string',
         headerName: 'Outlet Name',
-        description: '',
       },
       lastWorkingDayNetSales: {
         sourceColumn: 'latestMetric',
@@ -103,41 +102,32 @@ const config = {
       outletSumNetSalesL3M: {
         sourceColumn: 'sum Net Sales',
         type: 'currency',
-        headerName: 'Net Sales L30D',
-        description: '',
+        headerName: 'Net Sales L3M',
       },
       maxNetSalesL3M: {
         sourceColumn: 'max Net Sales',
         type: 'currency',
-        headerName: 'Daily Max Net Sales L30D',
-        description: '',
+        headerName: 'Daily Max Net Sales L3M',
       },
       minNetSalesL3M: {
         sourceColumn: 'min Net Sales',
         type: 'currency',
-        headerName: 'Daily Min Net Sales L30D',
-        description: '',
+        headerName: 'Daily Min Net Sales L3M',
       },
       averageOrderCountL3M: {
         sourceColumn: 'average Average Order Value',
-        link: false,
         type: 'number',
         headerName: 'Average Order Count',
-        description: '',
       },
       sumOrderCountL3M: {
         sourceColumn: 'sum Order Count',
-        link: false,
         type: 'number',
-        headerName: 'Order Count L30D',
-        description: '',
+        headerName: 'Order Count L3M',
       },
       averageDailyOrderCountL3M: {
         sourceColumn: 'average Order Count',
-        link: false,
         type: 'number',
         headerName: 'Avg Daily Order Count',
-        description: '',
       },
       lastWorkingDayChannelNetSales: {
         sourceColumn: 'latestMetric',
@@ -157,19 +147,17 @@ const config = {
       outletSumChannelNetSalesL3M: {
         sourceColumn: 'aggregateMetric',
         type: 'currency',
-        headerName: 'Net Sales L30D',
+        headerName: 'Net Sales L3M',
       },
       maxChannelNetSalesL3M: {
         sourceColumn: 'maxMetric',
         type: 'currency',
-        headerName: 'Daily Max Net Sales L30D',
-        description: '',
+        headerName: 'Daily Max Net Sales L3M',
       },
       minChannelNetSalesL3M: {
         sourceColumn: 'minMetric',
         type: 'currency',
-        headerName: 'Daily Min Net Sales L30D',
-        description: '',
+        headerName: 'Daily Min Net Sales L3M',
       },
     },
     listFields: {
@@ -269,7 +257,6 @@ const config = {
           },
         },
       },
-      tab2: {},
     },
   },
   product: {
@@ -295,8 +282,8 @@ const config = {
         contentType: 'trend',
         name: 'productNetQtySoldTrend',
         valueKey: 'sum Quantity',
-        groupKey: 'Transactiontime',
-        title: 'Daily Qty Sold Last 3M',
+        groupKey: 'TransactionTime',
+        title: 'Daily Qty Sold Last 30D',
       },
     },
     calculatedMetrics: {
@@ -330,22 +317,20 @@ const config = {
         sourceColumn: 'ID',
         type: 'string',
         headerName: 'Product ID',
-        description: '',
       },
       productName: {
         sourceColumn: 'Name',
         type: 'string',
         headerName: 'Name',
-        description: '',
       },
-      lastWorkingDayQtySold: {
+      lastWorkingDayQtySales: {
         sourceColumn: 'latestMetric',
-        type: 'number',
+        type: 'currency',
         headerName: 'Last Working Day Qty Sold',
       },
-      priorWorkingDayQtySold: {
+      priorWorkingDayQtySales: {
         sourceColumn: 'priorMetric',
-        type: 'number',
+        type: 'currency',
         headerName: 'Prior Working Day Qty Sold',
       },
       workingDayNetQtyPercentChange: {
@@ -376,7 +361,7 @@ const config = {
         maxWidth: 250,
       },
       latestMetric: {
-        variablesMetrics: 'lastWorkingDayQtySold',
+        variablesMetrics: 'lastWorkingDayQtySales',
         maxWidth: 150,
       },
       percentChangeMetric: {
@@ -406,10 +391,10 @@ const config = {
         },
         table: {
           metric1: {
-            variablesMetrics: 'lastWorkingDayQtySold',
+            variablesMetrics: 'lastWorkingDayQtySales',
           },
           metric2: {
-            variablesMetrics: 'priorWorkingDayQtySold',
+            variablesMetrics: 'priorWorkingDayQtySales',
           },
           metric3: {
             variablesMetrics: 'workingDayNetQtyPercentChange',
@@ -450,8 +435,8 @@ const config = {
         contentType: 'trend',
         name: 'promotionNetQtySoldTrend',
         valueKey: 'sum Quantity',
-        groupKey: 'Transactiontime',
-        title: 'Daily Qty Promo Used Last 3M',
+        groupKey: 'TransactionTime',
+        title: 'Daily Qty Promo Used Last 30D',
       },
     },
     calculatedMetrics: {
@@ -482,16 +467,14 @@ const config = {
     },
     variablesMetrics: {
       promotionShortCode: {
-        sourceColumn: 'Storehub Product ID',
+        sourceColumn: 'ID',
         type: 'string',
-        headerName: 'Promotion ID',
-        description: '',
+        headerName: 'Product ID',
       },
       promotionName: {
-        sourceColumn: 'POS Button Storehub',
+        sourceColumn: 'Name',
         type: 'string',
         headerName: 'Name',
-        description: '',
       },
       lastWorkingDayQtyUsed: {
         sourceColumn: 'latestMetric',
