@@ -73,7 +73,7 @@ export default function Header() {
             {user && <DomainSelector />}
 
             {userDomain === ROOT_DOMAIN && (
-              <NextLink href={{ pathname: Routes.admin }} passHref>
+              <NextLink href={`/admin/${selectedDomain}`} passHref>
                 <IconButtonAnimate color="inherit">
                   <Iconify icon={contentDeliveryNetwork} sx={{ width: 20, height: 20 }} />
                 </IconButtonAnimate>
