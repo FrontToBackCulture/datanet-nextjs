@@ -41,7 +41,7 @@ export default function ListPage({ rowData, conf }) {
       <Stack height={1}>
         <Header />
         <Page title={title}>
-          <AgGrid type="list" conf={conf} entity={entity} rowD={rowData} title={title} />
+          <AgGrid type="list" conf={conf} entity={entity} rowData={rowData} title={title} />
         </Page>
       </Stack>
     </DomainContext.Provider>

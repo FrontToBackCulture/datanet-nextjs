@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect, useRef, useMemo, useContext } from 'react'
+import React, { useCallback, useRef, useContext } from 'react'
 import NextLink from 'next/link'
 import { TextField, Stack, Typography } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react'
@@ -9,17 +9,11 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-balham-dark.css'
 import 'ag-grid-enterprise/dist/styles/ag-theme-material.css'
 import { fCurrency, fShortenNumber, fPercent, fNumber } from '../../utils/formatNumber'
 
-function LinkComponent(props) {
-  const { linkKey, data, value, entity } = props
+function LinkComponent({ linkKey, data, value, entity }) {
   const keyValue = data[linkKey]
   const selectedDomain = useContext(DomainContext)
 
-  let link
-  if (keyValue) {
-    link = keyValue.replace('/', '%2F')
-  } else {
-    link = ''
-  }
+  const link = keyValue ? keyValue.replace('/', '%2F') : ''
 
   const href = `/list/${selectedDomain}/${entity}/${link}`
 
@@ -30,159 +24,86 @@ function LinkComponent(props) {
   )
 }
 
-export default function AGGrid({ rowD, type, conf, entity, title }) {
+const getFormatter = (type) => {
+  switch (type) {
+    case 'decimal':
+      return fShortenNumber
+    case 'currency':
+      return fCurrency
+    case 'number':
+      return fNumber
+    case 'percent':
+      return fPercent
+    default:
+      return (x) => x
+  }
+}
+
+export default function AGGrid({ rowData, conf, entity, title }) {
   const gridRef = useRef()
-  const [rowData, setRowData] = useState([])
-  const [columnDefs, setColumnDefs] = useState([])
-
-  const defaultColDef = useMemo(
-    () => ({
-      enableValue: true,
-      enableRowGroup: true,
-      enablePivot: true,
-      sortable: true,
-      filter: true,
-      resizable: true,
-      wrapHeaderText: true,
-      autoHeight: true,
-    }),
-    []
-  )
-
-  const statusBar = useMemo(
-    () => ({
-      statusPanels: [
-        {
-          statusPanel: 'agTotalAndFilteredRowCountComponent',
-          align: 'left',
-        },
-        {
-          statusPanel: 'agTotalRowCountComponent',
-          align: 'center',
-        },
-        { statusPanel: 'agFilteredRowCountComponent' },
-        { statusPanel: 'agSelectedRowCountComponent' },
-        { statusPanel: 'agAggregationComponent' },
-      ],
-    }),
-    []
-  )
+  let columnDefs = []
 
   const onFilterTextBoxChanged = useCallback(() => {
     gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value)
   }, [])
 
-  function decimalFormatter(params) {
-    if (params && params.value) {
-      return fShortenNumber(params.value)
-    }
-    return 0
-  }
+  if (rowData && conf && entity) {
+    const { dataSources, listFields } = conf
+    const { trendSource } = dataSources
 
-  function currencyFormatter(params) {
-    if (params && params.value) {
-      return fCurrency(params.value)
-    }
-    return 0
-  }
-
-  function numberFormatter(params) {
-    if (params && params.value) {
-      return fNumber(params.value)
-    }
-    return 0
-  }
-
-  function percentFormatter(params) {
-    if (params && params.value) {
-      return fPercent(params.value)
-    }
-    return 0
-  }
-
-  useEffect(() => {
-    if (rowD && conf && entity) {
-      const { dataSources, variablesMetrics, listFields, detailFields } = conf
-      const { staticSource, metricSource, trendSource } = dataSources
-
-      if (rowD && rowD.length > 0) {
-        const colDefs = []
-        if (listFields) {
-          const fields2Show = Object.keys(listFields)
-          fields2Show.forEach((field2Show) => {
-            const colDefsObj = {}
-            const variableMetric = conf.variablesMetrics[listFields[field2Show].variablesMetrics]
-            colDefsObj.field = variableMetric.sourceColumn
-            colDefsObj.headerName = variableMetric.headerName
-            switch (variableMetric.type) {
-              case 'decimal':
-                colDefsObj.valueFormatter = decimalFormatter
-                break
-              case 'currency':
-                colDefsObj.valueFormatter = currencyFormatter
-                break
-              case 'number':
-                colDefsObj.valueFormatter = numberFormatter
-                break
-              case 'percent':
-                colDefsObj.valueFormatter = percentFormatter
-                break
-              default:
-                break
-            }
-            if (listFields[field2Show].link) {
-              colDefsObj.cellRenderer = LinkComponent
-              colDefsObj.cellRendererParams = {
-                linkKey: conf.dataSources.staticSource.key,
-                entity,
-              }
-              colDefsObj.pinned = 'left'
-            }
-            if (listFields[field2Show].sort) {
-              colDefsObj.sort = listFields[field2Show].sort
-            }
-            if (listFields[field2Show].maxWidth) {
-              colDefsObj.maxWidth = listFields[field2Show].maxWidth
-            }
-            if (listFields[field2Show].condition) {
-              colDefsObj.cellClassRules = {
-                'rag-green': 'x > 0',
-                'rag-red': 'x < 0',
-              }
-            }
-            colDefs.push(colDefsObj)
-          })
-          colDefs.push({
-            field: 'change',
-            cellRenderer: 'agSparklineCellRenderer',
-            headerName: 'Weekly Trend',
-            cellRendererParams: {
-              sparklineOptions: {
-                type: 'area',
-                xKey: 'Week',
-                yKey: trendSource.valueKey,
-                marker: {
-                  size: 3,
-                },
-              },
-            },
-          })
-          setColumnDefs(colDefs)
-        } else {
-          const keys = Object.keys(rowD[0])
-          keys.forEach((key) => {
-            if (key === 'ID') {
-              colDefs.push({ field: key, cellRenderer: 'LinkComponent' })
-            } else {
-              colDefs.push({ field: key })
-            }
-          })
-          setColumnDefs(colDefs)
+    if (listFields) {
+      columnDefs = Object.keys(listFields).map((field2Show) => {
+        const variableMetric = conf.variablesMetrics[listFields[field2Show].variablesMetrics]
+        const colDefsObj = {
+          field: variableMetric.sourceColumn,
+          headerName: variableMetric.headerName,
+          valueFormatter: (params) => getFormatter(variableMetric.type)(params.value),
         }
-      }
-      setRowData(rowD)
+
+        if (listFields[field2Show].link) {
+          colDefsObj.cellRenderer = LinkComponent
+          colDefsObj.cellRendererParams = {
+            linkKey: conf.dataSources.staticSource.key,
+            entity,
+          }
+          colDefsObj.pinned = 'left'
+        }
+        if (listFields[field2Show].sort) {
+          colDefsObj.sort = listFields[field2Show].sort
+        }
+        if (listFields[field2Show].maxWidth) {
+          colDefsObj.maxWidth = listFields[field2Show].maxWidth
+        }
+        if (listFields[field2Show].condition) {
+          colDefsObj.cellClassRules = {
+            'rag-green': 'x > 0',
+            'rag-red': 'x < 0',
+          }
+        }
+        return colDefsObj
+      })
+      columnDefs.push({
+        field: 'change',
+        cellRenderer: 'agSparklineCellRenderer',
+        headerName: 'Weekly Trend',
+        cellRendererParams: {
+          sparklineOptions: {
+            type: 'area',
+            xKey: 'Week',
+            yKey: trendSource.valueKey,
+            marker: {
+              size: 3,
+            },
+          },
+        },
+      })
+    } else {
+      columnDefs = Object.keys(rowData[0]).map((key) => ({
+        field: key,
+        cellRenderer: key === 'ID' ? 'LinkComponent' : undefined,
+      }))
     }
-  }, [rowD, type, conf, entity])
+  }
 
   return (
     <Stack height={1} spacing={3}>
@@ -195,19 +116,35 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
           ref={gridRef}
           rowData={rowData}
           columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          statusBar={{ statusBar }}
-          sideBar={false}
+          defaultColDef={{
+            enableValue: true,
+            enableRowGroup: true,
+            enablePivot: true,
+            sortable: true,
+            filter: true,
+            resizable: true,
+            wrapHeaderText: true,
+          }}
+          statusBar={{
+            statusBar: {
+              statusPanels: [
+                {
+                  statusPanel: 'agTotalAndFilteredRowCountComponent',
+                  align: 'left',
+                },
+                {
+                  statusPanel: 'agTotalRowCountComponent',
+                  align: 'center',
+                },
+                { statusPanel: 'agFilteredRowCountComponent' },
+                { statusPanel: 'agSelectedRowCountComponent' },
+                { statusPanel: 'agAggregationComponent' },
+              ],
+            },
+          }}
           animateRows
-          rowGroupPanelShow={false}
           rowHeight={25}
           cacheQuickFilter
-          overlayLoadingTemplate={
-            '<span class="ag-overlay-loading-center">This is a custom \'no rows\' overlay</span>'
-          }
-          overlayNoRowsTemplate={
-            '<span style="padding: 10px; border: 2px solid #444; background: lightgoldenrodyellow">Please wait while your data is loading</span>'
-          }
         />
       </div>
     </Stack>
