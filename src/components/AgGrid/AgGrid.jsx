@@ -186,20 +186,9 @@ export default function AGGrid({ rowD, type, conf, entity, title }) {
 
   return (
     <Stack height={1} spacing={3}>
-      <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-        <Typography variant="h4" gutterBottom>
-          {title}
-        </Typography>
-        <TextField
-          id="filter-text-box"
-          label="Search"
-          color="secondary"
-          onChange={onFilterTextBoxChanged}
-          variant="outlined"
-          size="small"
-          focused
-          sx={{ width: '25ch' }}
-        />
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h4">{title}</Typography>
+        <TextField label="Search" onChange={onFilterTextBoxChanged} size="small" focused />
       </Stack>
       <div id="myGrid" style={{ flexGrow: 1 }} className="ag-theme-material">
         <AgGridReact

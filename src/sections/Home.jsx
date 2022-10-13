@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Stack, Container, Typography } from '@mui/material'
+import { Stack, Typography } from '@mui/material'
 import Image from 'next/image'
 import { DomainContext } from '../contexts/DomainProvider'
 
@@ -25,13 +25,11 @@ const Logo = () => {
 }
 
 export const Home = () => (
-  <Container>
-    <Stack spacing={5} alignItems={{ xs: 'center', md: 'flex-start' }} sx={{ py: 15 }}>
-      <Logo />
-      <Typography>
-        Datanet is built on top of VAL, a powerful no-code data warehouse that provides a single
-        source of truth across systems you used.
-      </Typography>
-    </Stack>
-  </Container>
+  <Stack flexGrow={1} spacing={5} alignItems={{ xs: 'center', md: 'flex-start' }} sx={{ py: 15 }}>
+    <Logo />
+    <Typography>
+      Datanet is built on top of VAL, a powerful no-code data warehouse that provides a single
+      source of truth across systems you used.
+    </Typography>
+  </Stack>
 )

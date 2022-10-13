@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Container, Stack } from '@mui/material'
+import { Stack } from '@mui/material'
 import { useUser } from '@auth0/nextjs-auth0'
 import { readVAL } from '../../api/grpc'
 import { dataNetMerge, dataNetPerformCalc } from '../../api/datanet'
@@ -41,9 +41,7 @@ export default function ListPage({ rowData, conf }) {
       <Stack height={1}>
         <Header />
         <Page title={title}>
-          <Container sx={{ flexGrow: 1, py: 3 }} maxWidth="xl">
-            <AgGrid type="list" conf={conf} entity={entity} rowD={rowData} title={title} />
-          </Container>
+          <AgGrid type="list" conf={conf} entity={entity} rowD={rowData} title={title} />
         </Page>
       </Stack>
     </DomainContext.Provider>
