@@ -99,32 +99,32 @@ const config = {
         type: 'percent',
         headerName: 'Daily Net Sales % Δ',
       },
-      outletSumNetSalesL3M: {
+      outletSumNetSalesL30D: {
         sourceColumn: 'sum Net Sales',
         type: 'currency',
-        headerName: 'Net Sales L3M',
+        headerName: 'Net Sales L30D',
       },
-      maxNetSalesL3M: {
+      maxNetSalesL30D: {
         sourceColumn: 'max Net Sales',
         type: 'currency',
-        headerName: 'Daily Max Net Sales L3M',
+        headerName: 'Daily Max Net Sales L30D',
       },
-      minNetSalesL3M: {
+      minNetSalesL30D: {
         sourceColumn: 'min Net Sales',
         type: 'currency',
-        headerName: 'Daily Min Net Sales L3M',
+        headerName: 'Daily Min Net Sales L30D',
       },
-      averageOrderCountL3M: {
+      averageOrderCountL30D: {
         sourceColumn: 'average Average Order Value',
         type: 'number',
         headerName: 'Average Order Count',
       },
-      sumOrderCountL3M: {
+      sumOrderCountL30D: {
         sourceColumn: 'sum Order Count',
         type: 'number',
-        headerName: 'Order Count L3M',
+        headerName: 'Order Count L30D',
       },
-      averageDailyOrderCountL3M: {
+      averageDailyOrderCountL30D: {
         sourceColumn: 'average Order Count',
         type: 'number',
         headerName: 'Avg Daily Order Count',
@@ -144,20 +144,20 @@ const config = {
         type: 'percent',
         headerName: 'Daily Net Sales % Δ',
       },
-      outletSumChannelNetSalesL3M: {
+      outletSumChannelNetSalesL30D: {
         sourceColumn: 'aggregateMetric',
         type: 'currency',
-        headerName: 'Net Sales L3M',
+        headerName: 'Net Sales L30D',
       },
-      maxChannelNetSalesL3M: {
+      maxChannelNetSalesL30D: {
         sourceColumn: 'maxMetric',
         type: 'currency',
-        headerName: 'Daily Max Net Sales L3M',
+        headerName: 'Daily Max Net Sales L30D',
       },
-      minChannelNetSalesL3M: {
+      minChannelNetSalesL30D: {
         sourceColumn: 'minMetric',
         type: 'currency',
-        headerName: 'Daily Min Net Sales L3M',
+        headerName: 'Daily Min Net Sales L30D',
       },
     },
     listFields: {
@@ -176,20 +176,20 @@ const config = {
         maxWidth: 150,
       },
       metric3: {
-        variablesMetrics: 'outletSumNetSalesL3M',
+        variablesMetrics: 'outletSumNetSalesL30D',
         maxWidth: 150,
         sort: 'desc',
       },
       metric4: {
-        variablesMetrics: 'maxNetSalesL3M',
+        variablesMetrics: 'maxNetSalesL30D',
         maxWidth: 150,
       },
       metric5: {
-        variablesMetrics: 'minNetSalesL3M',
+        variablesMetrics: 'minNetSalesL30D',
         maxWidth: 150,
       },
       metric6: {
-        variablesMetrics: 'averageOrderCountL3M',
+        variablesMetrics: 'averageOrderCountL30D',
         maxWidth: 150,
       },
     },
@@ -211,22 +211,22 @@ const config = {
             condition: 'cellClassRules',
           },
           metric4: {
-            variablesMetrics: 'outletSumNetSalesL3M',
+            variablesMetrics: 'outletSumNetSalesL30D',
           },
           metric5: {
-            variablesMetrics: 'maxNetSalesL3M',
+            variablesMetrics: 'maxNetSalesL30D',
           },
           metric6: {
-            variablesMetrics: 'minNetSalesL3M',
+            variablesMetrics: 'minNetSalesL30D',
           },
           metric7: {
-            variablesMetrics: 'averageOrderCountL3M',
+            variablesMetrics: 'averageOrderCountL30D',
           },
           metric8: {
-            variablesMetrics: 'sumOrderCountL3M',
+            variablesMetrics: 'sumOrderCountL30D',
           },
           metric9: {
-            variablesMetrics: 'averageDailyOrderCountL3M',
+            variablesMetrics: 'averageDailyOrderCountL30D',
           },
         },
       },
@@ -247,13 +247,13 @@ const config = {
             condition: 'cellClassRules',
           },
           metric4: {
-            variablesMetrics: 'outletSumChannelNetSalesL3M',
+            variablesMetrics: 'outletSumChannelNetSalesL30D',
           },
           metric5: {
-            variablesMetrics: 'maxChannelNetSalesL3M',
+            variablesMetrics: 'maxChannelNetSalesL30D',
           },
           metric6: {
-            variablesMetrics: 'minChannelNetSalesL3M',
+            variablesMetrics: 'minChannelNetSalesL30D',
           },
         },
       },
@@ -285,6 +285,17 @@ const config = {
         groupKey: 'TransactionTime',
         title: 'Daily Qty Sold Last 30D',
       },
+      tab1Chart: {
+        queryID: '4120',
+        domain: 'saladstop',
+        key: 'Productid',
+        contentType: 'outletProduct',
+        name: 'outletProductSalesTrend',
+        valueKey: 'sum Quantity',
+        groupKey: 'Store',
+        groupPeriodKey: 'Transactiontime',
+        title: 'Product Qty Sold Trend by Outlet',
+      },
     },
     calculatedMetrics: {
       lastWorkingDayQtySales: {
@@ -311,6 +322,21 @@ const config = {
         columnName: 'change',
         calcType: 'weeklyTrend',
       },
+      minDayQtySales: {
+        timeseriesSource: 'productNetQtySoldTrend',
+        columnName: 'minDayQtySales',
+        calcType: 'min',
+      },
+      maxDayQtySales: {
+        timeseriesSource: 'productNetQtySoldTrend',
+        columnName: 'maxDayQtySales',
+        calcType: 'max',
+      },
+      avgDayQtySales: {
+        timeseriesSource: 'productNetQtySoldTrend',
+        columnName: 'avgDayQtySales',
+        calcType: 'avg',
+      },
     },
     variablesMetrics: {
       productShortCode: {
@@ -325,12 +351,12 @@ const config = {
       },
       lastWorkingDayQtySales: {
         sourceColumn: 'latestMetric',
-        type: 'currency',
+        type: 'number',
         headerName: 'Last Working Day Qty Sold',
       },
       priorWorkingDayQtySales: {
         sourceColumn: 'priorMetric',
-        type: 'currency',
+        type: 'number',
         headerName: 'Prior Working Day Qty Sold',
       },
       workingDayNetQtyPercentChange: {
@@ -338,20 +364,35 @@ const config = {
         type: 'percent',
         headerName: 'Daily Qty Sold % Δ',
       },
-      sumQuantity: {
+      sumQuantityL30D: {
         sourceColumn: 'sum Quantity',
         type: 'number',
         headerName: 'Qty Sold L30D',
       },
-      sumTotal: {
+      sumTotalL30D: {
         sourceColumn: 'sum Total',
         type: 'currency',
         headerName: 'Net Sales L30D',
       },
-      sumDiscount: {
+      sumDiscountL30D: {
         sourceColumn: 'sum Discount',
         type: 'currency',
         headerName: 'Discount L30D',
+      },
+      minDayQtySalesL30D: {
+        sourceColumn: 'maxMetric',
+        type: 'number',
+        headerName: 'Daily Min Qty Sold L30D',
+      },
+      maxDayQtySalesL30D: {
+        sourceColumn: 'minMetric',
+        type: 'number',
+        headerName: 'Daily Max Qty Sold L30D',
+      },
+      avgDayQtySalesL30D: {
+        sourceColumn: 'avgMetric',
+        type: 'number',
+        headerName: 'Daily Avg Qty Sold L30D',
       },
     },
     listFields: {
@@ -370,16 +411,28 @@ const config = {
         maxWidth: 150,
       },
       metric3: {
-        variablesMetrics: 'sumQuantity',
+        variablesMetrics: 'sumQuantityL30D',
         maxWidth: 150,
         sort: 'desc',
       },
       metric4: {
-        variablesMetrics: 'sumTotal',
+        variablesMetrics: 'sumTotalL30D',
         maxWidth: 150,
       },
       metric5: {
-        variablesMetrics: 'sumDiscount',
+        variablesMetrics: 'sumDiscountL30D',
+        maxWidth: 150,
+      },
+      metric6: {
+        variablesMetrics: 'minDayQtySalesL30D',
+        maxWidth: 150,
+      },
+      metric7: {
+        variablesMetrics: 'maxDayQtySalesL30D',
+        maxWidth: 150,
+      },
+      metric8: {
+        variablesMetrics: 'avgDayQtySalesL30D',
         maxWidth: 150,
       },
     },
@@ -398,15 +451,61 @@ const config = {
           },
           metric3: {
             variablesMetrics: 'workingDayNetQtyPercentChange',
+            condition: 'cellClassRules',
           },
           metric4: {
-            variablesMetrics: 'sumQuantity',
+            variablesMetrics: 'sumQuantityL30D',
           },
           metric5: {
-            variablesMetrics: 'sumTotal',
+            variablesMetrics: 'sumTotalL30D',
           },
           metric6: {
-            variablesMetrics: 'sumDiscount',
+            variablesMetrics: 'sumDiscountL30D',
+          },
+          metric7: {
+            variablesMetrics: 'minDayQtySalesL30D',
+          },
+          metric8: {
+            variablesMetrics: 'maxDayQtySalesL30D',
+          },
+          metric9: {
+            variablesMetrics: 'avgDayQtySalesL30D',
+          },
+        },
+      },
+      tab1: {
+        name: 'Product Qty Sold Trend by Outlet',
+        chart: {
+          dataSource: 'tab1Chart',
+        },
+        table: {
+          metric1: {
+            variablesMetrics: 'lastWorkingDayQtySales',
+          },
+          metric2: {
+            variablesMetrics: 'priorWorkingDayQtySales',
+          },
+          metric3: {
+            variablesMetrics: 'workingDayNetQtyPercentChange',
+            condition: 'cellClassRules',
+          },
+          metric4: {
+            variablesMetrics: 'sumQuantityL30D',
+          },
+          metric5: {
+            variablesMetrics: 'sumTotalL30D',
+          },
+          metric6: {
+            variablesMetrics: 'sumDiscountL30D',
+          },
+          metric7: {
+            variablesMetrics: 'minDayQtySalesL30D',
+          },
+          metric8: {
+            variablesMetrics: 'maxDayQtySalesL30D',
+          },
+          metric9: {
+            variablesMetrics: 'avgDayQtySalesL30D',
           },
         },
       },
@@ -440,29 +539,41 @@ const config = {
       },
     },
     calculatedMetrics: {
-      lastWorkingDayQtySales: {
-        timeseriesSource: 'promotionNetQtySoldTrend',
+      lastWorkingDayQtyUsed: {
+        timeseriesSource: 'promotionNetQtyUsedTrend',
         columnName: 'latestMetric',
         calcType: 'latest',
       },
-      priorWorkingDayQtySales: {
-        timeseriesSource: 'promotionNetQtySoldTrend',
+      priorWorkingDayQtyUsed: {
+        timeseriesSource: 'promotionNetQtyUsedTrend',
         columnName: 'priorMetric',
         calcType: '2ndLatest',
       },
-      changeWorkingDayQtySales: {
+      changeWorkingDayQtyUsed: {
         columnName: 'changeMetric',
         calcType: 'formula',
         formula: 'latestMetric-priorMetric',
       },
-      percentChangeWorkingDayQtySales: {
+      percentChangeWorkingDayQtyUsed: {
         columnName: 'changeMetricPercent',
         calcType: 'formula',
         formula: 'changeMetric/priorMetric',
       },
-      weeklyTrend: {
-        columnName: 'change',
-        calcType: 'weeklyTrend',
+      weeklyTrend: { columnName: 'change', calcType: 'weeklyTrend' },
+      minDayQty: {
+        timeseriesSource: 'promotionNetQtyUsedTrend',
+        columnName: 'minDayQty',
+        calcType: 'min',
+      },
+      maxDayQty: {
+        timeseriesSource: 'promotionNetQtyUsedTrend',
+        columnName: 'maxDayQty',
+        calcType: 'max',
+      },
+      avgDayQty: {
+        timeseriesSource: 'promotionNetQtyUsedTrend',
+        columnName: 'avgDayQty',
+        calcType: 'avg',
       },
     },
     variablesMetrics: {
@@ -508,7 +619,7 @@ const config = {
         maxWidth: 150,
       },
       percentChangeMetric: {
-        variablesMetrics: 'workingDayNetQtyPercentChange',
+        variablesMetrics: 'priorWorkingDayQtyUsed',
         condition: 'cellClassRules',
         maxWidth: 150,
       },
@@ -524,20 +635,7 @@ const config = {
         chart: {
           dataSource: 'trendSource',
         },
-        table: {
-          metric1: {
-            variablesMetrics: 'lastWorkingDayQtyUsed',
-          },
-          metric2: {
-            variablesMetrics: 'priorWorkingDayQtyUsed',
-          },
-          metric3: {
-            variablesMetrics: 'workingDayNetQtyPercentChange',
-          },
-          metric4: {
-            variablesMetrics: 'sumQuantity',
-          },
-        },
+        table: {},
       },
     },
   },
