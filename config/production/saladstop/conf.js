@@ -33,7 +33,7 @@ const config = {
         name: 'outletNetSalesTrend',
         valueKey: 'Net Sales',
         groupKey: 'Date',
-        title: 'Daily Net Sales Last 3M',
+        title: 'Daily Net Sales Last 30D',
       },
       tab1Chart: {
         queryID: '4097',
