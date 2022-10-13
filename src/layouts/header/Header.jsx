@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Box, Stack, AppBar } from '@mui/material'
-import { useUser } from '@auth0/nextjs-auth0'
 import Routes from '../../routes'
 import { useResponsive } from '../../hooks'
 import { Logo, Label } from '../../components'
@@ -10,8 +9,6 @@ import { selectConfig } from '../../utils/selectScript'
 import { DomainContext } from '../../contexts/DomainProvider'
 
 export default function Header() {
-  const { user } = useUser()
-
   const selectedDomain = useContext(DomainContext)
 
   const navConf = selectConfig(selectedDomain)?.getConfig('navConfig') ?? []
@@ -29,7 +26,7 @@ export default function Header() {
       <ToolbarStyle>
         <Stack direction="row" justifyContent="space-between" flexGrow={1}>
           <Stack direction="row" spacing={2}>
-            {!isDesktop && user && <NavMobile navConfig={navConfig} />}
+            {!isDesktop && <NavMobile navConfig={navConfig} />}
 
             <Box sx={{ lineHeight: 0, position: 'relative', py: 2 }}>
               <Logo onDark />
@@ -50,7 +47,7 @@ export default function Header() {
             </Box>
           </Stack>
 
-          {isDesktop && user && <NavDesktop navConfig={navConfig} />}
+          {isDesktop && <NavDesktop navConfig={navConfig} />}
         </Stack>
       </ToolbarStyle>
     </AppBar>
