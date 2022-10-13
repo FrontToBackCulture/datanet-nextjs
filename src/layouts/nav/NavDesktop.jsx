@@ -1,15 +1,58 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { Link, Stack } from '@mui/material'
+import { Button, Divider, Link, Stack } from '@mui/material'
+import { IconButtonAnimate, Iconify } from 'src/components'
+import { DomainContext, ROOT_DOMAIN, useUserDomain } from 'src/contexts/DomainProvider'
+import { useUser } from '@auth0/nextjs-auth0'
+import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network'
+import { DomainSelector } from '../header/DomainSelector'
 
 export default function NavDesktop({ navConfig }) {
+  const userDomain = useUserDomain()
+  const selectedDomain = useContext(DomainContext)
+
+  const { user } = useUser()
+
   return (
-    <Stack direction="row" spacing={6} sx={{ ml: 6, color: 'text.secondary' }}>
-      {navConfig.map((link) => (
-        <NavItemDesktop key={link.title} item={link} />
-      ))}
-    </Stack>
+    <>
+      <Stack direction="row" spacing={6} sx={{ ml: 6, color: 'text.secondary' }}>
+        {navConfig.map((link) => (
+          <NavItemDesktop key={link.code} item={link} />
+        ))}
+      </Stack>
+
+      <Stack spacing={2} direction="row" alignItems="center">
+        {user && (
+          <>
+            <DomainSelector />
+            <Divider orientation="vertical" sx={{ height: 1 }} />
+          </>
+        )}
+
+        {userDomain === ROOT_DOMAIN && (
+          <NextLink href={`/admin/${selectedDomain}`} passHref>
+            <IconButtonAnimate color="inherit">
+              <Iconify icon={contentDeliveryNetwork} sx={{ width: 20, height: 20 }} />
+            </IconButtonAnimate>
+          </NextLink>
+        )}
+
+        {user ? (
+          <NextLink href="/api/auth/logout" prefetch={false} passHref>
+            <Button color="inherit" variant="outlined">
+              Logout
+            </Button>
+          </NextLink>
+        ) : (
+          <NextLink href="/api/auth/login" prefetch={false} passHref>
+            <Button color="inherit" variant="outlined">
+              Login
+            </Button>
+          </NextLink>
+        )}
+      </Stack>
+    </>
   )
 }
 
@@ -29,10 +72,8 @@ function NavItemDesktop({ item }) {
   }
 
   return (
-    <NextLink key={title} href={path} passHref>
-      <StyledListItem active={isActiveRoot}>
-        <div>{title}</div>
-      </StyledListItem>
+    <NextLink href={path} passHref>
+      <StyledListItem active={isActiveRoot}>{title}</StyledListItem>
     </NextLink>
   )
 }
