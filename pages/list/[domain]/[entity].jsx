@@ -31,10 +31,10 @@ export default function ListPage({ rowData, conf }) {
   // - reset row data to blank
   // - push event to GA4
   useEffect(() => {
-    if (process.env.NEXT_PUBLIC_CONFIGURATION === 'production') {
+    if (user && process.env.NEXT_PUBLIC_CONFIGURATION === 'production') {
       gtag.event({ action: 'screenview', category: entity, label: user.email, value: 1 })
     }
-  }, [router.query, userDomain])
+  }, [router.query, userDomain, user])
 
   return (
     <DomainContext.Provider value={selectedDomain}>
