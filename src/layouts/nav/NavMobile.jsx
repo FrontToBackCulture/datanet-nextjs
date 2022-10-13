@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-import { alpha, styled } from '@mui/material/styles'
+import { alpha } from '@mui/material/styles'
 import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemButton } from '@mui/material'
 import menuIcon from '@iconify/icons-carbon/menu'
 import chevronRight from '@iconify/icons-carbon/chevron-right'
@@ -9,22 +9,6 @@ import chevronDown from '@iconify/icons-carbon/chevron-down'
 import { DRAWER_WIDTH } from '../../config'
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components'
 import { IconButtonAnimate } from '../../components/animate'
-
-const RootLinkStyle = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})(({ active, theme }) => ({
-  ...theme.typography.body2,
-  height: 48,
-  textTransform: 'capitalize',
-  paddingLeft: theme.spacing(2.5),
-  paddingRight: theme.spacing(2.5),
-  color: theme.palette.text.secondary,
-  ...(active && {
-    color: theme.palette.primary.main,
-    fontWeight: theme.typography.fontWeightMedium,
-    backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-  }),
-}))
 
 export default function NavMobile({ navConfig }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -76,10 +60,10 @@ function NavItemMobile({ item, onClose }) {
   if (children) {
     return (
       <>
-        <RootLinkStyle onClick={handleOpen} active={isActiveRootWithChild}>
+        <StyledListItem onClick={handleOpen} active={isActiveRootWithChild}>
           <ListItemText disableTypography primary={title} />
           <Iconify icon={open ? chevronDown : chevronRight} sx={{ width: 16, height: 16, ml: 1 }} />
-        </RootLinkStyle>
+        </StyledListItem>
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
@@ -140,18 +124,33 @@ function NavItemMobile({ item, onClose }) {
   if (title === 'Documentation') {
     return (
       <Link href={path} underline="none" target="_blank" rel="noopener">
-        <RootLinkStyle>
+        <StyledListItem>
           <ListItemText disableTypography primary={title} />
-        </RootLinkStyle>
+        </StyledListItem>
       </Link>
     )
   }
 
   return (
     <NextLink key={title} href={path} passHref>
-      <RootLinkStyle active={isActiveRoot} onClick={onClose}>
+      <StyledListItem active={isActiveRoot} onClick={onClose}>
         <ListItemText disableTypography primary={title} />
-      </RootLinkStyle>
+      </StyledListItem>
     </NextLink>
   )
 }
+
+const StyledListItem = ({ active, ...props }) => (
+  <ListItemButton
+    {...props}
+    sx={{
+      color: (theme) => theme.palette.text.secondary,
+      ...(active && {
+        color: (theme) => theme.palette.primary.main,
+        fontWeight: 'bold',
+        backgroundColor: (theme) =>
+          alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+      }),
+    }}
+  />
+)
