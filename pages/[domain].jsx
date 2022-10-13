@@ -19,7 +19,7 @@ export default function HomePage() {
     <DomainContext.Provider value={selectedDomain}>
       <Stack height={1}>
         <Header />
-        <Page title="The starting point for your next project" simpleFooter>
+        <Page title="The starting point for your next project">
           <Home />
         </Page>
       </Stack>

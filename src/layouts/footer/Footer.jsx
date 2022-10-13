@@ -10,7 +10,7 @@ export default function Footer() {
       <Container>
         <Stack alignItems="flex-start" spacing={3} py={8}>
           <Logo />
-          <Typography variant="body3" sx={{ color: 'text.secondary' }}>
+          <Typography color="text.secondary">
             The starting point for your data journey based on no-code aggregation of data across
             systems.
           </Typography>
@@ -26,14 +26,12 @@ export default function Footer() {
           justifyContent="space-between"
           sx={{ py: 3, textAlign: 'center' }}
         >
-          <Typography variant="body3" sx={{ color: 'text.secondary' }}>
-            © 2022. All rights reserved
-          </Typography>
+          <Typography color="text.secondary">© 2022. All rights reserved</Typography>
           <Stack direction="row" spacing={3} justifyContent="center">
-            <Link variant="body3" sx={{ color: 'text.secondary' }}>
+            <Link color="text.secondary" href="/">
               Help Center
             </Link>
-            <Link variant="body3" sx={{ color: 'text.secondary' }}>
+            <Link color="text.secondary" href="/">
               Terms of Service
             </Link>
           </Stack>
