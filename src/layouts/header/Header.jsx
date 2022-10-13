@@ -5,7 +5,7 @@ import { useResponsive } from '../../hooks'
 import { Logo, Label } from '../../components'
 import { NavMobile, NavDesktop } from '../nav'
 import { ToolbarStyle } from './HeaderToolbarStyle'
-import { selectConfig } from '../../utils/selectScript'
+import { selectConfig } from '../../utils/selectConfig'
 import { DomainContext } from '../../contexts/DomainProvider'
 
 export default function Header() {

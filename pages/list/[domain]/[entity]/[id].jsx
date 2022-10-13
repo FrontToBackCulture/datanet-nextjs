@@ -12,12 +12,8 @@ import DataTableGroup from '../../../../src/components/DataTable/DataTableGroup'
 import SimpleAreaChart from '../../../../src/components/Recharts/SimpleAreaChart'
 import MultiLineSeriesChart from '../../../../src/components/Recharts/MultiLineSeriesChart'
 import { ItemHero } from '../../../../src/sections/list'
-import {
-  selectConfig,
-  selectObject,
-  selectLocalDataSource,
-} from '../../../../src/utils/selectScript'
-
+import { selectObject, selectLocalDataSource } from '../../../../src/utils/selectScript'
+import { selectConfig } from '../../../../src/utils/selectConfig'
 import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../../../../src/contexts/DomainProvider'
 import Header from '../../../../src/layouts/header/Header'
 

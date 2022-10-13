@@ -1,7 +1,4 @@
 import localData from '../../data'
-import { getConfig } from '../../config/getConfig'
-
-export const selectConfig = (domain) => getConfig()[domain]?.conf
 
 export function selectObject(arr, checkKey, selectKey, item) {
   let result
