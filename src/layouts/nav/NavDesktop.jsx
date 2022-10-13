@@ -80,7 +80,7 @@ function NavItemDesktop({ item }) {
   }
 
   return (
-    <NextLink key={title} href={{ pathname: path }} passHref>
+    <NextLink key={title} href={path} passHref>
       <RootLinkStyle active={isActiveRoot}>
         <div>{title}</div>
       </RootLinkStyle>

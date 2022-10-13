@@ -1,35 +1,14 @@
-// react
-import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-// next
+import React, { useState } from 'react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
-// @mui
 import { alpha, styled } from '@mui/material/styles'
-import {
-  Box,
-  List,
-  Link,
-  Stack,
-  Button,
-  Drawer,
-  Collapse,
-  ListItemText,
-  ListItemButton,
-} from '@mui/material'
-// auth
-import { useUser } from '@auth0/nextjs-auth0'
-// config
+import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemButton } from '@mui/material'
 import menuIcon from '@iconify/icons-carbon/menu'
 import chevronRight from '@iconify/icons-carbon/chevron-right'
 import chevronDown from '@iconify/icons-carbon/chevron-down'
 import { DRAWER_WIDTH } from '../../config'
-// components
 import { Logo, Scrollbar, Iconify, NavSection } from '../../components'
 import { IconButtonAnimate } from '../../components/animate'
-// icons
-
-// ----------------------------------------------------------------------
 
 const RootLinkStyle = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -47,41 +26,18 @@ const RootLinkStyle = styled(ListItemButton, {
   }),
 }))
 
-// ----------------------------------------------------------------------
-
-NavMobile.propTypes = {
-  navConfig: PropTypes.array.isRequired,
-  sx: PropTypes.object,
-}
-
-export default function NavMobile({ navConfig, sx, userDomain }) {
-  const { user, error, isLoading } = useUser()
-  const { pathname } = useRouter()
+export default function NavMobile({ navConfig }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
-  console.log('Melvin Mobile', userDomain)
-  useEffect(() => {
-    if (drawerOpen) {
-      handleDrawerClose()
-    }
-  }, [pathname])
-
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true)
-  }
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false)
-  }
 
   return (
     <>
-      <IconButtonAnimate color="inherit" onClick={handleDrawerOpen} sx={sx}>
+      <IconButtonAnimate color="inherit" onClick={() => setDrawerOpen(true)}>
         <Iconify icon={menuIcon} />
       </IconButtonAnimate>
 
       <Drawer
         open={drawerOpen}
-        onClose={handleDrawerClose}
+        onClose={() => setDrawerOpen(false)}
         ModalProps={{ keepMounted: true }}
         PaperProps={{
           sx: { width: DRAWER_WIDTH },
@@ -94,62 +50,20 @@ export default function NavMobile({ navConfig, sx, userDomain }) {
 
           <List sx={{ px: 0 }}>
             {navConfig.map((link) => (
-              <NavItemMobile key={link.title} item={link} userDomain={userDomain} />
+              <NavItemMobile key={link.title} item={link} onClose={() => setDrawerOpen(false)} />
             ))}
           </List>
-
-          {/* {!user && (
-            <NextLink href="/api/auth/login">
-              <Button fullWidth variant="outlined" color="inherit">
-                Login
-              </Button>
-            </NextLink>
-          )} */}
-          {/* {user && (
-            <>            
-              <NextLink href="/api/auth/logout">
-                <Button fullWidth variant="outlined" color="inherit">
-                  Logout
-                </Button>
-              </NextLink>
-            </>
-          )} */}
-
-          {/* <Stack spacing={2} sx={{ p: 2.5, pb: 5 }}>
-            <NextLink href={Routes.loginIllustration} passHref>
-              <Button fullWidth variant="outlined" color="inherit">
-                Login
-              </Button>
-            </NextLink>
-
-            <NextLink href={Routes.registerIllustration} passHref>
-              <Button fullWidth variant="contained" color="inherit">
-                Join Us
-              </Button>
-            </NextLink>
-          </Stack> */}
         </Scrollbar>
       </Drawer>
     </>
   )
 }
 
-// ----------------------------------------------------------------------
-
-NavItemMobile.propTypes = {
-  item: PropTypes.shape({
-    children: PropTypes.array,
-    path: PropTypes.string,
-    title: PropTypes.string,
-  }),
-}
-
-function NavItemMobile({ item, userDomain }) {
+function NavItemMobile({ item, onClose }) {
   const { pathname, asPath } = useRouter()
 
   const { title, path, code, children } = item
   const rootPath = pathname.split('/')[1]
-  // const isActiveRoot = pathname === path;
   const isActiveRoot = asPath.includes(code)
   const isActiveRootWithChild = pathname.includes(`/${rootPath}/`)
 
@@ -234,12 +148,8 @@ function NavItemMobile({ item, userDomain }) {
   }
 
   return (
-    <NextLink
-      key={title}
-      href={{ pathname: path, query: { title, code, selectedDomain: userDomain } }}
-      passHref
-    >
-      <RootLinkStyle active={isActiveRoot}>
+    <NextLink key={title} href={path} passHref>
+      <RootLinkStyle active={isActiveRoot} onClick={onClose}>
         <ListItemText disableTypography primary={title} />
       </RootLinkStyle>
     </NextLink>

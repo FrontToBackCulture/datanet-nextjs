@@ -46,7 +46,7 @@ export default function Header() {
       <ToolbarStyle disableGutters>
         <Stack direction="row" justifyContent="space-between" flexGrow={1}>
           <Stack direction="row" spacing={2}>
-            {!isDesktop && user && <NavMobile navConfig={navConfig} userDomain={selectedDomain} />}
+            {!isDesktop && user && <NavMobile navConfig={navConfig} />}
 
             <Box sx={{ lineHeight: 0, position: 'relative', py: 2 }}>
               <Logo onDark />
