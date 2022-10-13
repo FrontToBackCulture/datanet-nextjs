@@ -42,6 +42,7 @@ export default function MyApp(props) {
   return (
     <>
       <Head>
+        <title>DataNet</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
