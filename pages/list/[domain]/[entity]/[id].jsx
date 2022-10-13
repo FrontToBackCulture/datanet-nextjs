@@ -74,50 +74,48 @@ export default function PromotionItemPage({
         <Header />
         <Page title={`${entity} | ${item.name}`}>
           <ItemHero item={item} entity={entity} />
-          <Grid container spacing={12}>
-            <Grid item xs={12} md={12} lg={12}>
-              <Box sx={{ width: '100%', padding: '0px' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                  <Tabs
-                    value={tabId}
-                    scrollButtons="auto"
-                    variant="scrollable"
-                    allowScrollButtonsMobile
-                    onChange={switchTab}
-                  >
-                    <Tab label={overviewName} />
-                    {tab1 && <Tab label={tab1Name} />}
-                  </Tabs>
-                </Box>
-                <TabPanel value={tabId} index={0} p={{ xs: 0, md: 2 }}>
-                  <br />
-                  <SimpleAreaChart conf={conf} chartData={chartData} tab="overview" />
+          <Stack spacing={2} flexGrow={1}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs
+                value={tabId}
+                scrollButtons="auto"
+                variant="scrollable"
+                allowScrollButtonsMobile
+                onChange={switchTab}
+              >
+                <Tab label={overviewName} />
+                {tab1 && <Tab label={tab1Name} />}
+              </Tabs>
+            </Box>
+            <TabPanel value={tabId} index={0}>
+              <Stack spacing={3}>
+                <SimpleAreaChart conf={conf} chartData={chartData} tab="overview" />
+                <Stack direction="row" spacing={2}>
                   {isDesktop ? (
-                    <Stack mt="10px" direction="row" spacing={2}>
+                    <>
                       <DataTable job={dataRows.slice(0, 7)} conf={conf} tabType="overview" />
                       <DataTable job={dataRows.slice(7, 14)} conf={conf} tabType="overview" />
-                    </Stack>
+                    </>
                   ) : (
                     <DataTable job={dataRows} conf={conf} tabType="overview" />
                   )}
-                </TabPanel>
-                {tab1 && (
-                  <TabPanel value={tabId} index={1}>
-                    <br />
-                    <MultiLineSeriesChart
-                      conf={conf}
-                      chartData={multiSeriesChannelData}
-                      uniqueChannels={uniqueChannels}
-                      tab="tab1"
-                    />
-                    <Stack sx={{ marginTop: '10px' }} spacing={2}>
-                      <DataTableGroup job={multiSeriesChannelData} conf={conf} tabType="tab1" />
-                    </Stack>
-                  </TabPanel>
-                )}
-              </Box>
-            </Grid>
-          </Grid>
+                </Stack>
+              </Stack>
+            </TabPanel>
+            <TabPanel value={tabId} index={1}>
+              <Stack spacing={3}>
+                <MultiLineSeriesChart
+                  conf={conf}
+                  chartData={multiSeriesChannelData}
+                  uniqueChannels={uniqueChannels}
+                  tab="tab1"
+                />
+                <Stack sx={{ marginTop: '10px' }} spacing={2}>
+                  <DataTableGroup job={multiSeriesChannelData} conf={conf} tabType="tab1" />
+                </Stack>
+              </Stack>
+            </TabPanel>
+          </Stack>
         </Page>
       </Stack>
     </DomainContext.Provider>
