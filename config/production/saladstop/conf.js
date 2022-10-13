@@ -114,10 +114,10 @@ const config = {
         type: 'currency',
         headerName: 'Daily Min Net Sales L30D',
       },
-      averageOrderCountL30D: {
+      averageOrderValueL30D: {
         sourceColumn: 'average Average Order Value',
-        type: 'number',
-        headerName: 'Average Order Count',
+        type: 'currency',
+        headerName: 'Average Order Value',
       },
       sumOrderCountL30D: {
         sourceColumn: 'sum Order Count',
@@ -220,7 +220,7 @@ const config = {
             variablesMetrics: 'minNetSalesL30D',
           },
           metric7: {
-            variablesMetrics: 'averageOrderCountL30D',
+            variablesMetrics: 'averageOrderValueL30D',
           },
           metric8: {
             variablesMetrics: 'sumOrderCountL30D',
