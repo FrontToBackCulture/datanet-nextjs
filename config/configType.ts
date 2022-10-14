@@ -47,7 +47,7 @@ type ListFieldsConfig = {
   link?: boolean
   maxWidth: number
   condition?: string
-  sort?: string
+  sort?: 'asc' | 'desc'
 }
 
 type TableConfig = Record<
