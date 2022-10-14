@@ -192,7 +192,7 @@ const config: Config = {
           maxWidth: 150,
         },
         metric6: {
-          variablesMetrics: 'averageOrderCountL30D',
+          variablesMetrics: 'averageOrderValueL30D',
           maxWidth: 150,
         },
       },
