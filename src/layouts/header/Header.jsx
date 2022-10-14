@@ -5,13 +5,13 @@ import { useResponsive } from '../../hooks'
 import { Logo, Label } from '../../components'
 import { NavMobile, NavDesktop } from '../nav'
 import { ToolbarStyle } from './HeaderToolbarStyle'
-import { selectConfig } from '../../utils/selectConfig'
+import { selectConfig } from '../../../config/selectConfig'
 import { DomainContext } from '../../contexts/DomainProvider'
 
 export default function Header() {
   const selectedDomain = useContext(DomainContext)
 
-  const navConf = selectConfig(selectedDomain)?.getConfig('navConfig') ?? []
+  const navConf = selectConfig(selectedDomain)?.navConfig ?? []
 
   const navConfig = navConf.map(({ title, code }) => ({
     title,

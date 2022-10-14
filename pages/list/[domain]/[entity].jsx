@@ -8,7 +8,7 @@ import * as gtag from '../../../lib/gtag'
 import { Page } from '../../../src/components'
 import AgGrid from '../../../src/components/AgGrid/AgGrid'
 import { selectLocalDataSource } from '../../../src/utils/selectScript'
-import { selectConfig } from '../../../src/utils/selectConfig'
+import { selectConfig } from '../../../config/selectConfig'
 import { DomainContext, useUserDomain } from '../../../src/contexts/DomainProvider'
 import Header from '../../../src/layouts/header/Header'
 
@@ -25,7 +25,7 @@ export default function ListPage({ rowData, conf }) {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const title = domainConf?.getConfig('navConfig')?.find((route) => route.code === entity)?.title
+  const title = domainConf.navConfig.find((route) => route.code === entity)?.title
 
   // whenever query or userDomain change
   // - get the relevant config
@@ -71,7 +71,7 @@ export const getServerSideProps = async ({ params }) => {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const conf = domainConf?.getConfig(entity)
+  const conf = domainConf[entity]
 
   const { dataSources } = conf
 

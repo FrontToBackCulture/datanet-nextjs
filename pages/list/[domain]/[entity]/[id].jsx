@@ -13,7 +13,7 @@ import SimpleAreaChart from '../../../../src/components/Recharts/SimpleAreaChart
 import MultiLineSeriesChart from '../../../../src/components/Recharts/MultiLineSeriesChart'
 import { ItemHero } from '../../../../src/sections/list'
 import { selectObject, selectLocalDataSource } from '../../../../src/utils/selectScript'
-import { selectConfig } from '../../../../src/utils/selectConfig'
+import { selectConfig } from '../../../../config/selectConfig'
 import { DomainContext, ROOT_DOMAIN, useUserDomain } from '../../../../src/contexts/DomainProvider'
 import Header from '../../../../src/layouts/header/Header'
 
@@ -139,7 +139,7 @@ export const getServerSideProps = async ({ params }) => {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const conf = domainConf?.getConfig(entity)
+  const conf = domainConf[entity]
 
   const { dataSources, listFields, detailFields } = conf
 
