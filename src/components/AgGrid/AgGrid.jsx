@@ -124,6 +124,7 @@ export default function AGGrid({ rowData, conf, entity, title }) {
             filter: true,
             resizable: true,
             wrapHeaderText: true,
+            cellStyle: { paddingLeft: '0.5em', paddingRight: '0.5em' },
           }}
           statusBar={{
             statusBar: {
