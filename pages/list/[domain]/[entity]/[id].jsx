@@ -64,6 +64,8 @@ export default function PromotionItemPage({
     return <LoadingScreen />
   }
 
+  const dataRowsByChunk = isDesktop ? _.chunk(dataRows, Math.ceil(dataRows.length / 2)) : [dataRows]
+
   return (
     <DomainContext.Provider value={selectedDomain}>
       <Stack height={1}>
@@ -87,14 +89,9 @@ export default function PromotionItemPage({
               <Stack spacing={3}>
                 <SimpleAreaChart conf={conf} chartData={chartData} tab="overview" />
                 <Stack direction="row" spacing={2}>
-                  {isDesktop ? (
-                    <>
-                      <DataTable job={dataRows.slice(0, 7)} conf={conf} tabType="overview" />
-                      <DataTable job={dataRows.slice(7, 14)} conf={conf} tabType="overview" />
-                    </>
-                  ) : (
-                    <DataTable job={dataRows} conf={conf} tabType="overview" />
-                  )}
+                  {dataRowsByChunk.map((dataRows, i) => (
+                    <DataTable key={i} job={dataRows} conf={conf} tabType="overview" />
+                  ))}
                 </Stack>
               </Stack>
             </TabPanel>
