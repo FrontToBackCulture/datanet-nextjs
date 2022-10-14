@@ -1,4 +1,4 @@
-import { Config } from "../configType"
+import { Config } from '../configType'
 
 const config: Config = {
   general: {
@@ -537,7 +537,7 @@ const config: Config = {
           contentType: 'trend',
           name: 'promotionNetQtySoldTrend',
           valueKey: 'sum Quantity',
-          groupKey: 'TransactionTime',
+          groupKey: 'Transactiontime',
           title: 'Daily Qty Promo Used Last 30D',
         },
       },
@@ -581,12 +581,12 @@ const config: Config = {
       },
       variablesMetrics: {
         promotionShortCode: {
-          sourceColumn: 'ID',
+          sourceColumn: 'Storehub Product ID',
           type: 'string',
           headerName: 'Product ID',
         },
         promotionName: {
-          sourceColumn: 'Name',
+          sourceColumn: 'POS Button Storehub',
           type: 'string',
           headerName: 'Name',
         },
@@ -641,7 +641,7 @@ const config: Config = {
           table: {},
         },
       },
-    }
+    },
   },
 }
 
