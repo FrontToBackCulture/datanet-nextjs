@@ -37,45 +37,45 @@ const config: Config = {
       },
       calculatedMetrics: {
         lastWorkingDayQtySales: {
-          dataSource: 'mergeStaticMetric',
+          // dataSource: 'mergeStaticMetric',
           timeseriesSource: 'productNetSalesTrend',
           columnName: 'latestMetric',
           calcType: 'latest',
         },
         priorWorkingDayQtySales: {
-          dataSource: 'mergeStaticMetric',
+          // dataSource: 'mergeStaticMetric',
           timeseriesSource: 'productNetSalesTrend',
           columnName: 'priorMetric',
           calcType: '2ndLatest',
         },
         changeWorkingDayQtySales: {
-          dataSource: 'mergeStaticMetric',
+          // dataSource: 'mergeStaticMetric',
           columnName: 'changeMetric',
           calcType: 'formula',
           formula: 'latestMetric-priorMetric',
         },
         percentChangeWorkingDayQtySales: {
-          dataSource: 'mergeStaticMetric',
+          // dataSource: 'mergeStaticMetric',
           columnName: 'changeMetricPercent',
           calcType: 'formula',
           formula: 'changeMetric/priorMetric',
         },
         weeklyTrend: {
-          dataSource: 'mergeStaticMetric',
+          // dataSource: 'mergeStaticMetric',
           columnName: 'change',
           calcType: 'weeklyTrend',
         },
       },
       variablesMetrics: {
         productShortCode: {
-          dataSource: 'staticSource',
+          // dataSource: 'staticSource',
           sourceColumn: 'Stock ID',
           type: 'string',
           headerName: 'Stock ID',
           description: '',
         },
         productName: {
-          dataSource: 'staticSource',
+          // dataSource: 'staticSource',
           sourceColumn: 'Product Name',
           type: 'string',
           headerName: 'Name',

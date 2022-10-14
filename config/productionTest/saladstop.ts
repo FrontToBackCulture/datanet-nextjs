@@ -38,16 +38,16 @@ const config: Config = {
           groupKey: 'Date',
           title: 'Daily Net Sales Last 30D',
         },
-        tab1Chart: {
-          queryID: '4097',
-          domain: 'saladstop',
-          key: 'Store',
-          contentType: 'channel',
-          valueKey: 'sum Net Sales',
-          groupPeriodKey: 'Transaction Date',
-          groupKey: 'Order Channel',
-          title: 'Performance Trend by Channel',
-        },
+        // tab1Chart: {
+        //   queryID: '4097',
+        //   domain: 'saladstop',
+        //   key: 'Store',
+        //   contentType: 'channel',
+        //   valueKey: 'sum Net Sales',
+        //   groupPeriodKey: 'Transaction Date',
+        //   groupKey: 'Order Channel',
+        //   title: 'Performance Trend by Channel',
+        // },
       },
       calculatedMetrics: {
         lastWorkingDayNetSales: {
@@ -272,7 +272,6 @@ const config: Config = {
             },
           },
         },
-        tab2: {},
       },
     },
     product: {
