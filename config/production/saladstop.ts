@@ -1,4 +1,4 @@
-import { Config } from "../../configType"
+import { Config } from "../configType"
 
 const config: Config = {
   general: {
