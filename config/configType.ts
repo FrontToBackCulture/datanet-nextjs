@@ -30,7 +30,7 @@ type SourceConfig = {
 type CalculatedMetricsConfig = {
   timeseriesSource?: string
   columnName: string
-  calcType: string
+  calcType: 'latest' | '2ndLatest' | 'formula' | 'weeklyTrend' | 'min' | 'max' | 'avg'
   formula?: string
 }
 
