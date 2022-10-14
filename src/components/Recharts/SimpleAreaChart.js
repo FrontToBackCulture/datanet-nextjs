@@ -57,7 +57,7 @@ export default function Example({ conf, chartData, tab }) {
   }, [displayDat])
 
   function formatXAxis(tickItem) {
-    if (chartData.length > 0) {
+    if (tickItem && chartData.length > 0) {
       // If using moment.js
       // console.log(tickItem);
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
