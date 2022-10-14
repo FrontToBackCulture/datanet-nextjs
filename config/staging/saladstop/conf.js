@@ -196,6 +196,7 @@ const config = {
     { title: 'Products', code: 'product' },
     { title: 'Promotions', code: 'promotion' },
   ],
+  entities: {},
 }
 
 module.exports = {

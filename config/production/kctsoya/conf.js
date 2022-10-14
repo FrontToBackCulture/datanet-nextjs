@@ -89,6 +89,7 @@ const config = {
     // { title: 'Home', path: '/', code: 'home' },
     { title: 'Products', code: 'product' },
   ],
+  entities: {},
 }
 
 module.exports = {

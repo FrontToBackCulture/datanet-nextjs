@@ -1,7 +1,8 @@
 export type Config = {
     general: General
     navConfig: NavItem[]
-} & Record<string, EntityConfig>
+    entities: Record<string, EntityConfig>
+}
 
 type General = {
     companyName: string

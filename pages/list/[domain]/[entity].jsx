@@ -71,7 +71,7 @@ export const getServerSideProps = async ({ params }) => {
 
   const domainConf = selectConfig(selectedDomain)
 
-  const conf = domainConf[entity]
+  const conf = domainConf.entities[entity]
 
   const { dataSources } = conf
 
