@@ -1,4 +1,6 @@
-const config = {
+import { Config } from '../configType'
+
+const config: Config = {
   general: {
     companyName: '',
     companyDescription: '',
@@ -147,6 +149,4 @@ const config = {
   },
 }
 
-module.exports = {
-  config,
-}
+export default config
