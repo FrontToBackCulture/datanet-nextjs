@@ -80,6 +80,7 @@ export default function Example({ conf, chartData, uniqueChannels, tab }) {
 
   function formatXAxis(tickItem) {
     if (chartData.length > 0) {
+      console.log(`~ tickItem ${tickItem}`)
       // If using moment.js
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
       // return moment(tickItem).format('YYYY-MM-DD');
@@ -105,6 +106,7 @@ export default function Example({ conf, chartData, uniqueChannels, tab }) {
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      console.log(`~ label 2 ${label}`)
       return (
         <div className="custom-tooltip">
           <Box

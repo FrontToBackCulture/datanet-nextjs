@@ -60,6 +60,7 @@ export default function DenseTable({ job, conf, tabType }) {
             Math.max.apply(
               null,
               item.data.map((e) => {
+                console.log(`~ e[groupPeriodKey] ${e[groupPeriodKey]}`)
                 let mrd = new Date(moment(e[groupPeriodKey]).format('YYYY-MM-DD'))
                 return new Date(mrd)
               })
@@ -69,6 +70,7 @@ export default function DenseTable({ job, conf, tabType }) {
             priorMetric = 0
           // get the the most recent date object in the trend data for the selected item
           var mostRecentObject = item.data.filter((e) => {
+            console.log(`~ e[groupPeriodKey] ${e[groupPeriodKey]}`)
             let d = new Date(moment(e[groupPeriodKey]).format('YYYY-MM-DD'))
             return d.getTime() == mostRecentDate.getTime()
             // return d == mostRecentDate;
