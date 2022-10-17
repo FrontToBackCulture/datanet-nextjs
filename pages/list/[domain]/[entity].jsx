@@ -12,7 +12,8 @@ import { selectConfig } from '../../../config/selectConfig'
 import { DomainContext, useUserDomain } from '../../../src/contexts/DomainProvider'
 import Header from '../../../src/layouts/header/Header'
 
-export default function ListPage({ rowData, conf }) {
+export default function ListPage({ rowData, conf, rawData }) {
+  console.log(`🚀 ~ rawData`, rawData)
   const { user } = useUser()
 
   const router = useRouter()
@@ -113,6 +114,7 @@ export const getServerSideProps = async ({ params }) => {
     props: {
       rowData,
       conf,
+      rawData,
     },
   }
 }
