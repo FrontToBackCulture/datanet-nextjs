@@ -19,6 +19,8 @@ import Header from '../../../../src/layouts/header/Header'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
+  console.log(`🚀 ~ props.multiSeriesChannelData`, props.multiSeriesChannelData)
+  console.log(`🚀 ~ props.uniqueChannels`, props.uniqueChannels)
 
   return (
     <div role="tabpanel" hidden={value !== index} {...other}>
