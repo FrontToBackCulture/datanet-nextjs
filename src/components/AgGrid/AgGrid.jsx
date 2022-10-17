@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useContext } from 'react'
+import React, { useCallback, useRef, useContext, useState } from 'react'
 import NextLink from 'next/link'
 import { TextField, Stack, Typography } from '@mui/material'
 import { AgGridReact } from 'ag-grid-react'
@@ -40,12 +40,9 @@ const getFormatter = (type) => {
 }
 
 export default function AGGrid({ rowData, conf, entity, title }) {
-  const gridRef = useRef()
-  let columnDefs = []
+  const [filterText, setQuickFilter] = useState('')
 
-  const onFilterTextBoxChanged = useCallback(() => {
-    gridRef.current.api.setQuickFilter(document.getElementById('filter-text-box').value)
-  }, [])
+  let columnDefs = []
 
   if (rowData && conf && entity) {
     const { dataSources, listFields } = conf
@@ -109,11 +106,15 @@ export default function AGGrid({ rowData, conf, entity, title }) {
     <Stack height={1} spacing={3}>
       <Stack direction="row" justifyContent="space-between">
         <Typography variant="h4">{title}</Typography>
-        <TextField label="Search" onChange={onFilterTextBoxChanged} size="small" focused />
+        <TextField
+          label="Search"
+          onChange={(e) => setQuickFilter(e.target.value)}
+          size="small"
+          focused
+        />
       </Stack>
       <div id="myGrid" style={{ flexGrow: 1 }} className="ag-theme-material">
         <AgGridReact
-          ref={gridRef}
           rowData={rowData}
           columnDefs={columnDefs}
           defaultColDef={{
@@ -126,6 +127,7 @@ export default function AGGrid({ rowData, conf, entity, title }) {
             wrapHeaderText: true,
             cellStyle: { paddingLeft: '0.5em', paddingRight: '0.5em' },
           }}
+          quickFilterText={filterText}
           statusBar={{
             statusBar: {
               statusPanels: [
