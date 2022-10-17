@@ -285,7 +285,7 @@ const config: Config = {
           contentType: 'trend',
           name: 'productNetQtySoldTrend',
           valueKey: 'sum Quantity',
-          groupKey: 'TransactionTime',
+          groupKey: 'Transactiontime',
           title: 'Daily Qty Sold Last 30D',
         },
         tab1Chart: {
@@ -324,21 +324,6 @@ const config: Config = {
         weeklyTrend: {
           columnName: 'change',
           calcType: 'weeklyTrend',
-        },
-        minDayQtySales: {
-          timeseriesSource: 'productNetQtySoldTrend',
-          columnName: 'minDayQtySales',
-          calcType: 'min',
-        },
-        maxDayQtySales: {
-          timeseriesSource: 'productNetQtySoldTrend',
-          columnName: 'maxDayQtySales',
-          calcType: 'max',
-        },
-        avgDayQtySales: {
-          timeseriesSource: 'productNetQtySoldTrend',
-          columnName: 'avgDayQtySales',
-          calcType: 'avg',
         },
       },
       variablesMetrics: {
@@ -382,20 +367,35 @@ const config: Config = {
           type: 'currency',
           headerName: 'Discount L30D',
         },
-        minDayQtySalesL30D: {
+        lastWorkingDayChannelNetSales: {
+          sourceColumn: 'latestMetric',
+          type: 'currency',
+          headerName: 'Last Working Day Net Sales',
+        },
+        priorWorkingDayChannelNetSales: {
+          sourceColumn: 'priorMetric',
+          type: 'currency',
+          headerName: 'Prior Working Day Net Sales',
+        },
+        workingDayChannelNetSalesPercentChange: {
+          sourceColumn: 'changeMetricPercent',
+          type: 'percent',
+          headerName: 'Daily Net Sales % Δ',
+        },
+        outletSumChannelNetSalesL30D: {
+          sourceColumn: 'aggregateMetric',
+          type: 'currency',
+          headerName: 'Net Sales L30D',
+        },
+        maxChannelNetSalesL30D: {
           sourceColumn: 'maxMetric',
-          type: 'number',
-          headerName: 'Daily Min Qty Sold L30D',
+          type: 'currency',
+          headerName: 'Daily Max Net Sales L30D',
         },
-        maxDayQtySalesL30D: {
+        minChannelNetSalesL30D: {
           sourceColumn: 'minMetric',
-          type: 'number',
-          headerName: 'Daily Max Qty Sold L30D',
-        },
-        avgDayQtySalesL30D: {
-          sourceColumn: 'avgMetric',
-          type: 'number',
-          headerName: 'Daily Avg Qty Sold L30D',
+          type: 'currency',
+          headerName: 'Daily Min Net Sales L30D',
         },
       },
       listFields: {
@@ -426,18 +426,6 @@ const config: Config = {
           variablesMetrics: 'sumDiscountL30D',
           maxWidth: 150,
         },
-        metric6: {
-          variablesMetrics: 'minDayQtySalesL30D',
-          maxWidth: 150,
-        },
-        metric7: {
-          variablesMetrics: 'maxDayQtySalesL30D',
-          maxWidth: 150,
-        },
-        metric8: {
-          variablesMetrics: 'avgDayQtySalesL30D',
-          maxWidth: 150,
-        },
       },
       detailFields: {
         overview: {
@@ -465,50 +453,32 @@ const config: Config = {
             metric6: {
               variablesMetrics: 'sumDiscountL30D',
             },
-            metric7: {
-              variablesMetrics: 'minDayQtySalesL30D',
-            },
-            metric8: {
-              variablesMetrics: 'maxDayQtySalesL30D',
-            },
-            metric9: {
-              variablesMetrics: 'avgDayQtySalesL30D',
-            },
           },
         },
         tab1: {
-          name: 'Product Qty Sold Trend by Outlet',
+          name: 'Channel Performance',
           chart: {
             dataSource: 'tab1Chart',
           },
           table: {
             metric1: {
-              variablesMetrics: 'lastWorkingDayQtySales',
+              variablesMetrics: 'lastWorkingDayChannelNetSales',
             },
             metric2: {
-              variablesMetrics: 'priorWorkingDayQtySales',
+              variablesMetrics: 'priorWorkingDayChannelNetSales',
             },
             metric3: {
-              variablesMetrics: 'workingDayNetQtyPercentChange',
+              variablesMetrics: 'workingDayChannelNetSalesPercentChange',
               condition: 'cellClassRules',
             },
             metric4: {
-              variablesMetrics: 'sumQuantityL30D',
+              variablesMetrics: 'outletSumChannelNetSalesL30D',
             },
             metric5: {
-              variablesMetrics: 'sumTotalL30D',
+              variablesMetrics: 'maxChannelNetSalesL30D',
             },
             metric6: {
-              variablesMetrics: 'sumDiscountL30D',
-            },
-            metric7: {
-              variablesMetrics: 'minDayQtySalesL30D',
-            },
-            metric8: {
-              variablesMetrics: 'maxDayQtySalesL30D',
-            },
-            metric9: {
-              variablesMetrics: 'avgDayQtySalesL30D',
+              variablesMetrics: 'minChannelNetSalesL30D',
             },
           },
         },
@@ -563,21 +533,6 @@ const config: Config = {
           formula: 'changeMetric/priorMetric',
         },
         weeklyTrend: { columnName: 'change', calcType: 'weeklyTrend' },
-        minDayQty: {
-          timeseriesSource: 'promotionNetQtyUsedTrend',
-          columnName: 'minDayQty',
-          calcType: 'min',
-        },
-        maxDayQty: {
-          timeseriesSource: 'promotionNetQtyUsedTrend',
-          columnName: 'maxDayQty',
-          calcType: 'max',
-        },
-        avgDayQty: {
-          timeseriesSource: 'promotionNetQtyUsedTrend',
-          columnName: 'avgDayQty',
-          calcType: 'avg',
-        },
       },
       variablesMetrics: {
         promotionShortCode: {
