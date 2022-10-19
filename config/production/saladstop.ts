@@ -292,8 +292,8 @@ const config: Config = {
           queryID: '4120',
           domain: 'saladstop',
           key: 'Productid',
-          contentType: 'channel',
-          name: 'outletChannelTrend',
+          contentType: 'outletProduct',
+          name: 'outletProductSalesTrend',
           valueKey: 'sum Quantity',
           groupKey: 'Store',
           groupPeriodKey: 'Transactiontime',
@@ -367,36 +367,6 @@ const config: Config = {
           type: 'currency',
           headerName: 'Discount L30D',
         },
-        lastWorkingDayChannelNetSales: {
-          sourceColumn: 'latestMetric',
-          type: 'currency',
-          headerName: 'Last Working Day Net Sales',
-        },
-        priorWorkingDayChannelNetSales: {
-          sourceColumn: 'priorMetric',
-          type: 'currency',
-          headerName: 'Prior Working Day Net Sales',
-        },
-        workingDayChannelNetSalesPercentChange: {
-          sourceColumn: 'changeMetricPercent',
-          type: 'percent',
-          headerName: 'Daily Net Sales % Δ',
-        },
-        outletSumChannelNetSalesL30D: {
-          sourceColumn: 'aggregateMetric',
-          type: 'currency',
-          headerName: 'Net Sales L30D',
-        },
-        maxChannelNetSalesL30D: {
-          sourceColumn: 'maxMetric',
-          type: 'currency',
-          headerName: 'Daily Max Net Sales L30D',
-        },
-        minChannelNetSalesL30D: {
-          sourceColumn: 'minMetric',
-          type: 'currency',
-          headerName: 'Daily Min Net Sales L30D',
-        },
       },
       listFields: {
         name: {
@@ -437,9 +407,6 @@ const config: Config = {
             metric1: {
               variablesMetrics: 'lastWorkingDayQtySales',
             },
-            metric2: {
-              variablesMetrics: 'priorWorkingDayQtySales',
-            },
             metric3: {
               variablesMetrics: 'workingDayNetQtyPercentChange',
               condition: 'cellClassRules',
@@ -452,33 +419,6 @@ const config: Config = {
             },
             metric6: {
               variablesMetrics: 'sumDiscountL30D',
-            },
-          },
-        },
-        tab1: {
-          name: 'Channel Performance',
-          chart: {
-            dataSource: 'tab1Chart',
-          },
-          table: {
-            metric1: {
-              variablesMetrics: 'lastWorkingDayChannelNetSales',
-            },
-            metric2: {
-              variablesMetrics: 'priorWorkingDayChannelNetSales',
-            },
-            metric3: {
-              variablesMetrics: 'workingDayChannelNetSalesPercentChange',
-              condition: 'cellClassRules',
-            },
-            metric4: {
-              variablesMetrics: 'outletSumChannelNetSalesL30D',
-            },
-            metric5: {
-              variablesMetrics: 'maxChannelNetSalesL30D',
-            },
-            metric6: {
-              variablesMetrics: 'minChannelNetSalesL30D',
             },
           },
         },
@@ -505,7 +445,7 @@ const config: Config = {
           domain: 'saladstop',
           key: 'Productid',
           contentType: 'trend',
-          name: 'promotionNetQtySoldTrend',
+          name: 'promotionNetQtyUsedTrend',
           valueKey: 'sum Quantity',
           groupKey: 'Transactiontime',
           title: 'Daily Qty Promo Used Last 30D',
@@ -560,7 +500,7 @@ const config: Config = {
           type: 'percent',
           headerName: 'Daily Promo Used % Δ',
         },
-        sumQuantity: {
+        sumQuantityL30D: {
           sourceColumn: 'sum Quantity',
           type: 'number',
           headerName: 'Promo Used Count L30D',
@@ -577,12 +517,12 @@ const config: Config = {
           maxWidth: 150,
         },
         percentChangeMetric: {
-          variablesMetrics: 'priorWorkingDayQtyUsed',
+          variablesMetrics: 'workingDayNetQtyPercentChange',
           condition: 'cellClassRules',
           maxWidth: 150,
         },
         metric3: {
-          variablesMetrics: 'sumQuantity',
+          variablesMetrics: 'sumQuantityL30D',
           maxWidth: 150,
           sort: 'desc',
         },
@@ -593,7 +533,24 @@ const config: Config = {
           chart: {
             dataSource: 'trendSource',
           },
-          table: {},
+          table: {
+            metric1: {
+              variablesMetrics: 'lastWorkingDayQtyUsed',
+            },
+            metric2: {
+              variablesMetrics: 'priorWorkingDayQtyUsed',
+            },
+            metric3: {
+              variablesMetrics: 'changeWorkingDayQtyUsed',
+            },
+            metric4: {
+              variablesMetrics: 'percentChangeWorkingDayQtyUsed',
+              condition: 'cellClassRules',
+            },
+            metric5: {
+              variablesMetrics: 'sumQuantityL30D',
+            },
+          },
         },
       },
     },
