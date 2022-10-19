@@ -407,6 +407,9 @@ const config: Config = {
             metric1: {
               variablesMetrics: 'lastWorkingDayQtySales',
             },
+            metric2: {
+              variablesMetrics: 'priorWorkingDayQtySales',
+            },
             metric3: {
               variablesMetrics: 'workingDayNetQtyPercentChange',
               condition: 'cellClassRules',
