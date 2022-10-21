@@ -109,6 +109,8 @@ export const getServerSideProps = async ({ params }) => {
     dataType: entity,
   }
 
+  console.log(`🚀 ~ rawData`, rawData)
+
   const rowData = (await dataNetPerformCalc(performCalcParams)).data
 
   return {
