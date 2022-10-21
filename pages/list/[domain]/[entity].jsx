@@ -79,7 +79,8 @@ export const getServerSideProps = async ({ params }) => {
   const rawData = {}
   for (const dataSet of Object.keys(dataSources)) {
     const { domain, queryID, contentType, name } = dataSources[dataSet]
-    rawData[name] = await getDataFromVAL(queryID, domain, contentType, entity, true)
+    const dataFromVal = await getDataFromVAL(queryID, domain, contentType, entity, true)
+    if (dataFromVal) rawData[name] = dataFromVal
   }
 
   const trendSourceName = dataSources.trendSource.name
