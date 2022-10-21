@@ -23,6 +23,7 @@ export const DomainSelector = () => {
             <MenuItem value="thinkval">ThinkVAL</MenuItem>
             <MenuItem value="saladstop">Salad Stop!</MenuItem>
             <MenuItem value="kctsoya">KCT Soya</MenuItem>
+            <MenuItem value="lesamis">Les Amis</MenuItem>
           </Select>
         </FormControl>
       ) : (
