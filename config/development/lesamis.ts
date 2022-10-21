@@ -146,8 +146,6 @@ const config: Config = {
           condition: 'cellClassRules',
         },
         metric3: { variablesMetrics: 'outletSumNetSalesL30D', maxWidth: 150, sort: 'desc' },
-        metric4: { variablesMetrics: 'maxNetSalesL30D', maxWidth: 150 },
-        metric5: { variablesMetrics: 'minNetSalesL30D', maxWidth: 150 },
         metric6: { variablesMetrics: 'averageOrderValueL30D', maxWidth: 150 },
       },
       detailFields: {
