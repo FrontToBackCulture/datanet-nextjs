@@ -168,18 +168,6 @@ const data = [
     id: 'OGS',
   },
   {
-    Outlet: 'RP',
-    'Size (SqFt)': 451,
-    'District Manager': 'Victoria',
-    Brand: 'SaladStop!',
-    'Outlet Name': 'Republic Plaza',
-    Address: '9 Raffles Place.B1-21 Republic Plaza',
-    Manager: ['Jogie'],
-    Supervisor: [],
-    'Supervisor 2': [],
-    id: 'RP',
-  },
-  {
     Outlet: 'TANGS',
     'Size (SqFt)': 528,
     'District Manager': 'Azan',
@@ -204,6 +192,7 @@ const data = [
     id: 'TGL',
   },
 ]
+
 function getData() {
   return data
 }

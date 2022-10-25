@@ -17,6 +17,7 @@ export function selectObject(arr, checkKey, selectKey, item) {
 export function selectLocalDataSource(contentType, dataType, domain) {
   let outletJsonData
   let productJsonData
+  let promotionJsonData
   let localJsonData
   if (dataType === 'outlet' && localData[domain][dataType][contentType]) {
     // outletJsonData = outletData[contentType].getData();
@@ -26,12 +27,19 @@ export function selectLocalDataSource(contentType, dataType, domain) {
     // productJsonData = productData[contentType].getData();
     productJsonData = localData[domain][dataType][contentType].getData()
   }
+  if (dataType === 'promotion' && localData[domain][dataType][contentType]) {
+    // promotionJsonData = productData[contentType].getData();
+    promotionJsonData = localData[domain][dataType][contentType].getData()
+  }
   switch (dataType) {
     case 'outlet':
       localJsonData = outletJsonData
       break
     case 'product':
       localJsonData = productJsonData
+      break
+    case 'promotion':
+      localJsonData = promotionJsonData
       break
     default:
       break
