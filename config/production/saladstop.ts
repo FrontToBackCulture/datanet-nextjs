@@ -544,13 +544,10 @@ const config: Config = {
               variablesMetrics: 'priorWorkingDayQtyUsed',
             },
             metric3: {
-              variablesMetrics: 'changeWorkingDayQtyUsed',
-            },
-            metric4: {
-              variablesMetrics: 'percentChangeWorkingDayQtyUsed',
+              variablesMetrics: 'workingDayNetQtyPercentChange',
               condition: 'cellClassRules',
             },
-            metric5: {
+            metric4: {
               variablesMetrics: 'sumQuantityL30D',
             },
           },
