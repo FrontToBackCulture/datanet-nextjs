@@ -97,27 +97,31 @@ export const getServerSideProps = async ({ params }) => {
     dataType: entity,
   }
 
-  const mergeStaticMetric = (await dataNetMerge(mergeParams)).data
+  try {
+    const mergeStaticMetric = (await dataNetMerge(mergeParams)).data
 
-  const performCalcParams = {
-    data: {
-      mergeStaticMetric,
-      [trendSourceName]: rawData[trendSourceName],
-    },
-    conf,
-    domain: selectedDomain,
-    dataType: entity,
-  }
-
-  console.log(`🚀 ~ rawData`, rawData)
-
-  const rowData = (await dataNetPerformCalc(performCalcParams)).data
-
-  return {
-    props: {
-      rowData,
+    const performCalcParams = {
+      data: {
+        mergeStaticMetric,
+        [trendSourceName]: rawData[trendSourceName],
+      },
       conf,
-      rawData,
-    },
+      domain: selectedDomain,
+      dataType: entity,
+    }
+
+    const rowData = (await dataNetPerformCalc(performCalcParams)).data
+
+    return {
+      props: {
+        rowData,
+        conf,
+        rawData,
+      },
+    }
+  } catch (e) {
+    console.error(e)
+
+    return { props: { rawData } }
   }
 }
