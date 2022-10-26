@@ -55,14 +55,19 @@ const getDataFromVAL = async (id, dom, contentType, dataType, cache) => {
   if (process.env.NEXT_PUBLIC_CONFIGURATION === 'development') {
     return selectLocalDataSource(contentType, dataType, dom)
   }
-  const valJobs = await readVAL({
-    queryID: id,
-    domain: dom,
-    contentType,
-    dataType,
-    cache,
-  })
-  return valJobs.data
+  try {
+    const valJobs = await readVAL({
+      queryID: id,
+      domain: dom,
+      contentType,
+      dataType,
+      cache,
+    })
+    return valJobs.data
+  } catch (e) {
+    console.error(e)
+    return []
+  }
 }
 
 export const getServerSideProps = async ({ params }) => {
