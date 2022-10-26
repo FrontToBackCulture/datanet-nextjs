@@ -36,7 +36,7 @@ type CalculatedMetricsConfig = {
 
 type VariablesMetricsConfig = {
   sourceColumn: string
-  type: string
+  type: 'string' | 'number' | 'currency' | 'percent'
   headerName: string
   description?: string
   link?: boolean
