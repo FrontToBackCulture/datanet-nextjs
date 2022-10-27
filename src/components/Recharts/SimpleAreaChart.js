@@ -58,8 +58,6 @@ export default function Example({ conf, chartData, tab }) {
 
   function formatXAxis(tickItem) {
     if (tickItem && chartData.length > 0) {
-      console.log(`~ tickItem 2 ${tickItem}`)
-
       // If using moment.js
       // console.log(tickItem);
       // console.log(new Date(moment(tickItem).format('YYYY-MM-DD')));
