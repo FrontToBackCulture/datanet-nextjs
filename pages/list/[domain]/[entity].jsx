@@ -13,7 +13,7 @@ import { DomainContext, useUserDomain } from '../../../src/contexts/DomainProvid
 import Header from '../../../src/layouts/header/Header'
 
 export default function ListPage({ rowData, conf, rawData }) {
-  console.log(`🚀 ~ rawData`, rawData)
+  if (typeof window !== 'undefined') console.log(`🚀 ~ rawData`, rawData)
   const { user } = useUser()
 
   const router = useRouter()
@@ -102,19 +102,27 @@ export const getServerSideProps = async ({ params }) => {
     dataType: entity,
   }
 
+  let mergeStaticMetric
+
   try {
-    const mergeStaticMetric = (await dataNetMerge(mergeParams)).data
+    mergeStaticMetric = (await dataNetMerge(mergeParams)).data
+  } catch (e) {
+    console.error('Error on dataNetMerge :', e)
 
-    const performCalcParams = {
-      data: {
-        mergeStaticMetric,
-        [trendSourceName]: rawData[trendSourceName],
-      },
-      conf,
-      domain: selectedDomain,
-      dataType: entity,
-    }
+    return { props: { rawData, conf } }
+  }
 
+  const performCalcParams = {
+    data: {
+      mergeStaticMetric,
+      [trendSourceName]: rawData[trendSourceName],
+    },
+    conf,
+    domain: selectedDomain,
+    dataType: entity,
+  }
+
+  try {
     const rowData = (await dataNetPerformCalc(performCalcParams)).data
 
     return {
@@ -125,8 +133,8 @@ export const getServerSideProps = async ({ params }) => {
       },
     }
   } catch (e) {
-    console.error(e)
+    console.error('Error on dataNetPerformCalc :', e)
 
-    return { props: { rawData } }
+    return { props: { rawData, conf } }
   }
 }
